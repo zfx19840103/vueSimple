@@ -1,6 +1,5 @@
 stages:
   - build
-  - deploy
 
 cache:
   key: ${CI_COMMIT_BEF_NAME}
@@ -20,8 +19,3 @@ job-build:
     paths:
       - .nuxt/
       - .
-  tags:
-    - rancher
-    - dev
-  only:
-    - develop
