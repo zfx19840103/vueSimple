@@ -1,11 +1,11 @@
 stages:
   - build
+  - delpoy
 
 cache:
   key: ${CI_COMMIT_BEF_NAME}
   paths:
     - node_modules/
-
 
 build:
   stage: build
