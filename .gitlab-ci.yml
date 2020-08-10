@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_BEF_NAME}
+  paths:
+    - node_modules/
+
+
+job-build:
+  stage: build
+  only:
+    - tags
+  scripts:
+    - npm install && npm run build
+    - ls -al
+
+  artifacts:
+    paths:
+      - .nuxt/
+      - .
+  tags:
+    - rancher
+    - dev
+  only:
+    - develop
