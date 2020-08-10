@@ -1,2 +1,2 @@
-const API = '//dev.api.byte.tsingglobal.cn'
+const API = '//apitest.tsingglobal.com'
 export default API;
