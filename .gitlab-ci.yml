@@ -7,7 +7,7 @@ cache:
     - node_modules/
 
 
-job-build:
+build:
   stage: build
   only:
     refs:
