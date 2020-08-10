@@ -14,7 +14,7 @@ build:
     - tags
 
   script:
-    - npm install --progress=false --registry=https://registry.npm.taobao.org
+    - npm install --progress=false --registry=https://mirrors.huaweicloud.com/repository/npm/
     - npm run build
     - ls -al
 
