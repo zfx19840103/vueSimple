@@ -30,7 +30,7 @@
 import { getData, deleteinvoice } from "@/api/addinvoice";
 
 import Cookie from "js-cookie";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 
 export default {
     data: function() {

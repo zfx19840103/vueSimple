@@ -52,7 +52,7 @@
 import { loginPost, pushCode, verify } from "@/api/login";
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 import Header from "./header";
 export default {
     data() {

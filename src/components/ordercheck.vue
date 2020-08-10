@@ -194,7 +194,7 @@
 
 <script>
 import Cookie from "js-cookie";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 import {
     getaddresslistdata,
     skuinfo,

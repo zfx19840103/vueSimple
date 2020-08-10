@@ -93,7 +93,7 @@ import {
     paypolling,
     payovertime
 } from "@/api/orderdetail";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 
 export default {
     data() {

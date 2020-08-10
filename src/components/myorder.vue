@@ -50,7 +50,7 @@ import Cookie from "js-cookie";
 import { orderlist } from "@/api/myorder";
 import { ordercreateapi } from "@/api/ordercheck";
 import { paycreate } from "@/api/orderdetail";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 
 import BScroll from "better-scroll";
 

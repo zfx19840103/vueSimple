@@ -38,7 +38,7 @@
 
 <script>
 import Cookie from "js-cookie";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 import Clipboard from "clipboard";
 import { logisticsinfo } from "@/api/ordertrack";
 export default {
