@@ -328,6 +328,7 @@ export default {
                     visible: true,
                     tip: res.message
                 };
+                
                 localStorage.removeItem("moon_email");
                 setTimeout(function() {
                     that.$router.push("/login");
