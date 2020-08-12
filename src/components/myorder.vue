@@ -1,18 +1,12 @@
 <template>
     <div class="myorder">
-        <div style="font-size: 14px; position:absolute; z-index:999; top:0; left:0;">{{tipppp}}</div>
+        <!-- <div style="font-size: 14px; position:absolute; z-index:999; top:0; left:0;">{{tipppp}}</div> -->
         <div class="wrapper" ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
             <div class="bscroll-container">
-                <!-- 刷新提示信息 -->
-                <!-- <div class="top-tip">
-                    <span class="refresh-hook">{{pulldownMsg}}</span>
-                </div>-->
-                <!-- 内容列表 -->
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
                         <div class="top">
-                            {{index}}
-                            <span>{{item.created_at}}</span>
+                            <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
                             <em
                                 v-bind:class="{ 'col': item.pay_status == 0 }"
                             >{{order_status_func(item.order_status)}}</em>
@@ -62,168 +56,7 @@ export default {
                 tip: ""
             },
             myorderData: {
-                list: [
-                    {
-                        id: 12,
-                        user_id: 112,
-                        out_biz_code: "1567898545",
-                        order_code: "111223dddd",
-                        snapshoot_cnt: {
-                            user_id: 112,
-                            out_biz_code: "1567898545",
-                            sku_list: [
-                                {
-                                    itemCode: "itemcodeitemcode",
-                                    shopPrice: 12,
-                                    itemName: "月饼礼盒",
-                                    images: [
-                                        "https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png"
-                                    ],
-                                    barCode: "pariatur",
-                                    warehouseCode: "in aliqua non consectetur",
-                                    status: 0, //0代付款，1已付款，2已关闭,
-                                    created_at: "2020-07-17 10:19:09",
-                                    updated_at: "2020-07-17 10:19:09",
-                                    shop_price: "0.12",
-                                    freight: "0",
-                                    sku_count: 3
-                                }
-                            ],
-                            pay_method: 0,
-                            receive_info: {
-                                province: "北京",
-                                city: "北京市",
-                                area: "朝阳区",
-                                name: "用户名",
-                                phone: "15633412233",
-                                detailAddress: "朝阳区大悦城"
-                            },
-                            is_invoice: 1,
-                            pathway: 1,
-                            order_code: "111223dddd",
-                            total_sku_price: "199",
-                            freight: "0",
-                            total_price: "199"
-                        },
-                        pay_status: 1,
-                        order_status: 1,
-                        created_at: "2020-07-19 17:00:00",
-                        updated_at: "2020-07-19 17:00:00",
-                        deleted_at: "2020-07-19 17:00:00"
-                    },
-                    {
-                        id: -4331724.6716109365,
-                        user_id: -34348112.378211714,
-                        out_biz_code: "velit est proident des",
-                        order_code: "askfjkalsjfkalsfjkladsfj",
-                        snapshoot_cnt: {
-                            user_id: 58886697.38669899,
-                            out_biz_code: "ipsum mollit ",
-                            sku_list: [
-                                {
-                                    itemCode: "itemcodeitemcode",
-                                    shopPrice: 12,
-                                    itemName: "月饼礼盒",
-                                    images: [
-                                        "https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png"
-                                    ],
-                                    barCode: "pariatur",
-                                    warehouseCode: "in aliqua non consectetur",
-                                    status: 0, //0代付款，1已付款，2已关闭,
-                                    created_at: "2020-07-17 10:19:09",
-                                    updated_at: "2020-07-17 10:19:09",
-                                    shop_price: "0.12",
-                                    freight: "0",
-                                    sku_count: 3
-                                },
-                                {
-                                    itemCode: "itemcodeitemcode",
-                                    shopPrice: 12,
-                                    itemName: "月饼礼盒1",
-                                    images: [
-                                        "https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png"
-                                    ],
-                                    barCode: "pariatur",
-                                    warehouseCode: "in aliqua non consectetur",
-                                    status: 1, //0代付款，1已付款，2已关闭,
-                                    created_at: "2020-07-17 10:19:09",
-                                    updated_at: "2020-07-17 10:19:09",
-                                    shop_price: "0.12",
-                                    freight: "0",
-                                    sku_count: 3
-                                },
-                                {
-                                    itemCode: "itemcodeitemcode",
-                                    shopPrice: 12,
-                                    itemName: "月饼礼盒2",
-                                    images: [
-                                        "https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png"
-                                    ],
-                                    barCode: "pariatur",
-                                    warehouseCode: "in aliqua non consectetur",
-                                    status: 2, //0代付款，1已付款，2已关闭,
-                                    created_at: "2020-07-17 10:19:09",
-                                    updated_at: "2020-07-17 10:19:09",
-                                    shop_price: "0.12",
-                                    freight: "0",
-                                    sku_count: 3
-                                },
-                                {
-                                    itemCode: "itemcodeitemcode",
-                                    shopPrice: 12,
-                                    itemName: "月饼礼盒21",
-                                    images: [
-                                        "https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png"
-                                    ],
-                                    barCode: "pariatur",
-                                    warehouseCode: "in aliqua non consectetur",
-                                    status: 2, //0代付款，1已付款，2已关闭,
-                                    created_at: "2020-07-17 10:19:09",
-                                    updated_at: "2020-07-17 10:19:09",
-                                    shop_price: "0.12",
-                                    freight: "0",
-                                    sku_count: 3
-                                },
-                                {
-                                    itemCode: "itemcodeitemcode",
-                                    shopPrice: 12,
-                                    itemName: "月饼礼盒22",
-                                    images: [
-                                        "https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png"
-                                    ],
-                                    barCode: "pariatur",
-                                    warehouseCode: "in aliqua non consectetur",
-                                    status: 2, //0代付款，1已付款，2已关闭,
-                                    created_at: "2020-07-17 10:19:09",
-                                    updated_at: "2020-07-17 10:19:09",
-                                    shop_price: "0.12",
-                                    freight: "0",
-                                    sku_count: 3
-                                }
-                            ],
-                            pay_method: 1,
-                            receive_info: {
-                                province: "ad enim deserunt irure",
-                                city: "dolore irure ea",
-                                area: "sint exercitation cillum dolore",
-                                name: "labore ea consectetur sit",
-                                phone: "cupidatat pariatur ex",
-                                detailAddress: "laboris reprehenderit in"
-                            },
-                            is_invoice: 36582115.7384941,
-                            pathway: 42234882.06140268,
-                            order_code: "minim",
-                            total_sku_price: "299",
-                            freight: "0",
-                            total_price: "299"
-                        },
-                        pay_status: -40776657.34044391,
-                        order_status: 79758178.0346713,
-                        created_at: "2020-07-19 17:00:00",
-                        updated_at: "2020-07-19 17:00:00",
-                        deleted_at: "2020-07-19 17:00:00"
-                    }
-                ]
+                list: []
             },
             windowHeight: document.documentElement.clientHeight,
             myorderDatapagesize: 10,
@@ -341,11 +174,6 @@ export default {
                 .then(function(res) {
                     if (res.code == 20000) {
                         callback(res);
-
-                        that.alertBox = {
-                            visible: true,
-                            tip: "请求成功"
-                        };
                     } else {
                         that.alertBox = {
                             visible: true,
@@ -504,14 +332,14 @@ ul li {
 .myorder ul li .bottom button {
     float: right;
     margin: 8px 0 0;
-    color: #ff502c;
+    color: #0C62D9;
     font-size: 14px;
     background: #ffffff;
     outline: 0;
     width: 90px;
     height: 30px;
     border-radius: 18px;
-    border: 1px solid rgba(255, 80, 44, 1);
+    border: 1px solid #0C62D9;
 }
 .myorder ul li .bottom {
     height: 46px;

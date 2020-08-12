@@ -64,7 +64,7 @@ export default {
                 receiver: "",
                 phone: "",
                 area: "",
-                address: "",
+                address: "朝阳区123",
                 areaobj: {
                     p: "",
                     c: "",
@@ -89,41 +89,58 @@ export default {
     components: { Areacomponent, AlertBox },
 
     created() {
-        if (!!this.$route.query.edit && this.$route.query.edit == 1) {
-            this.saveaddress = false;
-            this.initEdit();
-        }
+
     },
     mounted() {
         this.addressFunc();
+        if (!!this.$route.query.edit && this.$route.query.edit == 1) {
+            // this.initEdit();
+            this.saveaddress = false;
+            let query = this.$route.query;
+            // this.param.address = query.address;
+            this.id = query.id;
+            this.param.areaobj.p = !!query.provincial ? query.provincial : "";
+            this.param.areaobj.c = !!query.city ? query.city : "";
+            this.param.areaobj.d = !!query.area ? query.area : "";
+            this.param.area = (!!query.provincial ? query.provincial : "") +
+                        " " +
+                        (!!query.city ? query.city : "") +
+                        " " +
+                        (!!query.area ? query.area : "");
+            this.param.receiver = query.receiver;
+            this.param.phone = query.phone;
+        }
     },
-    updated() {},
+    updated() {
+
+    },
     methods: {
         initEdit() {
             let query = this.$route.query;
             this.id = query.id;
-            this.param = {
-                areaobj: {
-                    p: !!query.provincial ? query.provincial : "",
-                    c: !!query.city ? query.city : "",
-                    d: !!query.area ? query.area : ""
-                },
-                area:
-                    (!!query.provincial ? query.provincial : "") +
-                    " " +
-                    (!!query.city ? query.city : "") +
-                    " " +
-                    (!!query.area ? query.area : ""),
-                receiver: query.receiver,
-                phone: query.phone,
-                address: query.address
-            };
+
+                this.param = {
+                    areaobj: {
+                        p: !!query.provincial ? query.provincial : "",
+                        c: !!query.city ? query.city : "",
+                        d: !!query.area ? query.area : ""
+                    },
+                    area:
+                        (!!query.provincial ? query.provincial : "") +
+                        " " +
+                        (!!query.city ? query.city : "") +
+                        " " +
+                        (!!query.area ? query.area : ""),
+                    receiver: query.receiver,
+                    phone: query.phone,
+                    address: query.address
+                };
+
         },
         editaddressFunc() {
             let that = this;
 
             let data = {
-                // token: Cookie.get("moon_token"),
                 address: {
                     provincial: this.param.areaobj.p,
                     city: this.param.areaobj.c,
@@ -218,6 +235,8 @@ export default {
                     "<br />value = " +
                     value;
                 G("searchResultPanel").innerHTML = str;
+
+
             });
 
             var myValue;
@@ -236,7 +255,7 @@ export default {
                     "<br />myValue = " +
                     myValue;
 
-                setPlace();
+                // setPlace();
             });
 
             function setPlace() {
@@ -283,7 +302,6 @@ export default {
                 };
             } else {
                 let data = {
-                    // token: Cookie.get("moon_token"),
                     address: {
                         provincial: this.param.areaobj.p,
                         city: this.param.areaobj.c,
@@ -313,7 +331,7 @@ export default {
                 setTimeout(function() {
                     that.$router.push("/ordercheck");
                 }, 1000);
-            } else {
+            } else if(!!res && res.code == 113005) {
                 this.alertBox = {
                     tip: res.message
                 };
@@ -351,16 +369,19 @@ export default {
     top: 2.58rem;
     width: 3.31rem;
     height: 0.5rem;
-    background: #ff502c;
-    border-radius: 25px;
+    background: -webkit-gradient(linear,left top, right top,from(rgba(27,123,255,1)),to(rgba(12,97,216,1)));
+    background: linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
+    border-radius: 18px;
+    outline: 0;
+    border: 0;
+    font-size: 18px;
     overflow: hidden;
     left: 0.23rem;
-    font-size: 18px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
     border: 0;
-    outline: 0;
+    outline: 0
 }
 .areaaddress i {
     font-style: normal;
