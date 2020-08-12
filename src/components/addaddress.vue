@@ -28,11 +28,11 @@
 
             <div class="unit">
                 <label>详细地址</label>
+                <input type="text" class="addressaddress" @input="addressbkFunc" v-model="param.addressbk" :placeholder="placeholder.address"/>
                 <div id="l-map"></div>
                 <div id="r-result">
                     <input
                         v-model="param.address"
-                        clearable
                         :placeholder="placeholder.address"
                         id="suggestId"
                     />
@@ -64,7 +64,8 @@ export default {
                 receiver: "",
                 phone: "",
                 area: "",
-                address: "朝阳区123",
+                address: "",
+                addressbk: "",
                 areaobj: {
                     p: "",
                     c: "",
@@ -89,32 +90,21 @@ export default {
     components: { Areacomponent, AlertBox },
 
     created() {
-
+        if (!!this.$route.query.edit && this.$route.query.edit == 1) {
+            this.initEdit();
+            this.saveaddress = false;
+        }
     },
     mounted() {
         this.addressFunc();
-        if (!!this.$route.query.edit && this.$route.query.edit == 1) {
-            // this.initEdit();
-            this.saveaddress = false;
-            let query = this.$route.query;
-            // this.param.address = query.address;
-            this.id = query.id;
-            this.param.areaobj.p = !!query.provincial ? query.provincial : "";
-            this.param.areaobj.c = !!query.city ? query.city : "";
-            this.param.areaobj.d = !!query.area ? query.area : "";
-            this.param.area = (!!query.provincial ? query.provincial : "") +
-                        " " +
-                        (!!query.city ? query.city : "") +
-                        " " +
-                        (!!query.area ? query.area : "");
-            this.param.receiver = query.receiver;
-            this.param.phone = query.phone;
-        }
     },
     updated() {
 
     },
     methods: {
+        addressbkFunc() {
+            this.param.address = this.param.addressbk;
+        },
         initEdit() {
             let query = this.$route.query;
             this.id = query.id;
@@ -133,7 +123,7 @@ export default {
                         (!!query.area ? query.area : ""),
                     receiver: query.receiver,
                     phone: query.phone,
-                    address: query.address
+                    addressbk: query.address
                 };
 
         },
@@ -201,6 +191,7 @@ export default {
             }); //建立一个自动完成的对象
 
             ac.addEventListener("onhighlight", function(e) {
+
                 //鼠标放在下拉列表上的事件
                 var str = "";
                 var _value = e.fromitem.value;
@@ -236,12 +227,12 @@ export default {
                     value;
                 G("searchResultPanel").innerHTML = str;
 
-
             });
 
             var myValue;
             ac.addEventListener("onconfirm", function(e) {
                 //鼠标点击下拉列表后的事件
+
                 var _value = e.item.value;
                 myValue =
                     _value.province +
@@ -255,7 +246,7 @@ export default {
                     "<br />myValue = " +
                     myValue;
 
-                // setPlace();
+                setPlace();
             });
 
             function setPlace() {
@@ -269,6 +260,7 @@ export default {
                     //智能搜索
                     onSearchComplete: myFun
                 });
+                that.param.addressbk = myValue;
                 that.param.address = myValue;
                 local.search(myValue);
             }
@@ -325,23 +317,28 @@ export default {
             let that = this;
             if (!!res && res.code == 20000) {
                 this.alertBox = {
+                    visible: true,
                     tip: "保存成功"
                 };
-
                 setTimeout(function() {
                     that.$router.push("/ordercheck");
                 }, 1000);
             } else if(!!res && res.code == 113005) {
                 this.alertBox = {
+                    visible: true,
                     tip: res.message
                 };
                 localStorage.removeItem("moon_email");
-
                 setTimeout(function() {
                     that.$router.push("/login");
                 }, 1000);
+            }else {
+                this.alertBox = {
+                    visible: true,
+                    tip: res.message
+                };
             }
-            this.alertBox.visible = true;
+
         },
         areashowclose() {
             this.areashow = false;
@@ -364,6 +361,13 @@ export default {
 </script>
 
 <style scoped>
+#suggestId {
+    opacity: 0;
+    position: relative;
+    z-index: -1;
+    float: right;
+    margin: -48px 7px 0 0;
+}
 .addaddresssave {
     position: absolute;
     top: 2.58rem;
