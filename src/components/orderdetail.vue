@@ -2,10 +2,10 @@
     <div>
         <div class="ms_content">
             <div class="detailTip">
-                <h3>{{orderloadingtime}}{{orderloading}}</h3>
-                <div class="tip" @click="logisticsinfoFunc">
+                <h3>{{orderloadingtime}} {{orderloading}}</h3>
+                <div v-if="logisticsinfo" class="tip" @click="logisticsinfoFunc">
                     <span>仓库处理中</span>
-                    <em>{{info.created_at}}</em>
+                    <em>{{info.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
                     <i class="el-icon-arrow-right"></i>
                 </div>
             </div>
@@ -13,9 +13,9 @@
                 <i class="el-icon-location-outline"></i>
                 <p>
                     <span>{{info.snapshoot_cnt.receive_info.name}}</span>
-                    {{info.snapshoot_cnt.receive_info.phone}}
+                    {{info.snapshoot_cnt.receive_info.mobile}}
                 </p>
-                <p>{{info.snapshoot_cnt.receive_info.detailAddress}}</p>
+                <p>{{info.snapshoot_cnt.receive_info.province}} {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}} {{info.snapshoot_cnt.receive_info.detailAddress}}</p>
             </div>
             <div class="order">
                 <div class="orderh">
@@ -25,7 +25,7 @@
                         <span>运费：{{info.snapshoot_cnt.sku_list[0].freight == 0 ? '免运费' : '¥'+info.snapshoot_cnt.sku_list[0].freight}}</span>
                         <span>¥{{info.snapshoot_cnt.sku_list[0].shop_price}}/盒</span>
                     </div>
-                    <div class="orderNum">X{{info.snapshoot_cnt.sku_list.length}}</div>
+                    <div class="orderNum">X{{info.snapshoot_cnt.sku_list[0].sku_count}}</div>
                 </div>
                 <p>
                     <span>商品合计：</span>
@@ -40,7 +40,7 @@
                     <i>实付款：</i>
                 </p>
             </div>
-            <div class="invoice">
+            <div class="invoice" v-if="info.snapshoot_cnt.is_invoice == 1">
                 <h3>发票</h3>
                 <p>
                     <span>发票抬头</span>
@@ -51,6 +51,12 @@
                     <em>{{info.snapshoot_cnt.invoice_info.taxpayer_number}}</em>
                 </p>
             </div>
+            <div class="no_invoice invoice" v-else>
+                <h3>发票</h3>
+                <p>
+                    <span>不开发票</span>
+                </p>
+            </div>
             <div class="ordernews">
                 <h3>订单信息：</h3>
                 <p>
@@ -59,7 +65,8 @@
                 </p>
                 <p>
                     <span>下单时间：</span>
-                    <em>{{info.created_at}}</em>
+                    <em v-if="!!info.created_at">{{info.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
+                    <em v-else></em>
                 </p>
                 <p>
                     <span>支付方式：</span>
@@ -67,15 +74,17 @@
                 </p>
                 <p>
                     <span>支付时间：</span>
-                    <em>{{info.updated_at}}</em>
+                    <em v-if="!!info.updated_at">{{info.updated_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
+                    <em v-else></em>
                 </p>
                 <p>
                     <span>配送方式：</span>
-                    <em>顺丰快递</em>
+                    <em>{{info.logistics_name}}</em>
                 </p>
                 <p>
                     <span>完成时间：</span>
-                    <em>{{info.deleted_at}}</em>
+                    <em v-if="!!info.deleted_at">{{info.deleted_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
+                    <em v-else></em>
                 </p>
             </div>
             <button class="orderdetailbtn" @click="paycreateFunc">再来一单</button>
@@ -93,16 +102,17 @@ import {
     paypolling,
     payovertime
 } from "@/api/orderdetail";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 
 export default {
     data() {
         return {
-            orderloadingtime: 0,
+            orderloadingtime: !!localStorage.getItem('orderloadingtime') ? localStorage.getItem('orderloadingtime') : 0,
             alertBox: {
                 visible: false,
                 tip: ""
             },
+            logisticsinfo: false,
             param: {
                 pay: ""
             },
@@ -186,6 +196,9 @@ export default {
         }else {
             this.orderloading = localStorage.getItem('order_loading')
         }
+        if(this.orderloading == '支付成功') {
+            this.logisticsinfo = true;
+        }
         this.getData();
     },
     methods: {
@@ -205,21 +218,24 @@ export default {
             let that = this;
             orderinfo(data)
                 .then(function(res) {
-                    // that.alertBox.visible = true;
+
                     if (!!res && res.code == 20000) {
-                        that.alertBox = {
-                            tip: "请求成功"
-                        };
                         that.info = res.data.info;
-                    } else {
+                    } else if(!!res && res.code == 113005) {
                         that.alertBox = {
-                            tip: res.message
+                            tip: res.message,
+                            visible:true,
                         };
-                        // localStorage.removeItem("moon_email");
 
                         setTimeout(function() {
-                            // that.$router.push("/login");
+                            that.$router.push("/login");
                         }, 1000);
+                        localStorage.removeItem("moon_email");
+                    }else {
+                        that.alertBox = {
+                            visible:true,
+                            tip: res.message
+                        };
                     }
                 })
                 .catch(function(error) {
@@ -239,37 +255,7 @@ export default {
             
             localStorage.setItem('onemoreobj', JSON.stringify(that.info));
 
-            // paycreate(data)
-            //     .then(function(res) {
 
-            //         if (!!res && res.code == 20000) {
-            //             that.alertBox = {
-            //                 tip: "请求成功",
-            //                 visible:true,
-            //             };
-            //             that.info = res.data.info;
-            //             that.pollpay();
-            //             if (that.info.snapshoot_cnt.pay_method == 1) {
-            //                 //1是支付宝 2是微信
-            //                 that.alipay(res);
-            //             } else {
-            //                 that.wxpay(res);
-            //             }
-            //         } else {
-            //             that.alertBox = {
-            //                 tip: res.message,
-            //                 visible:true,
-            //             };
-            //             // localStorage.removeItem("moon_email");
-
-            //             setTimeout(function() {
-            //                 // that.$router.push("/login");
-            //             }, 1000);
-            //         }
-            //     })
-            //     .catch(function(error) {
-            //         console.log(error);
-            //     });
         },
         payovertimeFunc() {
             let data = {
@@ -303,6 +289,7 @@ export default {
                     if (t <= n) {
                     console.log(t);
                     that.orderloadingtime = t;
+                    localStorage.setItem('orderloadingtime', t);
                         if (t % 2 == 0) {
                             paypolling(data)
                                 .then(function(res) {
@@ -312,10 +299,11 @@ export default {
                                             localStorage.setItem('order_isload', 0)
                                             if(res.data.pay_status == 2) {
                                                 that.orderloading = '支付成功';
+                                                that.logisticsinfo = true;
                                             }else {
                                                 that.orderloading = '支付中...';
                                             }
-                                        }else if (res.code == 520001 || res.code == 520002) {
+                                        }else if (res.code == 520001 || res.code == 520002 || res.code == 88888) {
                                             clearTimeout(timeFunc);
                                             localStorage.setItem('order_isload', 0)
                                             that.orderloading = res.message;
@@ -354,6 +342,12 @@ export default {
 </script>
 
 <style scoped>
+.no_invoice.invoice p span{
+    color: #9b9b9b;
+}
+.no_invoice.invoice {
+    height: 75px;
+}
 .ms_content {
     font-size: 14px;
     background: #f4f4f4;
@@ -363,7 +357,9 @@ export default {
     line-height: 50px;
     color: #ffffff;
     width: 100%;
-    background: #ff502c;
+    background: -webkit-gradient(linear,left top, right top,from(rgba(27,123,255,1)),to(rgba(12,97,216,1)));
+    background: linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
+    margin-bottom: 20px;
     outline: 0;
     border: 0;
     font-size: 18px;
@@ -473,6 +469,7 @@ div.ordernews p em {
 .order p {
     overflow: hidden;
     padding: 0 12px;
+    margin: 10px 0;
 }
 .order p span {
     float: left;

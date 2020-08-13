@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog 
-            class="alertBox"
+            class="alertBoxs"
             @open="openCallback"
             :show-close = false
             :before-close="handleClose"
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import Cookie from "js-cookie";
 
 export default {
     data: function() {
@@ -40,7 +39,6 @@ export default {
     .content {
         font-size: 15px;
         font-weight: 400;
-    
     }
 </style>
 

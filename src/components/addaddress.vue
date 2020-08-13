@@ -28,11 +28,11 @@
 
             <div class="unit">
                 <label>详细地址</label>
+                <input type="text" class="addressaddress" @input="addressbkFunc" v-model="param.addressbk" :placeholder="placeholder.address"/>
                 <div id="l-map"></div>
                 <div id="r-result">
                     <input
                         v-model="param.address"
-                        clearable
                         :placeholder="placeholder.address"
                         id="suggestId"
                     />
@@ -65,6 +65,7 @@ export default {
                 phone: "",
                 area: "",
                 address: "",
+                addressbk: "",
                 areaobj: {
                     p: "",
                     c: "",
@@ -90,40 +91,46 @@ export default {
 
     created() {
         if (!!this.$route.query.edit && this.$route.query.edit == 1) {
-            this.saveaddress = false;
             this.initEdit();
+            this.saveaddress = false;
         }
     },
     mounted() {
         this.addressFunc();
     },
-    updated() {},
+    updated() {
+
+    },
     methods: {
+        addressbkFunc() {
+            this.param.address = this.param.addressbk;
+        },
         initEdit() {
             let query = this.$route.query;
             this.id = query.id;
-            this.param = {
-                areaobj: {
-                    p: !!query.provincial ? query.provincial : "",
-                    c: !!query.city ? query.city : "",
-                    d: !!query.area ? query.area : ""
-                },
-                area:
-                    (!!query.provincial ? query.provincial : "") +
-                    " " +
-                    (!!query.city ? query.city : "") +
-                    " " +
-                    (!!query.area ? query.area : ""),
-                receiver: query.receiver,
-                phone: query.phone,
-                address: query.address
-            };
+
+                this.param = {
+                    areaobj: {
+                        p: !!query.provincial ? query.provincial : "",
+                        c: !!query.city ? query.city : "",
+                        d: !!query.area ? query.area : ""
+                    },
+                    area:
+                        (!!query.provincial ? query.provincial : "") +
+                        " " +
+                        (!!query.city ? query.city : "") +
+                        " " +
+                        (!!query.area ? query.area : ""),
+                    receiver: query.receiver,
+                    phone: query.phone,
+                    addressbk: query.address
+                };
+
         },
         editaddressFunc() {
             let that = this;
 
             let data = {
-                // token: Cookie.get("moon_token"),
                 address: {
                     provincial: this.param.areaobj.p,
                     city: this.param.areaobj.c,
@@ -184,6 +191,7 @@ export default {
             }); //建立一个自动完成的对象
 
             ac.addEventListener("onhighlight", function(e) {
+
                 //鼠标放在下拉列表上的事件
                 var str = "";
                 var _value = e.fromitem.value;
@@ -218,11 +226,13 @@ export default {
                     "<br />value = " +
                     value;
                 G("searchResultPanel").innerHTML = str;
+
             });
 
             var myValue;
             ac.addEventListener("onconfirm", function(e) {
                 //鼠标点击下拉列表后的事件
+
                 var _value = e.item.value;
                 myValue =
                     _value.province +
@@ -250,6 +260,7 @@ export default {
                     //智能搜索
                     onSearchComplete: myFun
                 });
+                that.param.addressbk = myValue;
                 that.param.address = myValue;
                 local.search(myValue);
             }
@@ -283,7 +294,6 @@ export default {
                 };
             } else {
                 let data = {
-                    // token: Cookie.get("moon_token"),
                     address: {
                         provincial: this.param.areaobj.p,
                         city: this.param.areaobj.c,
@@ -307,23 +317,29 @@ export default {
             let that = this;
             if (!!res && res.code == 20000) {
                 this.alertBox = {
+                    visible: true,
                     tip: "保存成功"
                 };
-
                 setTimeout(function() {
                     that.$router.push("/ordercheck");
                 }, 1000);
-            } else {
+            } else if(!!res && res.code == 113005) {
                 this.alertBox = {
+                    visible: true,
                     tip: res.message
                 };
+                
                 localStorage.removeItem("moon_email");
-
                 setTimeout(function() {
                     that.$router.push("/login");
                 }, 1000);
+            }else {
+                this.alertBox = {
+                    visible: true,
+                    tip: res.message
+                };
             }
-            this.alertBox.visible = true;
+
         },
         areashowclose() {
             this.areashow = false;
@@ -346,21 +362,31 @@ export default {
 </script>
 
 <style scoped>
+#suggestId {
+    opacity: 0;
+    position: relative;
+    z-index: -1;
+    float: right;
+    margin: -48px 7px 0 0;
+}
 .addaddresssave {
     position: absolute;
     top: 2.58rem;
     width: 3.31rem;
     height: 0.5rem;
-    background: #ff502c;
-    border-radius: 25px;
+    background: -webkit-gradient(linear,left top, right top,from(rgba(27,123,255,1)),to(rgba(12,97,216,1)));
+    background: linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
+    border-radius: 18px;
+    outline: 0;
+    border: 0;
+    font-size: 18px;
     overflow: hidden;
     left: 0.23rem;
-    font-size: 18px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
     border: 0;
-    outline: 0;
+    outline: 0
 }
 .areaaddress i {
     font-style: normal;

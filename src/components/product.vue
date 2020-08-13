@@ -59,8 +59,7 @@
 import { loginPost, pushCode } from "@/api/login";
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
-import AlertBox from "./alertBox";
-import Header from "./header";
+import AlertBox from "./alertbox";
 export default {
     data() {
         return {
@@ -220,7 +219,7 @@ export default {
             }
         },
         orderCenter() {
-            if (localStorage.getItem("moon_email")) {
+            if (!!localStorage.getItem("moon_email")) {
                 this.$router.push("/myorder");
             } else {
                 this.loginShow = true;
@@ -232,6 +231,7 @@ export default {
 </script>
 
 <style scoped>
+
 .productimg1 {
     position: absolute;
     width: 1.65rem;
@@ -355,8 +355,8 @@ div.captchaClass {
     margin: 0.43rem auto 0;
     padding: 0;
     font-size: 12px;
-    width: 3rem;
-    height: 0.42rem;
+    width: 300px;
+    height: 42px;
 }
 
 .captchacontent {

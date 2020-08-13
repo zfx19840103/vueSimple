@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="ordercheckBg">
         <div v-bind:class="{ 'payloading': payloading }" class="ms_content">
             <div v-if="!payloading">
                 <div class="detailowner" v-if="detailowner" @click="drawer = true">
@@ -8,7 +8,7 @@
                         <span>{{detailownerParam.receiver}}</span>
                         {{detailownerParam.phone}}
                     </p>
-                    <p>{{detailownerParam.address}}</p>
+                    <p>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="detailowner" v-else @click="drawer = true">
@@ -23,7 +23,7 @@
                         <span>{{detailownerParam.receiver}}</span>
                         {{detailownerParam.phone}}
                     </p>
-                    <p>{{detailownerParam.address}}</p>
+                    <p>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="detailowner" v-else >
@@ -92,6 +92,7 @@
                             class="orderdes"
                             v-model="ordercreate.orderdes"
                             placeholder="点击填写备注"
+                            maxlength="100"
                         />
                         <input
                             v-else
@@ -100,6 +101,7 @@
                             class="orderdes"
                             v-model="ordercreate.orderdes"
                             placeholder="点击填写备注"
+                            maxlength="100"
                         />
                     </em>
                 </p>
@@ -109,15 +111,7 @@
                 <label>
                     <span class="wxicon"></span>微信支付
                     <input
-                    v-if="!payloading"
-                        type="radio"
-                        name="payType"
-                        v-model="ordercreate.pay_method"
-                        value="2"
-                    />
-                    <input
-                    v-else
-                    disabled
+
                         type="radio"
                         name="payType"
                         v-model="ordercreate.pay_method"
@@ -127,15 +121,6 @@
                 <label>
                     <span class="alipayicon"></span>支付宝
                     <input
-                    v-if="!payloading"
-                        type="radio"
-                        name="payType"
-                        v-model="ordercreate.pay_method"
-                        value="1"
-                    />
-                    <input
-                        v-else
-                        disabled
                         type="radio"
                         name="payType"
                         v-model="ordercreate.pay_method"
@@ -164,7 +149,6 @@
                             <label>
                                 <input
                                     type="radio"
-                                    name="selectaddress"
                                     v-model="selectaddress"
                                     :value="item"
                                     @click="addresslistclick(item)"
@@ -194,7 +178,7 @@
 
 <script>
 import Cookie from "js-cookie";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 import {
     getaddresslistdata,
     skuinfo,
@@ -221,27 +205,6 @@ export default {
                 tip: ""
             },
             addressData: [
-                // {
-                //     id: 1,
-                //     value: 1,
-                //     address: "东煌大厦17层00516",
-                //     receiver: "用户",
-                //     phone: "16789492242"
-                // },
-                // {
-                //     id: 2,
-                //     value: 2,
-                //     address: "东煌大厦17层006",
-                //     receiver: "用户1",
-                //     phone: "16789492242"
-                // },
-                // {
-                //     id: 3,
-                //     value: 3,
-                //     address: "东煌大厦176",
-                //     receiver: "用户1",
-                //     phone: "16789492242"
-                // }
             ],
             orderCheckrules: {
                 pay: [
@@ -457,7 +420,7 @@ export default {
                             that.addressData = res.data;
 
                             //非再来一单的时候
-
+                            that.selectaddress = that.addressData[0];
                             if(that.$route.query.onemore != 1) {
                                 that.detailownerParam = {
                                     id: res.data[0].id,
@@ -587,6 +550,7 @@ export default {
                 },
                 is_invoice: that.ordercreate.is_invoice, //是否开发票	0否 1是
                 pathway: that.ordercreate.pathway, //环境配置	1,2
+                usage_scenario: 'bytemoon_pay', //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换
             };
 
             ordercreateapi(data)
@@ -596,6 +560,7 @@ export default {
                         //将商品code存在localstorge里
                         localStorage.setItem('order_code', res.data.order_code);                    
                         localStorage.setItem('order_isload', 1);                    
+                        localStorage.setItem('orderloadingtime', 0);                    
                         if (that.ordercreate.pay_method == 1) {
                             //1是支付宝 2是微信
                             that.alipay(res);
@@ -727,10 +692,14 @@ export default {
 </script>
 
 <style scoped>
-.payloading .detailowner p, .payloading .payTogo span, .payloading .payTogo span em, .payloading .el-icon-location-outline, .payloading .payType h3, .payloading .payType label, .payloading .order p span, .payloading .order p em, .payloading .order p em input, .payloading .paynumall span, .payloading .paynumall span input, .payloading .detailowner .el-icon-arrow-right, .payloading .ordercenter span {
+.payloading .detailowner p, .payloading .payTogo span, .payloading .payTogo span em, .payloading .el-icon-location-outline, .payloading .order p span, .payloading .order p em, .payloading .order p em input, .payloading .paynumall span, .payloading .paynumall span input, .payloading .detailowner .el-icon-arrow-right, .payloading .ordercenter span {
     color: #9b9b9b!important;
 }
-.payloading .orderh img, .payloading .wxicon, .payloading .alipayicon {
+.ordercheckBg {
+    background: #f4f4f4;
+    height: 100%;
+}
+.payloading .orderh img {
     opacity: 0.5;
 }
 .order p span.paynumallloading {
@@ -761,6 +730,7 @@ export default {
 .orderdes {
     border: 0;
     outline: 0;
+    width: 2.4rem;
     float: right;
     margin: 15px 12px 0 0;
     text-align: right;
@@ -920,14 +890,16 @@ export default {
 .payTogo button {
     float: right;
     margin: 7px 10px 0 0;
-    width: 90px;
-    height: 36px;
-    color: #ffffff;
-    border: 0;
+    width:90px;
+    height:36px;
+    background:linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
+    border-radius:18px;
     outline: 0;
-    font-size: 14px;
-    background: rgba(255, 80, 44, 1);
-    border-radius: 18px;
+    border: 0;
+    font-size:14px;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:rgba(255,255,255,1);
 }
 .payTogo span em {
     font-size: 14px;
@@ -945,9 +917,9 @@ export default {
     height: 50px;
     line-height: 50px;
     background: #ffffff;
-    /* position: absolute; */
-    /* bottom: 0; */
-    margin-top: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 .payType h3 {

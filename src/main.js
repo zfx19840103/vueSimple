@@ -7,12 +7,18 @@ import ElementUI from 'element-ui';
 import Cookie from 'js-cookie';
 import store from './store'
 import axios from 'axios';
+import moment from 'moment';
 
+moment.locale('zh-cn');
+Vue.filter('dateformat', (dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') =>{
+    return moment(dataStr).format(pattern)
+})
 
 axios.defaults.withCredentials = true;
 
 Vue.prototype.$axios = axios;
 
+Vue.prototype.$moment = moment;
 
 import FastClick from 'fastclick'
 

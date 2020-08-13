@@ -210,6 +210,7 @@ export default {
 <style scoped>
 .bg {
     height: 100%;
+    background: #f4f4f4;
 }
 .ms-content {
     /* margin: 10px; */
@@ -268,7 +269,10 @@ export default {
 .saverise {
     width: 3.4rem;
     height: 50px;
-    background: rgba(255, 80, 44, 1);
+
+    background: -webkit-gradient(linear,left top, right top,from(rgba(27,123,255,1)),to(rgba(12,97,216,1)));
+    background: linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
+ 
     border-radius: 25px;
     color: #ffffff;
     font-size: 18px;

@@ -71,7 +71,6 @@ export default new Router({
             component: () => import(/* webpackChunkName: "addinvoice" */ '../components/addinvoice.vue'),
             meta: { title: '添加发票信息' }
         }
-        
     ]
 })
 

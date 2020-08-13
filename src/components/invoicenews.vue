@@ -50,7 +50,6 @@
 
 <script>
 // import { loginapi } from "@/api/login";
-import Header from "./header";
 import Cookie from "js-cookie";
 
 export default {

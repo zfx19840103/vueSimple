@@ -2,11 +2,11 @@
     <div>
         <div class="ms_content">
             <div class="titNews">
-                百世快递 555352646547585
+                {{Logistics_company}}{{orderCode}}
                 <span
                     class="iconCopy"
                     title="复制单号"
-                    :data-clipboard-text="555352646547585"
+                    :data-clipboard-text= orderCode
                     @click="copy"
                 ></span>
             </div>
@@ -38,7 +38,7 @@
 
 <script>
 import Cookie from "js-cookie";
-import AlertBox from "./alertBox";
+import AlertBox from "./alertbox";
 import Clipboard from "clipboard";
 import { logisticsinfo } from "@/api/ordertrack";
 export default {
@@ -48,29 +48,10 @@ export default {
                 visible: false,
                 tip: ""
             },
+            orderCode: this.$route.query.orderCode,
+            Logistics_company: '',
             activities: [
-                // {
-                //     content: "已签收",
-                //     address: "北京市朝阳区东煌大厦",
-                //     timestamp: "04-12 20:46",
-                //     type: "primary",
-                //     color: "#ffffff"
-                // },
-                // {
-                //     content: "支持自定义颜色",
-                //     address: "北京市朝阳区东煌大厦",
-                //     timestamp: "04-03 20:46"
-                // },
-                // {
-                //     content: "支持自定义尺寸",
-                //     address: "北京市朝阳区东煌大厦",
-                //     timestamp: "04-03 20:46"
-                // },
-                // {
-                //     content: "默认样式的节点",
-                //     address: "北京市朝阳区东煌大厦",
-                //     timestamp: "04-03 20:46"
-                // }
+                
             ]
         };
     },
@@ -106,6 +87,7 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.activities = that.dataeidt(res.data);
+                        that.Logistics_company = res.data.Logistics_company;
                     } else {
                         that.alertBox = {
                             visible: true,
