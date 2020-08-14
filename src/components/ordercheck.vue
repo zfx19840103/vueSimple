@@ -141,6 +141,7 @@
                 :visible.sync="drawer"
                 :direction="direction"
                 class="orderCheckaddress"
+                :show-close= false
             >
                 <h3>选择收货地址</h3>
                 <ul v-if="drawerAddress" class="drawerAddress">
@@ -153,7 +154,7 @@
                                     :value="item"
                                     @click="addresslistclick(item)"
                                 />
-                                <span>{{item.address}}</span>
+                                <span>{{item.provincial}} {{item.city}} {{item.area}} {{item.address}}</span>
                                 <em>{{item.receiver}} {{item.phone}}</em>
                             </label>
                             <i @click="editaddress" :data="JSON.stringify(item)"></i>
@@ -417,7 +418,7 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         if (res.data.length > 0) {
-                            that.addressData = res.data;
+                            that.addressData = res.data.reverse();
 
                             //非再来一单的时候
                             that.selectaddress = that.addressData[0];
@@ -647,17 +648,27 @@ export default {
             let that = this;
             let data = {
                 id: item.id,
-                token: Cookie.get("moon_token")
             };
+
             deleteaddress(data)
                 .then(function(res) {
-                    that.alertBox.visible = true;
+
                     if (!!res && res.code == 20000) {
-                        that.alertBox.tip = "删除成功";
+                        that.alertBox = {
+                            tip: '删除成功',
+                            visible:true,
+                        };
+
                         that.restSlide();
                         that.addressData.splice(index, 1);
+                        if(that.selectaddress.id == item.id) {
+                            that.selectaddress = that.addressData[0];
+                            that.detailownerParam = that.selectaddress;
+                        }
+                        
                         if (that.addressData.length == 0) {
                             that.detailowner = false;
+                            that.drawerAddress = false;
                         } else {
                             that.detailownerParam.receiver =
                                 that.addressData[0].receiver;
@@ -666,6 +677,7 @@ export default {
                             that.detailownerParam.address =
                                 that.addressData[0].address;
                         }
+
                     } else if(!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
@@ -676,6 +688,7 @@ export default {
                             that.$router.push("/login");
                         }, 1000);
                         localStorage.removeItem("moon_email");
+
                     } else {
                         that.alertBox = {
                             tip: res.message,
@@ -796,13 +809,21 @@ export default {
     transition: all 0.2s;
 }
 
+.drawerAddress li .list-box label {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 5px;
+    /* overflow: hidden; */
+    /* background: #f4f4f4; */
+}
 .drawerAddress li .list-box {
+    padding: 5px 0;
     display: flex;
     align-items: center;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     justify-content: flex-end;
-    height: 75px;
+
 }
 .drawerAddress li[data-type="0"] {
     transform: translate3d(0, 0, 0);
@@ -811,24 +832,28 @@ export default {
     transform: translate3d(-0.48rem, 0, 0);
 }
 .drawerAddress li span {
-    position: absolute;
-    width: 70%;
-    overflow: hidden;
+    position: relative;
+    width: 75%;
     text-align: left;
-    height: 25px;
-
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    top: 10px;
+    top: 5px;
     left: 47px;
-    font-size: 18px;
+    float: left;
+    font-size: 14px;
     font-weight: 500;
     color: rgba(51, 51, 51, 1);
-    line-height: 25px;
+    line-height: 20px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .drawerAddress li em {
-    position: absolute;
-    top: 40px;
+    position: relative;
+    top: 5px;
+    float: left;
+    text-align: left;
+    width: 100%;
     left: 47px;
     font-size: 12px;
     font-style: normal;
@@ -849,7 +874,7 @@ export default {
 }
 .drawerAddress li input {
     position: absolute;
-    top: 15px;
+    top: 25px;
     left: 16px;
 }
 .drawerAddress {

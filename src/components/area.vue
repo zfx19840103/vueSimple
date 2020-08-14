@@ -16,12 +16,12 @@
                         @click="citySelected()"
                         :class="City?'':'active'"
                     >{{City?City:'请选择'}}</div>
-                    <div
+                    <!-- <div
                         class="area"
                         @click="districtSelected()"
                         :class="District?'':'active'"
                         v-show="City"
-                    >{{District?District:'请选择'}}</div>
+                    >{{District?District:'请选择'}}</div> -->
                 </div>
                 <ul>
                     <li

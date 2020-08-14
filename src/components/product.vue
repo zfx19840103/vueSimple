@@ -109,7 +109,8 @@ export default {
                     };
 
                     let paramsdata = {
-                        email: that.param.email
+                        email: that.param.email,
+                        verify: that.verifydata,
                     };
                     
                     pushCode(paramsdata)
@@ -164,7 +165,7 @@ export default {
             let data = {
                 email: this.param.email,
                 captcha: this.param.vcCode,
-                verify: this.verifydata
+                // verify: this.verifydata,
             };
             let that = this;
             if (this.param.email === "") {
@@ -480,8 +481,9 @@ div.captchaClass {
     outline: 0;
     background: rgba(255, 255, 255, 0);
     font-size: 12px;
-    height: 38px;
-    line-height: 38px;
+    height: 22px;
+    line-height: 22px;
+    margin: 8px 0;
 }
 /* .loginunit:nth-child(2) input {
     width: 1.02rem;

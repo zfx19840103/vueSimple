@@ -29,12 +29,7 @@ h1,h2,h3,h4,h5,h6,div,p,span,input,em,i,ul,li{
     margin: 0;
     padding: 0;
 }
-.alertBoxs .el-dialog__body {
-    padding: 10px 0;
-}
-.alertBoxs .el-dialog__header {
-    padding: 0;
-}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -64,8 +59,14 @@ html, body {
     margin: 0;
     padding: 0;
 }
+.alertBox .el-dialog {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
 .alertBox .el-dialog__header {
     padding: 0;
 }
-
+.alertBox .el-dialog__body {
+    padding: 10px 0;
+}
 </style>

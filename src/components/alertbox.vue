@@ -1,9 +1,10 @@
 <template>
     <div>
         <el-dialog 
-            class="alertBoxs"
+            class="alertBox"
             @open="openCallback"
             :show-close = false
+            :modal = false
             :before-close="handleClose"
             :visible.sync="alertBox" width="40%">
             <div class="content"><slot></slot></div>
@@ -37,8 +38,10 @@ export default {
 
 <style scoped>
     .content {
-        font-size: 15px;
-        font-weight: 400;
+        font-size:14px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(255,255,255,1);
     }
 </style>
 

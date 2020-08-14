@@ -3,14 +3,14 @@
         <div class="ms-content addaddress">
             <div class="unit">
                 <label>收货人</label>
-                <input type="text" v-model="param.receiver" :placeholder="placeholder.receiver" />
+                <input type="text" maxlength="100" v-model="param.receiver" :placeholder="placeholder.receiver" />
             </div>
             <div class="unit">
                 <label>手机号</label>
                 <input
                     type="text"
                     v-model="param.phone"
-                    maxlength="20"
+                    maxlength="11"
                     :placeholder="placeholder.phone"
                 />
             </div>
@@ -28,7 +28,7 @@
 
             <div class="unit">
                 <label>详细地址</label>
-                <input type="text" class="addressaddress" @input="addressbkFunc" v-model="param.addressbk" :placeholder="placeholder.address"/>
+                <input type="text" class="addressaddress" @click="addressclick" @input="addressbkFunc" v-model="param.addressbk" :placeholder="placeholder.address"/>
                 <div id="l-map"></div>
                 <div id="r-result">
                     <input
@@ -84,7 +84,8 @@ export default {
                 area: "选择所在地区",
                 address: "选择详细地址"
             },
-            saveaddress: true
+            saveaddress: true,
+            ac: {},
         };
     },
     components: { Areacomponent, AlertBox },
@@ -102,6 +103,9 @@ export default {
 
     },
     methods: {
+        addressclick() {
+            this.ac.setLocation(this.param.areaobj.c);
+        },
         addressbkFunc() {
             this.param.address = this.param.addressbk;
         },
@@ -137,7 +141,7 @@ export default {
                     area: this.param.areaobj.d,
                     receiver: this.param.receiver,
                     phone: this.param.phone,
-                    address: this.param.address
+                    address: this.param.addressbk
                 },
                 id: this.id
             };
@@ -185,12 +189,14 @@ export default {
             var map = new BMap.Map("l-map");
             map.centerAndZoom("北京", 12); // 初始化地图,设置城市和地图级别。
 
-            var ac = new BMap.Autocomplete({
+            that.ac = new BMap.Autocomplete({
                 input: "suggestId",
                 location: map
             }); //建立一个自动完成的对象
 
-            ac.addEventListener("onhighlight", function(e) {
+            that.ac.setLocation(that.param.areaobj.c);
+
+            that.ac.addEventListener("onhighlight", function(e) {
 
                 //鼠标放在下拉列表上的事件
                 var str = "";
@@ -198,9 +204,9 @@ export default {
                 var value = "";
                 if (e.fromitem.index > -1) {
                     value =
-                        _value.province +
-                        _value.city +
-                        _value.district +
+                        // _value.province +
+                        // _value.city +
+                        // _value.district +
                         _value.street +
                         _value.business;
                 }
@@ -214,9 +220,9 @@ export default {
                 if (e.toitem.index > -1) {
                     _value = e.toitem.value;
                     value =
-                        _value.province +
-                        _value.city +
-                        _value.district +
+                        // _value.province +
+                        // _value.city +
+                        // _value.district +
                         _value.street +
                         _value.business;
                 }
@@ -230,14 +236,14 @@ export default {
             });
 
             var myValue;
-            ac.addEventListener("onconfirm", function(e) {
+            that.ac.addEventListener("onconfirm", function(e) {
                 //鼠标点击下拉列表后的事件
 
                 var _value = e.item.value;
                 myValue =
-                    _value.province +
-                    _value.city +
-                    _value.district +
+                    // _value.province +
+                    // _value.city +
+                    // _value.district +
                     _value.street +
                     _value.business;
                 G("searchResultPanel").innerHTML =
@@ -261,7 +267,7 @@ export default {
                     onSearchComplete: myFun
                 });
                 that.param.addressbk = myValue;
-                that.param.address = myValue;
+                // that.param.address = myValue;
                 local.search(myValue);
             }
         },
@@ -300,7 +306,7 @@ export default {
                         area: this.param.areaobj.d,
                         receiver: this.param.receiver,
                         phone: this.param.phone,
-                        address: this.param.address
+                        address: this.param.addressbk
                     }
                 };
                 let that = this;
