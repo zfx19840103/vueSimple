@@ -1,17 +1,16 @@
+variables:
+#  CI_DEBUG_TRACE: "true"
+  DEPLOY_PATH: "/data/project/byte-moon-fe"
+
 stages:
   - build
-  - delpoy
-
-cache:
-  key: ${CI_COMMIT_BEF_NAME}
-  paths:
-    - node_modules/
+  - deploy
 
 build:
   stage: build
   only:
     refs:
-    - tags
+    - master
 
   script:
     - npm install --progress=false --registry=https://mirrors.huaweicloud.com/repository/npm/
@@ -23,4 +22,39 @@ build:
     paths:
       - dist
   tags:
-    - shell
+    - deploy
+
+
+deploy_test:
+  tags:
+    - deploy
+  stage: deploy
+  dependencies:
+    - build
+  script:
+    - cd ~/ansible && git pull
+    - ansible deploy_test -m synchronize -a "src=${CI_PROJECT_DIR}/dist/ dest=${DEPLOY_PATH}/dist/ checksum=yes archive=no recursive=yes perms=no delete=yes owner=no group=no rsync_opts='--exclude=.git/'"
+    - ansible deploy_test -m file -a "path=${DEPLOY_PATH} owner=www group=www recurse=yes"
+  environment:
+    name: test
+  allow_failure: false
+  #when: manual
+  only:
+    - master
+
+deploy_prod:
+  tags:
+    - deploy
+  stage: deploy
+  dependencies:
+    - build
+  script:
+    - cd ~/ansible && git pull
+    - ansible deploy_prod -m synchronize -a "src=${CI_PROJECT_DIR}/dist/ dest=${DEPLOY_PATH}/dist/ checksum=yes archive=no recursive=yes perms=no delete=yes owner=no group=no rsync_opts='--exclude=.git/'"
+    - ansible deploy_prod -m file -a "path=${DEPLOY_PATH} owner=www group=www recurse=yes"
+  environment:
+    name: prod
+  allow_failure: false
+  when: manual
+  only:
+    - tags
