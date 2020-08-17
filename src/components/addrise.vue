@@ -1,12 +1,11 @@
 <template>
     <div class="bg">
         <div class="ms-content addrise">
-            <div class="unit">
+            <div class="unit menu" v-if="this.$route.query.edit != 1">
                 <span>抬头类型</span>
                 <label>
                     <input type="radio" name="riseType" v-model="param.look_up" value="2" /> 个人/非企业单位
                 </label>
-
                 <label>
                     <input type="radio" name="riseType" v-model="param.look_up" value="1" /> 单位
                 </label>
@@ -14,33 +13,36 @@
             
             <div v-if="param.look_up == 1">
                  <div class="unit">
+                     <i>*</i>
                     <span>公司抬头</span>
-                    <input type="text" v-model="param.company1" placeholder="输入公司抬头" />
+                    <input type="text" v-model="param.company1" maxlength="50" placeholder="输入公司抬头" />
                 </div>
                 <div class="unit">
+                    <i>*</i>
                     <span>公司税号</span>
-                    <input type="text" v-model="param.tax_number"  placeholder="输入公司税号" />
+                    <input type="text" v-model="param.tax_number" maxlength="50"  placeholder="输入公司税号" />
                 </div>
                 <div class="unit">
                     <span>注册地址</span>
-                    <input type="text" v-model="param.address" placeholder="请输入注册地址" />
+                    <input type="text" v-model="param.address" maxlength="50" placeholder="请输入注册地址" />
                 </div>
                 <div class="unit">
                     <span>注册电话</span>
-                    <input type="text" v-model="param.tel" placeholder="请输入注册电话" />
+                    <input type="text" v-model="param.tel" maxlength="50" placeholder="请输入注册电话" />
                 </div>
                 <div class="unit">
                     <span>开户银行</span>
-                    <input type="text" v-model="param.account_bank" placeholder="请输入开户行名称" />
+                    <input type="text" v-model="param.account_bank" maxlength="50" placeholder="请输入开户行名称" />
                 </div>
                 <div class="unit">
                     <span>银行账号</span>
-                    <input type="text" v-model="param.bank_card" placeholder="请输入开户账号" />
+                    <input type="text" v-model="param.bank_card" maxlength="50" placeholder="请输入开户账号" />
                 </div>
             </div>
             <div v-else class="unit">
+                <i>*</i>
                 <span>公司抬头</span>
-                <input type="text" v-model="param.company2" placeholder="输入公司抬头" />
+                <input type="text" v-model="param.company2" maxlength="50" placeholder="请填写抬头名称" />
             </div>
             <button class="saverise" @click="saveriseFunc">保存并使用</button>
         </div>
@@ -99,18 +101,18 @@ export default {
         },
         saveriseFunc() {
             let that = this;
-            let data = {
-                look_up: this.param.look_up,
-                tax_number: this.param.tax_number,
-
-                tel: this.param.tel,
-                address: this.param.address,
-                account_bank: this.param.account_bank,
-                bank_card: this.param.bank_card,
-            };
 
             if(this.param.look_up == 1) {
-                data.company = this.param.company1;
+                var data = {
+                    look_up: this.param.look_up,
+                    tax_number: this.param.tax_number,
+                    company: this.param.company1,
+                    tel: this.param.tel,
+                    address: this.param.address,
+                    account_bank: this.param.account_bank,
+                    bank_card: this.param.bank_card,
+                };
+                
                 if(this.param.company1 == '') {
                     this.alertBox = {
                         visible: true,
@@ -122,6 +124,7 @@ export default {
                         tip: '输入公司税号'
                     }
                 }else {
+                    
                     if(this.$route.query.edit == 1){
                         this.editriseapi(data)
                     }else {
@@ -129,7 +132,10 @@ export default {
                     }
                 }
             }else {
-                data.company = this.param.company2;
+                var data = {
+                    look_up: this.param.look_up,
+                    company: this.param.company2,
+                };
                 if(this.param.company2 == '') {
                     this.alertBox = {
                         visible: true,
@@ -150,23 +156,30 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
-                            tip: "保存成功"
+                            tip: "保存成功",
+                            visible: true,
                         };
                         setTimeout(function() {
-                            that.$router.push('/addinvoice');
-                        }, 1000)
-                    } else {
-                        
-                        that.alertBox = {
-                            tip: res.message
-                        };
-                        // localStorage.removeItem("moon_email");
 
-                        // setTimeout(function() {
-                        //     that.$router.push("/login");
-                        // }, 1000);
+
+                            that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
+                        }, 1000)
+                    } else if(!!res && res.code == 113005) {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible:true,
+                        };
+
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                        localStorage.removeItem("moon_email");
+                    }else {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true,
+                        };
                     }
-                    that.alertBox.visible = true;
                     
                 })
                 .catch(function(error) {
@@ -180,23 +193,28 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
-                            tip: "编辑成功"
+                            tip: "保存成功",
+                            visible: true,
                         };
                         setTimeout(function() {
-                            that.$router.push('/addinvoice');
+                            that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
                         }, 1000)
-                    } else {
-                        
+                    } else if(!!res && res.code == 113005) {
                         that.alertBox = {
-                            tip: res.message
+                            tip: res.message,
+                            visible:true,
                         };
-                        // localStorage.removeItem("moon_email");
 
-                        // setTimeout(function() {
-                        //     that.$router.push("/login");
-                        // }, 1000);
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                        localStorage.removeItem("moon_email");
+                    }else {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true,
+                        };
                     }
-                    that.alertBox.visible = true;
                     
                 })
                 .catch(function(error) {
@@ -219,6 +237,10 @@ export default {
     /* min-height: 100%; */
     background: #f4f4f4;
 }
+.menu.unit input {
+    float: left;
+    margin: 0 10px 0 0;
+}
 .addressSave {
     position: absolute;
     top: 0;
@@ -232,6 +254,8 @@ export default {
     border-bottom: #f4f4f4 solid 1px;
     background: #ffffff;
     overflow: hidden;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
 .unit input {
@@ -239,18 +263,23 @@ export default {
     font-size: 14px;
     border: 0;
     text-align: right;
-    float: left;
+    float: right;
     outline: 0;
     height: 30px;
     line-height: 30px;
     padding: 8px 0 0 12px;
-    width: 2.8rem;
+    width: 2.7rem;
+}
+.unit i {
+    float: left;
+    color: #f00;
+    margin-right: 5px;
 }
 .unit span {
     float: left;
     color: #333333;
     font-size: 14px;
-    padding-left: 12px;
+    /* padding-left: 12px; */
 }
 .unit:nth-child(3) {
     margin-bottom: 10px;

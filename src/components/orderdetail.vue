@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div style="height:100%">
         <div class="ms_content">
             <div class="detailTip">
-                <h3>{{orderloadingtime}} {{orderloading}}</h3>
+                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.pay_status)}}</h3>
+                <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
                 <div v-if="logisticsinfo" class="tip" @click="logisticsinfoFunc">
                     <span>仓库处理中</span>
                     <em>{{info.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
@@ -18,24 +19,25 @@
                 <p>{{info.snapshoot_cnt.receive_info.province}} {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}} {{info.snapshoot_cnt.receive_info.detailAddress}}</p>
             </div>
             <div class="order">
-                <div class="orderh">
-                    <img :src="info.snapshoot_cnt.sku_list[0].images" />
+                <div class="orderh" v-for="(item, index) in info.snapshoot_cnt.sku_list" v-bind:key="index">
+                    <img :src="item.images? item.images: ''" :onerror="defaultAvatar" />
+                                
                     <div class="ordercenter">
-                        <span>{{info.snapshoot_cnt.sku_list[0].itemName}}</span>
-                        <span>运费：{{info.snapshoot_cnt.sku_list[0].freight == 0 ? '免运费' : '¥'+info.snapshoot_cnt.sku_list[0].freight}}</span>
-                        <span>¥{{info.snapshoot_cnt.sku_list[0].shop_price}}/盒</span>
+                        <span>{{item.itemName}}</span>
+                        <span>运费：{{item.freight == 0 ? '免运费' : '¥'+item.freight}}</span>
+                        <span>¥{{item.shop_price}}/盒</span>
                     </div>
-                    <div class="orderNum">X{{info.snapshoot_cnt.sku_list[0].sku_count}}</div>
+                    <div class="orderNum">X{{item.sku_count}}</div>
                 </div>
-                <p>
+                <p class="total_sku_price">
                     <span>商品合计：</span>
                     <em>¥{{info.snapshoot_cnt.total_sku_price}}</em>
                 </p>
-                <p>
+                <p class="freight">
                     <span>运费：</span>
                     <em>{{info.snapshoot_cnt.freight == 0 ? '免运费' : '¥'+info.snapshoot_cnt.freight}}</em>
                 </p>
-                <p>
+                <p class="total_price">
                     <em>¥{{info.snapshoot_cnt.total_price}}</em>
                     <i>实付款：</i>
                 </p>
@@ -136,8 +138,7 @@ export default {
                     user_id: 133,
                     out_biz_code: "",
                     orderdes: '',
-                    sku_list: [
-                        
+                    sku_list: [                      
                         {
                             itemCode: "",
                             shopPrice: '',
@@ -178,16 +179,22 @@ export default {
                     freight: "",
                     total_price: ""
                 },
-                pay_status: 1, //付款方式 1，微信 2，支付宝
+                pay_status: 1, 
                 order_status: 1, //订单类型
                 created_at: "",
                 updated_at: "",
                 deleted_at: ""
-            }
+            },
+            paystatus: '',
         };
     },
     components: {
         AlertBox
+    },
+    computed: {
+        defaultAvatar() {
+            return 'this.src="' + require("../assets/img/default.png") + '"';
+        }
     },
     created() {
 
@@ -210,6 +217,27 @@ export default {
                     orderCode: that.info.order_code
                 }
             });
+        },
+        order_status_func(status) {
+            var str = "";
+            if (!!status) {
+                if (status == 0) {
+                    str = "待付款";
+                } else if (status == 1) {
+                    str = "取消订单";
+                } else if (status == 2) {
+                    str = "下单成功";
+                } else if (status == 3) {
+                    str = "待发货";
+                } else if (status == 4) {
+                    str = "已发货";
+                } else if (status == 5) {
+                    str = "交易完成";
+                } else if (status == 6) {
+                    str = "交易异常";
+                }
+            }
+            return str;
         },
         getData() {
             let data = {
@@ -350,7 +378,9 @@ export default {
 }
 .ms_content {
     font-size: 14px;
+    height: 100%;
     background: #f4f4f4;
+    padding-bottom: 50px;
 }
 .orderdetailbtn {
     height: 50px;
@@ -365,6 +395,9 @@ export default {
     font-size: 18px;
     border-radius: 18px;
     margin-top: 15px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 .ordernews {
     margin-top: 10px;
@@ -436,6 +469,7 @@ div.ordernews p em {
     left: 10px;
 }
 .orderh {
+    position: relative;
     height: 110px;
     border-bottom: #f4f4f4 solid 1px;
 }
@@ -484,15 +518,15 @@ div.ordernews p em {
     font-weight: 400;
     font-style: normal;
 }
-.order p:nth-child(3) em {
+.order p.total_sku_price em {
     color: #9b9b9b;
 }
-.order p:nth-child(4) i {
+.order p.total_price i {
     font-style: normal;
     color: #333333;
     float: right;
 }
-.order p:nth-child(4) em {
+.order p.total_price em {
     color: #ff502c;
 }
 

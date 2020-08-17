@@ -1,21 +1,27 @@
 <template>
     <div class="myorder">
-        <!-- <div style="font-size: 14px; position:absolute; z-index:999; top:0; left:0;">{{tipppp}}</div> -->
-        <div class="wrapper" ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
+        <div class="nodata" v-if="nodata">暂无数据</div>
+        <div class="wrapper" v-else ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
             <div class="bscroll-container">
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
-                        <div class="top">
-                            <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
-                            <em
-                                v-bind:class="{ 'col': item.pay_status == 0 }"
-                            >{{order_status_func(item.order_status)}}</em>
-                        </div>
-                        <div class="center">
-                            <img :src="item.snapshoot_cnt.sku_list[0].images[0]" />
-                            <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>
-                            <p>运费: {{item.snapshoot_cnt.freight == 0 ? '免费' : '¥'+item.snapshoot_cnt.freight}}</p>
-                            <p>共{{item.snapshoot_cnt.sku_list[0].sku_count}}盒 实付：¥{{item.snapshoot_cnt.total_price}}</p>
+                        <div @click="orderdetail(item)">
+                            <div class="top">
+                                <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
+                                <em
+                                    v-bind:class="{ 'col': item.pay_status == 0 }"
+                                >{{order_status_func(item.order_status)}}</em>
+                            </div>
+                            <div class="center">
+                                <img :src="item.snapshoot_cnt.sku_list[0].images[0]? item.snapshoot_cnt.sku_list[0].images[0] : ''" :onerror="defaultAvatar" />
+                                <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>
+                                <p class="shopPricesku_count">
+                                    ¥{{item.snapshoot_cnt.sku_list[0].shopPrice}}
+                                    <br />
+                                    X{{item.snapshoot_cnt.sku_list[0].sku_count}}
+                                </p>
+                                <p>共{{item.snapshoot_cnt.sku_list[0].sku_count}}盒</p>
+                            </div>
                         </div>
                         <div class="bottom">
                             <button
@@ -55,6 +61,7 @@ export default {
                 visible: false,
                 tip: ""
             },
+            nodata: false,
             myorderData: {
                 list: []
             },
@@ -66,53 +73,38 @@ export default {
             pullupMsg: "加载更多",
             tipppp: "",
             _scroll: {},
-            datas: [
-                0,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                0,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                0,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                0,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6
-            ]
+            total: 1
         };
     },
     components: {
         AlertBox
     },
-    computed: {},
+    computed: {
+        defaultAvatar() {
+            return 'this.src="' + require("../assets/img/default.png") + '"';
+        }
+    },
     created() {
         let that = this;
         this.getData(res => {
-            this.myorderData.list = res.data.list;
-            // that.tipppp = '..'+this.myorderData.total;
+            if (res.data.list.length > 0) {
+                this.myorderData.list = res.data.list;
+                this.myorderDatapage++;
+                this.total = res.data.total;
+            } else {
+                this.nodata = true;
+            }
         }, 1);
         this.pulldownFunc();
     },
     mounted() {},
     watch: {},
     methods: {
+        orderdetail(item) {
+            let that = this;
+            localStorage.setItem("order_code", item.order_code);
+            that.$router.push({ name: "orderdetail", query: {myorder:1} });
+        },
         pulldownFunc() {
             let that = this;
             this.$nextTick(() => {
@@ -123,22 +115,35 @@ export default {
                 });
                 // 滑动过程中事件
                 this.scroll.on("scroll", pos => {
-                    that.tipppp =
-                        Number(pos.y).toFixed(0) + ".." + that.myorderDatapage;
+                    // that.tipppp = that.myorderDatapage<=Math.ceil(that.total/that.myorderDatapagesize)
                 });
                 //滑动结束松开事件
                 this.scroll.on("touchEnd", pos => {
                     //上拉刷新
 
                     if (pos.y < this.scroll.maxScrollY - 50) {
-                        //下拉加载
-                        this.pullupMsg = "加载中。。。";
+                        if (
+                            that.myorderDatapage > 1 &&
+                            that.myorderDatapage <=
+                                Math.ceil(that.total / that.myorderDatapagesize)
+                        ) {
+                            //下拉加载
+                            this.pullupMsg = "加载中。。。";
 
-                        that.getData(res => {
-                            this.myorderData.list = this.myorderData.list.concat(
-                                res.data.list
-                            );
-                        }, that.myorderDatapage++);
+                            that.getData(res => {
+                                this.myorderData.list = this.myorderData.list.concat(
+                                    res.data.list
+                                );
+                                if (
+                                    that.myorderDatapage >
+                                    Math.ceil(
+                                        that.total / that.myorderDatapagesize
+                                    )
+                                ) {
+                                    this.pullupMsg = "已是最后一页";
+                                }
+                            }, that.myorderDatapage++);
+                        }
                     }
                 });
             });
@@ -167,15 +172,26 @@ export default {
         getData(callback, pages) {
             let data = {
                 page: pages,
-                pagesize: this.myorderDatapagesize
+                pagesize: this.myorderDatapagesize,
+                usage_scenario: "bytemoon_buy"
             };
             let that = this;
             orderlist(data)
                 .then(function(res) {
                     if (res.code == 20000) {
                         callback(res);
+                    } else if (!!res && res.code == 113005) {
+                        this.alertBox = {
+                            visible: true,
+                            tip: res.message
+                        };
+                        localStorage.removeItem("moon_email");
+                        localStorage.removeItem("onemoreobj");
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
                     } else {
-                        that.alertBox = {
+                        this.alertBox = {
                             visible: true,
                             tip: res.message
                         };
@@ -216,6 +232,12 @@ export default {
 </script>
 
 <style scoped>
+.nodata {
+    width: 100%;
+    font-size: 16px;
+    line-height: 100px;
+    text-align: center;
+}
 .wrapper {
     font-size: 14px;
     width: 100%;
@@ -224,7 +246,12 @@ export default {
     position: relative;
     -webkit-overflow-scrolling: touch;
 }
-
+div.myorder ul li .center p.shopPricesku_count {
+    text-align: right;
+    height: 34px;
+    margin-top: -17px;
+    font-size: 14px;
+}
 /* 下拉、上拉提示信息 */
 .top-tip {
     position: absolute;
@@ -260,6 +287,7 @@ ul li {
     background: #ffffff;
     height: 170px;
     margin-bottom: 10px;
+    position: relative;
 }
 
 .myorder ul li .top {
@@ -332,14 +360,18 @@ ul li {
 .myorder ul li .bottom button {
     float: right;
     margin: 8px 0 0;
-    color: #0C62D9;
+    color: #fff;
     font-size: 14px;
-    background: #ffffff;
+    background: linear-gradient(
+        90deg,
+        rgba(27, 123, 255, 1) 0%,
+        rgba(12, 97, 216, 1) 100%
+    );
     outline: 0;
     width: 90px;
     height: 30px;
     border-radius: 18px;
-    border: 1px solid #0C62D9;
+    border: 0;
 }
 .myorder ul li .bottom {
     height: 46px;
@@ -351,4 +383,3 @@ ul li {
     color: #ffffff;
 }
 </style>
-

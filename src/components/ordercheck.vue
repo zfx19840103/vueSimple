@@ -33,7 +33,7 @@
             </div>
             <div class="order">
                 <div class="orderh">
-                    <img :src="skuinfoparam.images" />
+                    <img :src="skuinfoparam.images? skuinfoparam.images : ''" :onerror="defaultAvatar" />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
                         <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span>
@@ -68,23 +68,22 @@
                         <i class="el-icon-remove-outline" ></i>
                     </span>
                 </p>
-
                 <p v-if="!payloading" @click="linkInvoice">
-                    <span>发票</span>
+                    <span>发票1</span>
                     <i class="el-icon-arrow-right"></i>
-                    <em v-if="ordercreate.is_invoice == 1">不开发票</em>
+                    <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <em v-else>{{ordercreate.invoice_info.invoice_name}}</em>
                 </p>
                 <p v-else>
-                    <span>发票</span>
+                    <span>发票3</span>
                     <i class="el-icon-arrow-right"></i>
-                    <em v-if="ordercreate.is_invoice == 1">不开发票</em>
+                    <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <em v-else>{{ordercreate.invoice_info.invoice_name}}</em>
                 </p>
 
                 <p>
                     <span>订单备注</span>
-                    <i class="el-icon-arrow-right"></i>
+                    <!-- <i class="el-icon-arrow-right"></i> -->
                     <em>
                         <input
                             v-if="!payloading"
@@ -259,6 +258,7 @@ export default {
                 pay_method: 2, //1，支付宝 2，微信
                 orderdes: "",
                 invoice_info: {
+                    id: '',
                     invoice_type: 1,
                     register_phone: "",
                     register_address: "",
@@ -284,8 +284,15 @@ export default {
         if(this.onemore != 1){
             this.skuinfoFunc();
         }
-        this.initinvoiceFunc();
         this.initonemoreFunc();
+    },
+    computed: {
+        defaultAvatar() {
+            return 'this.src="' + require("../assets/img/default.png") + '"';
+        }
+    },
+    mounted() {
+        this.initinvoiceFunc();
     },
     methods: {
         initonemoreFunc() {
@@ -309,13 +316,13 @@ export default {
 
                 //发票
                 this.ordercreate.invoice_info = {
-                    invoice_type: onemoreobj.snapshoot_cnt.invoice_info.invoice_type,
-                    register_phone: onemoreobj.snapshoot_cnt.invoice_info.register_phone,
-                    register_address: onemoreobj.snapshoot_cnt.invoice_info.register_address,
-                    taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info.taxpayer_number,
-                    invoice_name: onemoreobj.snapshoot_cnt.invoice_info.invoice_name,
-                    register_bank: onemoreobj.snapshoot_cnt.invoice_info.register_bank,
-                    register_bank_account: onemoreobj.snapshoot_cnt.invoice_info.register_bank_account,
+                    invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type : '',
+                    register_phone: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_phone : '',
+                    register_address: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_address : '',
+                    taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.taxpayer_number : '',
+                    invoice_name: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.invoice_name : '',
+                    register_bank: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_bank : '',
+                    register_bank_account: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_bank_account : '',
                 }
 
                 //地址
@@ -330,19 +337,24 @@ export default {
             }
         },  
         initinvoiceFunc() {
-            let query = this.$route.query;
-            if(query.invoice == 1) {
-                this.ordercreate.is_invoice = query.is_invoice;
+            let _invoiceobj = JSON.parse(localStorage.getItem('invoiceobj'));
+
+            if(!!_invoiceobj) {
+
                 this.ordercreate.invoice_info = {
-                    invoice_type: query.invoice_type,
-                    invoice_name: query.invoice_name,
-                    register_phone: query.register_phone,
-                    register_address: query.register_address,
-                    taxpayer_number: query.taxpayer_number,
-                    register_bank: query.register_bank,
-                    register_bank_account: query.register_bank_account
+                    id: _invoiceobj.id,
+                    invoice_type: _invoiceobj.invoice_type,
+                    invoice_name: _invoiceobj.invoice_name,
+                    register_phone: _invoiceobj.register_phone,
+                    register_address: _invoiceobj.register_address,
+                    taxpayer_number: _invoiceobj.taxpayer_number,
+                    register_bank: _invoiceobj.register_bank,
+                    register_bank_account: _invoiceobj.register_bank_account
                 };
+                this.ordercreate.is_invoice = _invoiceobj.is_invoice;
+
             }
+
         },
         allnumFunc(num) {
             return num == "" || num < 1 ? 1 : num;
@@ -519,6 +531,19 @@ export default {
         //创建订单
         paysubmit() {
             let that = this;
+            
+            if(!that.selectaddress.id) {
+                that.alertBox = {
+                    tip: '请添加收货地址',
+                    visible:true,
+                };
+            // }else if(that.ordercreate.invoice_info.invoice_name == '') {
+            //     that.alertBox = {
+            //         tip: '请选择发票信息',
+            //         visible:true,
+            //     };
+            }else {
+
             let data = {
                 out_biz_code:
                     new Date().getTime() +
@@ -588,7 +613,7 @@ export default {
                 .catch(function(error) {
                     console.log(error);
                 });
-         
+            }
         },
         
         wxpay(res) {
@@ -608,7 +633,10 @@ export default {
             document.querySelector("#alipay").children[0].submit();
         },
         linkInvoice() {
-            this.$router.push("/addinvoice");
+
+            let _invoiceId = !!localStorage.getItem('invoiceobj') ? JSON.parse(localStorage.getItem('invoiceobj')).id : 0;
+            this.$router.push({ name: "addinvoice", query: {invoiceId: _invoiceId} });
+
         },
         touchStart(e) {
             this.startX = e.touches[0].clientX;

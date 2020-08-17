@@ -2,7 +2,7 @@
     <div>
         <div class="ms-content addinvoice">
             <div class="header" @click="checkedFunc('')">
-                <input type="radio" name="selectinvoice" />不开发票
+                <input type="radio" name="selectinvoice" value="0" v-model="invoiceId" />不开发票
             </div>
             <h4>发票信息</h4>
             <h5 @click="addtt">
@@ -10,11 +10,11 @@
             </h5>
             <ul>
                 <li v-for="(item, index) in invoiceData" data-type="0" :key="index">
-                    <div @click="checkedFunc(item)" @touchstart="touchStart" @touchend="touchEnd" class="list-box">
-                        <label>
-                            <input type="radio" name="selectinvoice" value="{item.value}" />
+                    <div  @touchstart="touchStart" @touchend="touchEnd" class="list-box">
+                        <label @click="checkedFunc(item)">
+                            <input type="radio" v-model="invoiceId" name="selectinvoice" :value= item.id />
                             <span>{{item.company}}</span>
-                            <em>{{item.tax_number}} {{item.tel}}</em>
+                            <em v-if="item.look_up == 1">税号:{{item.tax_number}}</em>
                         </label>
                         <i class="editicon" @click="editinvoiceFunc" :data="JSON.stringify(item)"></i>
                     </div>
@@ -39,6 +39,7 @@ export default {
                 visible: false,
                 tip: '',
             },
+            invoiceId: '',
             invoiceData: [
                 {
                     id: 1,
@@ -69,6 +70,7 @@ export default {
     },
     created() {
         this.getDataFunc();
+        this.invoiceId = this.$route.query.invoiceId;
     },
     methods: {
         getDataFunc() {
@@ -100,14 +102,17 @@ export default {
                 });
         },
         addtt() {
-            this.$router.push('addrise');
+
+            this.$router.push({ name: "addrise" });
         },      
         editinvoiceFunc(e) {
+
             console.log(e.target);
             let data = e.target.getAttribute("data");
 
             data = eval("(" + data + ")");
             data.edit = 1;
+            data.invoiceId = this.$route.query.invoiceId;
             this.$router.push({ name: "addrise", query: data });
         },
         checkedFunc(item) {
@@ -122,20 +127,22 @@ export default {
                     invoice_name: item.company,
                     register_bank: item.account_bank,
                     register_bank_account: item.bank_card,
-                    is_invoice: 0,
                     invoice:1,
+                    is_invoice: 1,
                 }
             }else {
                 obj = {
+                    id:0,
                     invoice:1,
-                    is_invoice: 1,
+                    is_invoice: 0,
                 }
             }
             this.$router.push({
                 name: "ordercheck",
-                query: obj,
+
             });
 
+            localStorage.setItem('invoiceobj', JSON.stringify(obj))
 
         },
         touchStart(e) {
@@ -285,6 +292,13 @@ export default {
     transition: all 0.2s;
 }
 
+.addinvoice li .list-box label {
+    position: absolute;
+    width: 85%;
+    height: 100%;
+    overflow: hidden;
+    left: 0;
+}
 .addinvoice li .list-box {
     display: flex;
     align-items: center;

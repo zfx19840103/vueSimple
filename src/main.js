@@ -20,15 +20,20 @@ Vue.prototype.$axios = axios;
 
 Vue.prototype.$moment = moment;
 
-import FastClick from 'fastclick'
 
-FastClick.attach(document.body);
+import FastClick from 'fastclick'
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function () {
+        FastClick.attach(document.body);
+    }, false);
+}
+
 
 FastClick.prototype.onTouchEnd = function (event) {
-    if (event.target.hasAttribute("type") && event.target.getAttribute("type") == "text") {
-        event.preventDefault();
-        return false;
-    }
+    // if (event.target.hasAttribute("type") && event.target.getAttribute("type") == "text") {
+    //     event.preventDefault();
+    //     return false;
+    // }
 }
 
 import 'element-ui/lib/theme-chalk/index.css';
