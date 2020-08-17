@@ -91,6 +91,9 @@ export default {
                 this.myorderData.list = res.data.list;
                 this.myorderDatapage++;
                 this.total = res.data.total;
+                if(this.total < this.myorderDatapagesize) {
+                    this.pullupMsg = "已是最后一页";
+                }
             } else {
                 this.nodata = true;
             }
@@ -122,11 +125,7 @@ export default {
                     //上拉刷新
 
                     if (pos.y < this.scroll.maxScrollY - 50) {
-                        if (
-                            that.myorderDatapage > 1 &&
-                            that.myorderDatapage <=
-                                Math.ceil(that.total / that.myorderDatapagesize)
-                        ) {
+                        if (that.myorderDatapage > 1 && that.myorderDatapage <= Math.ceil(that.total / that.myorderDatapagesize)) {
                             //下拉加载
                             this.pullupMsg = "加载中。。。";
 
