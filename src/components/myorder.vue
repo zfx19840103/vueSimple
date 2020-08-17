@@ -173,7 +173,7 @@ export default {
             let data = {
                 page: pages,
                 pagesize: this.myorderDatapagesize,
-                usage_scenario: "bytemoon_buy"
+                usage_scenario: "bytemoon_pay"
             };
             let that = this;
             orderlist(data)
