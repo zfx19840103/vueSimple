@@ -4,14 +4,14 @@
             <div class="unit menu" v-if="this.$route.query.edit != 1">
                 <span>抬头类型</span>
                 <label>
-                    <input type="radio" name="riseType" v-model="param.look_up" value="2" /> 个人/非企业单位
+                    <input type="radio" name="riseType" v-model="param.look_up" value="1" /> 个人/非企业单位
                 </label>
                 <label>
-                    <input type="radio" name="riseType" v-model="param.look_up" value="1" /> 单位
+                    <input type="radio" name="riseType" v-model="param.look_up" value="2" /> 单位
                 </label>
             </div>
             
-            <div v-if="param.look_up == 1">
+            <div v-if="param.look_up == 2">
                  <div class="unit">
                      <i>*</i>
                     <span>公司抬头</span>
@@ -64,7 +64,7 @@ export default {
             },
             param: {
                 id: '',
-                look_up: 1,
+                look_up: 2,
                 company1: "",
                 company2: "",
                 tax_number: "",
@@ -84,7 +84,7 @@ export default {
     methods: {
         initedit() {
             let query = this.$route.query;
-            if(query.edit == 1){
+            if(query.edit == 2){
                 this.param.id = query.id;
                 this.param.look_up = query.look_up;
                 this.param.tax_number = query.tax_number;
@@ -92,7 +92,7 @@ export default {
                 this.param.address = query.address;
                 this.param.account_bank = query.account_bank;
                 this.param.bank_card = query.bank_card;
-                if(query.look_up == 1) {
+                if(query.look_up == 2) {
                     this.param.company1 = query.company;
                 }else {
                     this.param.company2 = query.company;
@@ -102,7 +102,7 @@ export default {
         saveriseFunc() {
             let that = this;
 
-            if(this.param.look_up == 1) {
+            if(this.param.look_up == 2) {
                 var data = {
                     look_up: this.param.look_up,
                     tax_number: this.param.tax_number,

@@ -69,13 +69,13 @@
                     </span>
                 </p>
                 <p v-if="!payloading" @click="linkInvoice">
-                    <span>发票1</span>
+                    <span>发票</span>
                     <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <em v-else>{{ordercreate.invoice_info.invoice_name}}</em>
                 </p>
                 <p v-else>
-                    <span>发票3</span>
+                    <span>发票</span>
                     <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <em v-else>{{ordercreate.invoice_info.invoice_name}}</em>

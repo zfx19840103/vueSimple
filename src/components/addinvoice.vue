@@ -14,7 +14,7 @@
                         <label @click="checkedFunc(item)">
                             <input type="radio" v-model="invoiceId" name="selectinvoice" :value= item.id />
                             <span>{{item.company}}</span>
-                            <em v-if="item.look_up == 1">税号:{{item.tax_number}}</em>
+                            <em v-if="item.look_up == 2">税号:{{item.tax_number}}</em>
                         </label>
                         <i class="editicon" @click="editinvoiceFunc" :data="JSON.stringify(item)"></i>
                     </div>
@@ -117,6 +117,7 @@ export default {
         },
         checkedFunc(item) {
             let obj = {};
+
             if(!!item) {
                 obj = {
                     id: item.id,
@@ -135,6 +136,7 @@ export default {
                     id:0,
                     invoice:1,
                     is_invoice: 0,
+                    invoice_type: item.look_up,
                 }
             }
             this.$router.push({
