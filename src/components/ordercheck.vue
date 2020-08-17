@@ -407,13 +407,12 @@ export default {
                 });
         },
         addresslistclick(item) {
-
             this.detailownerParam = {
                 id: item.id,
                 receiver: item.receiver,
                 phone: item.phone,
                 address: item.address,
-                province: item.provincial,
+                provincial: item.provincial,
                 city: item.city,
                 area: item.area,
             };
