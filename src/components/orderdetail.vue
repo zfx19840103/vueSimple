@@ -548,6 +548,7 @@ div.ordernews p em {
     position: absolute;
     top: 37px;
     left: 12px;
+    font-size: 25px;
 }
 .detailowner p {
     position: absolute;

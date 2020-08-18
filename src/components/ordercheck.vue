@@ -26,14 +26,17 @@
                     <p>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
-                <div class="detailowner" v-else >
+                <div class="detailowner" v-else>
                     <span class="detailowneradd"></span>
                     <span class="detailowneraddress">添加收货地址</span>
                 </div>
             </div>
             <div class="order">
                 <div class="orderh">
-                    <img :src="skuinfoparam.images? skuinfoparam.images : ''" :onerror="defaultAvatar" />
+                    <img
+                        :src="skuinfoparam.images? skuinfoparam.images : ''"
+                        :onerror="defaultAvatar"
+                    />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
                         <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span>
@@ -55,7 +58,7 @@
                         <i class="el-icon-remove-outline" @click="paynumremove"></i>
                     </span>
                     <span class="paynumallloading" v-else>
-                        <i class="el-icon-circle-plus-outline" ></i>
+                        <i class="el-icon-circle-plus-outline"></i>
                         <input
                             type="number"
                             name="num"
@@ -65,20 +68,24 @@
                             disabled
                             value="paynum"
                         />
-                        <i class="el-icon-remove-outline" ></i>
+                        <i class="el-icon-remove-outline"></i>
                     </span>
                 </p>
                 <p v-if="!payloading" @click="linkInvoice">
                     <span>发票</span>
                     <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <em v-else>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
+                    <em
+                        v-else
+                    >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
                 </p>
                 <p v-else>
                     <span>发票</span>
                     <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <em v-else>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
+                    <em
+                        v-else
+                    >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
                 </p>
 
                 <p>
@@ -110,7 +117,6 @@
                 <label>
                     <span class="wxicon"></span>微信支付
                     <input
-
                         type="radio"
                         name="payType"
                         v-model="ordercreate.pay_method"
@@ -140,7 +146,7 @@
                 :visible.sync="drawer"
                 :direction="direction"
                 class="orderCheckaddress"
-                :show-close= false
+                :show-close="false"
             >
                 <h3>选择收货地址</h3>
                 <ul v-if="drawerAddress" class="drawerAddress">
@@ -204,8 +210,7 @@ export default {
                 visible: false,
                 tip: ""
             },
-            addressData: [
-            ],
+            addressData: [],
             orderCheckrules: {
                 pay: [
                     {
@@ -258,7 +263,7 @@ export default {
                 pay_method: 2, //1，支付宝 2，微信
                 orderdes: "",
                 invoice_info: {
-                    id: '',
+                    id: "",
                     invoice_type: 1,
                     register_phone: "",
                     register_address: "",
@@ -271,8 +276,14 @@ export default {
                 pathway: 2
             },
             maxnum: 100,
-            onemore: !!this.$route.query.onemore ? this.$route.query.onemore : '',
-            payloading: !!this.$route.query.payloading && this.$route.query.payloading == 1 ? this.$route.query.payloading : false,
+            onemore: !!this.$route.query.onemore
+                ? this.$route.query.onemore
+                : "",
+            payloading:
+                !!this.$route.query.payloading &&
+                this.$route.query.payloading == 1
+                    ? this.$route.query.payloading
+                    : false
         };
     },
     components: {
@@ -281,7 +292,7 @@ export default {
     created() {
         this.addaddressList();
 
-        if(this.onemore != 1){
+        if (this.onemore != 1) {
             this.skuinfoFunc();
         }
         this.initonemoreFunc();
@@ -297,51 +308,78 @@ export default {
     methods: {
         initonemoreFunc() {
             // let that = this;
-            let onemoreobj = JSON.parse(localStorage.getItem('onemoreobj'));
+            let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
 
-            if(this.onemore == 1) {
+            if (this.onemore == 1) {
+                this.skuinfoparam.images =
+                    onemoreobj.snapshoot_cnt.sku_list[0].images[0];
+                this.skuinfoparam.itemName =
+                    onemoreobj.snapshoot_cnt.sku_list[0].itemName;
+                this.skuinfoparam.freight =
+                    onemoreobj.snapshoot_cnt.sku_list[0].freight;
+                this.skuinfoparam.shop_price =
+                    onemoreobj.snapshoot_cnt.sku_list[0].shop_price;
 
-                this.skuinfoparam.images = onemoreobj.snapshoot_cnt.sku_list[0].images[0];
-                this.skuinfoparam.itemName = onemoreobj.snapshoot_cnt.sku_list[0].itemName;
-                this.skuinfoparam.freight = onemoreobj.snapshoot_cnt.sku_list[0].freight;
-                this.skuinfoparam.shop_price = onemoreobj.snapshoot_cnt.sku_list[0].shop_price;
+                this.skuinfoparam.itemCode =
+                    onemoreobj.snapshoot_cnt.sku_list[0].itemCode;
+                this.ordercreate.sku_list[0].sku_count =
+                    onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
 
-                this.skuinfoparam.itemCode = onemoreobj.snapshoot_cnt.sku_list[0].itemCode;
-                this.ordercreate.sku_list[0].sku_count = onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
-                
-                this.ordercreate.is_invoice = onemoreobj.snapshoot_cnt.is_invoice;
+                this.ordercreate.is_invoice =
+                    onemoreobj.snapshoot_cnt.is_invoice;
                 // this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
-                this.ordercreate.pay_method = onemoreobj.snapshoot_cnt.pay_method;
+                this.ordercreate.pay_method =
+                    onemoreobj.snapshoot_cnt.pay_method;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
                 //发票
                 this.ordercreate.invoice_info = {
-                    invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type : '',
-                    register_phone: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_phone : '',
-                    register_address: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_address : '',
-                    taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.taxpayer_number : '',
-                    invoice_name: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.invoice_name : '',
-                    register_bank: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_bank : '',
-                    register_bank_account: onemoreobj.snapshoot_cnt.invoice_info ? onemoreobj.snapshoot_cnt.invoice_info.register_bank_account : '',
-                }
+                    invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type
+                        : "",
+                    register_phone: onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info.register_phone
+                        : "",
+                    register_address: onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info.register_address
+                        : "",
+                    taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info.taxpayer_number
+                        : "",
+                    invoice_name: onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info.invoice_name
+                        : "",
+                    register_bank: onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info.register_bank
+                        : "",
+                    register_bank_account: onemoreobj.snapshoot_cnt.invoice_info
+                        ? onemoreobj.snapshoot_cnt.invoice_info
+                              .register_bank_account
+                        : ""
+                };
 
                 //地址
                 this.detailowner = true;
 
-                this.detailownerParam.receiver = onemoreobj.snapshoot_cnt.receive_info.name;
-                this.detailownerParam.phone = onemoreobj.snapshoot_cnt.receive_info.mobile;
-                this.detailownerParam.address = onemoreobj.snapshoot_cnt.receive_info.detailAddress;
-                this.detailownerParam.provincial = onemoreobj.snapshoot_cnt.receive_info.province;
-                this.detailownerParam.city = onemoreobj.snapshoot_cnt.receive_info.city;
-                this.detailownerParam.area = onemoreobj.snapshoot_cnt.receive_info.area;
+                this.detailownerParam.receiver =
+                    onemoreobj.snapshoot_cnt.receive_info.name;
+                this.detailownerParam.phone =
+                    onemoreobj.snapshoot_cnt.receive_info.mobile;
+                this.detailownerParam.address =
+                    onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                this.detailownerParam.provincial =
+                    onemoreobj.snapshoot_cnt.receive_info.province;
+                this.detailownerParam.city =
+                    onemoreobj.snapshoot_cnt.receive_info.city;
+                this.detailownerParam.area =
+                    onemoreobj.snapshoot_cnt.receive_info.area;
             }
-        },  
+        },
         initinvoiceFunc() {
-            let _invoiceobj = JSON.parse(localStorage.getItem('invoiceobj'));
+            let _invoiceobj = JSON.parse(localStorage.getItem("invoiceobj"));
 
-            if(!!_invoiceobj && this.onemore != 1) {
-
+            if (!!_invoiceobj && this.onemore != 1) {
                 this.ordercreate.invoice_info = {
                     id: _invoiceobj.id,
                     invoice_type: _invoiceobj.invoice_type,
@@ -353,9 +391,7 @@ export default {
                     register_bank_account: _invoiceobj.register_bank_account
                 };
                 this.ordercreate.is_invoice = _invoiceobj.is_invoice;
-
             }
-
         },
         allnumFunc(num) {
             return num == "" || num < 1 ? 1 : num;
@@ -364,7 +400,12 @@ export default {
             if (Number(num) < 1 && Number(num) !== "") {
                 num = 1;
             }
-            return (((Number(num) * Number(price) + Number(this.skuinfoparam.freight)) * 100) / 100).toFixed(2);
+            return (
+                ((Number(num) * Number(price) +
+                    Number(this.skuinfoparam.freight)) *
+                    100) /
+                100
+            ).toFixed(2);
         },
         //获取月饼商品详情
         skuinfoFunc() {
@@ -385,11 +426,10 @@ export default {
                         that.skuinfoparam.created_at = _info.created_at;
                         that.skuinfoparam.updated_at = _info.updated_at;
                         that.skuinfoparam.freight = _info.freight;
-                        
-                    } else if(!!res && res.code == 113005) {
+                    } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
 
                         setTimeout(function() {
@@ -399,7 +439,7 @@ export default {
                     } else {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
                     }
                 })
@@ -418,11 +458,12 @@ export default {
                 created_at: item.created_at,
                 updated_at: item.updated_at,
                 city: item.city,
-                area: item.area,
+                area: item.area
             };
             localStorage.setItem(
-                'addressobj', JSON.stringify(this.detailownerParam),
-            )
+                "addressobj",
+                JSON.stringify(this.detailownerParam)
+            );
             this.detailowner = true;
             this.drawer = false;
         },
@@ -438,68 +479,89 @@ export default {
                             that.addressData = res.data.reverse();
 
                             //非再来一单的时候
-                            if(that.$route.query.onemore != 1) {
-                                if(!!localStorage.getItem('addressobj')) {
-                                    
-                                    var _addressobj = JSON.parse(localStorage.getItem('addressobj'));
-                                    // console.log(that.selectaddress)
-                                    // console.log(that.addressData[0])
-                                    // console.log(that.selectaddress == that.addressData[0])
-                                    that.addressData.map((itm)=>{
-                                        if(itm.id == _addressobj.id) {
-                                            localStorage.setItem('addressobj', JSON.stringify(itm));
-                                            that.selectaddress = itm;
-                                        }
-                                    })
-                                    that.detailownerParam = {
-                                        
-                                        id: JSON.parse(localStorage.getItem('addressobj')).id,
-                                        receiver: JSON.parse(localStorage.getItem('addressobj')).receiver,
-                                        phone: JSON.parse(localStorage.getItem('addressobj')).phone,
-                                        address: JSON.parse(localStorage.getItem('addressobj')).address,
-                                        user_id: JSON.parse(localStorage.getItem('addressobj')).user_id,
-                                        provincial: JSON.parse(localStorage.getItem('addressobj')).provincial,
-                                        created_at: JSON.parse(localStorage.getItem('addressobj')).created_at,
-                                        updated_at: JSON.parse(localStorage.getItem('addressobj')).updated_at,
-                                        city: JSON.parse(localStorage.getItem('addressobj')).city,
-                                        area: JSON.parse(localStorage.getItem('addressobj')).area,
-                                    };
-                                }else {
-                                    that.selectaddress = that.addressData[0];
-                                    that.detailownerParam = {
-                                        id: res.data[0].id,
-                                        receiver: res.data[0].receiver,
-                                        phone: res.data[0].phone,
-                                        address: res.data[0].address,
-                                        user_id: res.data[0].user_id,
-                                        created_at: res.data[0].created_at,
-                                        updated_at: res.data[0].updated_at,
-                                        provincial: res.data[0].provincial,
-                                        city: res.data[0].city,
-                                        area: res.data[0].area,
-                                    };
-                                }
+                            if (that.$route.query.onemore != 1) {
                                 that.detailowner = true;
+                            }
+                            if (!!localStorage.getItem("addressobj")) {
+                                var _addressobj = JSON.parse(
+                                    localStorage.getItem("addressobj")
+                                );
+
+                                that.addressData.map(itm => {
+                                    if (itm.id == _addressobj.id) {
+                                        localStorage.setItem(
+                                            "addressobj",
+                                            JSON.stringify(itm)
+                                        );
+                                        that.selectaddress = itm;
+                                    }
+                                });
+                                that.detailownerParam = {
+                                    id: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).id,
+                                    receiver: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).receiver,
+                                    phone: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).phone,
+                                    address: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).address,
+                                    user_id: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).user_id,
+                                    provincial: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).provincial,
+                                    created_at: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).created_at,
+                                    updated_at: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).updated_at,
+                                    city: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).city,
+                                    area: JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    ).area
+                                };
+                            } else {
+                                that.selectaddress = that.addressData[0];
+                                that.detailownerParam = {
+                                    id: res.data[0].id,
+                                    receiver: res.data[0].receiver,
+                                    phone: res.data[0].phone,
+                                    address: res.data[0].address,
+                                    user_id: res.data[0].user_id,
+                                    created_at: res.data[0].created_at,
+                                    updated_at: res.data[0].updated_at,
+                                    provincial: res.data[0].provincial,
+                                    city: res.data[0].city,
+                                    area: res.data[0].area
+                                };
                             }
                             that.drawerAddress = true;
                         } else {
                             that.detailowner = false;
                             that.drawerAddress = false;
                         }
-                    } else if(!!res && res.code == 113005) {
+                    } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
 
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
                         localStorage.removeItem("moon_email");
-                    }else {
+                    } else {
                         that.alertBox = {
                             tip: res.message,
-                            visible: true,
+                            visible: true
                         };
                     }
                 })
@@ -557,9 +619,9 @@ export default {
         editaddress(e) {
             console.log(e.target);
             let data = e.target.getAttribute("data");
-            localStorage.setItem('addressobj', data);
+            localStorage.setItem("addressobj", data);
             data = eval("(" + data + ")");
-            
+
             data.edit = 1;
 
             this.$router.push({ name: "addaddress", query: data });
@@ -567,100 +629,125 @@ export default {
         //创建订单
         paysubmit() {
             let that = this;
-            
-            if(!that.selectaddress.id) {
+
+            if (!that.selectaddress.id) {
                 that.alertBox = {
-                    tip: '请添加收货地址',
-                    visible:true,
+                    tip: "请添加收货地址",
+                    visible: true
                 };
-            // }else if(that.ordercreate.invoice_info.invoice_name == '') {
-            //     that.alertBox = {
-            //         tip: '请选择发票信息',
-            //         visible:true,
-            //     };
-            }else {
-
-            let data = {
-                out_biz_code:
-                    new Date().getTime() +
-                    "" +
-                    Math.floor(Math.random() * 4000 + 1000),
-                sku_list: [
-                    {
-                        sku_code: that.skuinfoparam.itemCode,
-                        sku_count: that.ordercreate.sku_list[0].sku_count
-                    }
-                ],
-                pay_method: that.ordercreate.pay_method,
-                receive_info: {
-                    province: that.detailownerParam.provincial,
-                    city: that.detailownerParam.city,
-                    area: that.detailownerParam.area,
-                    name: that.detailownerParam.receiver,
-                    phone: that.detailownerParam.phone,
-                    detailAddress: that.detailownerParam.address
-                },
-                orderdes: that.ordercreate.orderdes,
-                invoice_info: {
-                    invoice_type: !!that.ordercreate.invoice_info.invoice_type ? that.ordercreate.invoice_info.invoice_type : '',
-                    register_phone: !!that.ordercreate.invoice_info.register_phone ? that.ordercreate.invoice_info.register_phone : '',
-                    register_address: !!that.ordercreate.invoice_info.register_address ? that.ordercreate.invoice_info.register_address : '',
-                    taxpayer_number: !!that.ordercreate.invoice_info.taxpayer_number ? that.ordercreate.invoice_info.taxpayer_number : '',
-                    invoice_name: !!that.ordercreate.invoice_info.invoice_name ? that.ordercreate.invoice_info.invoice_name : '',
-                    register_bank: !!that.ordercreate.invoice_info.register_bank ? that.ordercreate.invoice_info.register_bank : '',
-                    register_bank_account: !!that.ordercreate.invoice_info.register_bank_account ? that.ordercreate.invoice_info.register_bank_account : '',
-                },
-                is_invoice: that.ordercreate.is_invoice, //是否开发票	0否 1是
-                pathway: that.ordercreate.pathway, //环境配置	1,2
-                usage_scenario: 'bytemoon_pay', //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换
-            };
-
-            ordercreateapi(data)
-                .then(function(res) {
-                    
-                    if (!!res && res.code == 20000) {    
-                        //将商品code存在localstorge里
-                        localStorage.setItem('order_code', res.data.order_code);                    
-                        localStorage.setItem('order_isload', 1);                    
-                        localStorage.setItem('orderloadingtime', 0);                    
-                        if (that.ordercreate.pay_method == 1) {
-                            //1是支付宝 2是微信
-                            that.alipay(res);
-                        } else {
-                            that.wxpay(res);
+                // }else if(that.ordercreate.invoice_info.invoice_name == '') {
+                //     that.alertBox = {
+                //         tip: '请选择发票信息',
+                //         visible:true,
+                //     };
+            } else {
+                let _out_biz_code =
+                    this.$route.query.payloading == 1
+                        ? JSON.parse(localStorage.getItem("onemoreobj"))
+                              .out_biz_code
+                        : new Date().getTime() +
+                          "" +
+                          Math.floor(Math.random() * 4000 + 1000);
+                let data = {
+                    out_biz_code: _out_biz_code,
+                    sku_list: [
+                        {
+                            sku_code: that.skuinfoparam.itemCode,
+                            sku_count: that.ordercreate.sku_list[0].sku_count
                         }
-                    } else if(!!res && res.code == 113005) {
-                        that.alertBox = {
-                            tip: res.message,
-                            visible:true,
-                        };
+                    ],
+                    pay_method: that.ordercreate.pay_method,
+                    receive_info: {
+                        province: that.detailownerParam.provincial,
+                        city: that.detailownerParam.city,
+                        area: that.detailownerParam.area,
+                        name: that.detailownerParam.receiver,
+                        phone: that.detailownerParam.phone,
+                        detailAddress: that.detailownerParam.address
+                    },
+                    orderdes: that.ordercreate.orderdes,
+                    invoice_info: {
+                        invoice_type: !!that.ordercreate.invoice_info
+                            .invoice_type
+                            ? that.ordercreate.invoice_info.invoice_type
+                            : "",
+                        register_phone: !!that.ordercreate.invoice_info
+                            .register_phone
+                            ? that.ordercreate.invoice_info.register_phone
+                            : "",
+                        register_address: !!that.ordercreate.invoice_info
+                            .register_address
+                            ? that.ordercreate.invoice_info.register_address
+                            : "",
+                        taxpayer_number: !!that.ordercreate.invoice_info
+                            .taxpayer_number
+                            ? that.ordercreate.invoice_info.taxpayer_number
+                            : "",
+                        invoice_name: !!that.ordercreate.invoice_info
+                            .invoice_name
+                            ? that.ordercreate.invoice_info.invoice_name
+                            : "",
+                        register_bank: !!that.ordercreate.invoice_info
+                            .register_bank
+                            ? that.ordercreate.invoice_info.register_bank
+                            : "",
+                        register_bank_account: !!that.ordercreate.invoice_info
+                            .register_bank_account
+                            ? that.ordercreate.invoice_info
+                                  .register_bank_account
+                            : ""
+                    },
+                    is_invoice: that.ordercreate.is_invoice, //是否开发票	0否 1是
+                    pathway: that.ordercreate.pathway, //环境配置	1,2
+                    usage_scenario: "bytemoon_pay" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换
+                };
 
-                        setTimeout(function() {
-                            that.$router.push("/login");
-                        }, 1000);
-                        localStorage.removeItem("moon_email");
-                    } else {
-                        that.alertBox = {
-                            tip: res.message,
-                            visible:true,
-                        };
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+                ordercreateapi(data)
+                    .then(function(res) {
+                        if (!!res && res.code == 20000) {
+                            //将商品code存在localstorge里
+                            localStorage.setItem(
+                                "order_code",
+                                res.data.order_code
+                            );
+                            localStorage.setItem("order_isload", 1);
+                            localStorage.setItem("orderloadingtime", 0);
+                            if (that.ordercreate.pay_method == 1) {
+                                //1是支付宝 2是微信
+                                that.alipay(res);
+                            } else {
+                                that.wxpay(res);
+                            }
+                        } else if (!!res && res.code == 113005) {
+                            that.alertBox = {
+                                tip: res.message,
+                                visible: true
+                            };
+
+                            setTimeout(function() {
+                                that.$router.push("/login");
+                            }, 1000);
+                            localStorage.removeItem("moon_email");
+                        } else {
+                            that.alertBox = {
+                                tip: res.message,
+                                visible: true
+                            };
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
             }
         },
-        
-        wxpay(res) {
 
+        wxpay(res) {
             const _html = res.data.html;
             const div = document.createElement("div");
             div.innerHTML = _html;
             document.body.appendChild(div);
         },
         alipay(res) {
-            
             const form = res.data.html;
             const div = document.createElement("div");
             div.id = "alipay";
@@ -669,10 +756,13 @@ export default {
             document.querySelector("#alipay").children[0].submit();
         },
         linkInvoice() {
-
-            let _invoiceId = !!localStorage.getItem('invoiceobj') ? JSON.parse(localStorage.getItem('invoiceobj')).id : 0;
-            this.$router.push({ name: "addinvoice", query: {invoiceId: _invoiceId} });
-
+            let _invoiceId = !!localStorage.getItem("invoiceobj")
+                ? JSON.parse(localStorage.getItem("invoiceobj")).id
+                : 0;
+            this.$router.push({
+                name: "addinvoice",
+                query: { invoiceId: _invoiceId }
+            });
         },
         touchStart(e) {
             this.startX = e.touches[0].clientX;
@@ -711,26 +801,28 @@ export default {
                 item = JSON.parse(e.currentTarget.dataset.item);
             let that = this;
             let data = {
-                id: item.id,
+                id: item.id
             };
 
             deleteaddress(data)
                 .then(function(res) {
-
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
-                            tip: '删除成功',
-                            visible:true,
+                            tip: "删除成功",
+                            visible: true
                         };
 
                         that.restSlide();
                         that.addressData.splice(index, 1);
-                        if(that.selectaddress.id == item.id) {
+                        if (that.selectaddress.id == item.id) {
                             that.selectaddress = that.addressData[0];
-                            localStorage.setItem('addressobj', JSON.stringify(that.addressData[0]));
+                            localStorage.setItem(
+                                "addressobj",
+                                JSON.stringify(that.addressData[0])
+                            );
                             that.detailownerParam = that.selectaddress;
                         }
-                        
+
                         if (that.addressData.length == 0) {
                             that.detailowner = false;
                             that.drawerAddress = false;
@@ -742,22 +834,20 @@ export default {
                             that.detailownerParam.address =
                                 that.addressData[0].address;
                         }
-
-                    } else if(!!res && res.code == 113005) {
+                    } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
 
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
                         localStorage.removeItem("moon_email");
-
                     } else {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
                     }
                 })
@@ -770,8 +860,18 @@ export default {
 </script>
 
 <style scoped>
-.payloading .detailowner p, .payloading .payTogo span, .payloading .payTogo span em, .payloading .el-icon-location-outline, .payloading .order p span, .payloading .order p em, .payloading .order p em input, .payloading .paynumall span, .payloading .paynumall span input, .payloading .detailowner .el-icon-arrow-right, .payloading .ordercenter span {
-    color: #9b9b9b!important;
+.payloading .detailowner p,
+.payloading .payTogo span,
+.payloading .payTogo span em,
+.payloading .el-icon-location-outline,
+.payloading .order p span,
+.payloading .order p em,
+.payloading .order p em input,
+.payloading .paynumall span,
+.payloading .paynumall span input,
+.payloading .detailowner .el-icon-arrow-right,
+.payloading .ordercenter span {
+    color: #9b9b9b !important;
 }
 .ordercheckBg {
     background: #f4f4f4;
@@ -888,7 +988,6 @@ export default {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     justify-content: flex-end;
-
 }
 .drawerAddress li[data-type="0"] {
     transform: translate3d(0, 0, 0);
@@ -980,16 +1079,20 @@ export default {
 .payTogo button {
     float: right;
     margin: 7px 10px 0 0;
-    width:90px;
-    height:36px;
-    background:linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
-    border-radius:18px;
+    width: 90px;
+    height: 36px;
+    background: linear-gradient(
+        90deg,
+        rgba(27, 123, 255, 1) 0%,
+        rgba(12, 97, 216, 1) 100%
+    );
+    border-radius: 18px;
     outline: 0;
     border: 0;
-    font-size:14px;
-    font-family:PingFangSC-Regular,PingFang SC;
-    font-weight:400;
-    color:rgba(255,255,255,1);
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
 }
 .payTogo span em {
     font-size: 14px;
