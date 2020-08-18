@@ -13,7 +13,7 @@
                     <div  @touchstart="touchStart" @touchend="touchEnd" class="list-box">
                         <label @click="checkedFunc(item)">
                             <input type="radio" v-model="invoiceId" name="selectinvoice" :value= item.id />
-                            <span>{{item.company}}</span>
+                            <span v-bind:class="item.look_up == 2 ? '' : 'selfinvoice'">{{item.company}}</span>
                             <em v-if="item.look_up == 2">税号:{{item.tax_number}}</em>
                         </label>
                         <i class="editicon" @click="editinvoiceFunc" :data="JSON.stringify(item)"></i>
@@ -40,29 +40,7 @@ export default {
                 tip: '',
             },
             invoiceId: '',
-            invoiceData: [
-                {
-                    id: 1,
-                    value: 1,
-                    address: "东煌大厦17层00516",
-                    receiver: "用户",
-                    phone: "16789492242"
-                },
-                {
-                    id: 2,
-                    value: 2,
-                    address: "东煌大厦17层006",
-                    receiver: "用户1",
-                    phone: "16789492242"
-                },
-                {
-                    id: 3,
-                    value: 3,
-                    address: "东煌大厦176",
-                    receiver: "用户1",
-                    phone: "16789492242"
-                }
-            ]
+            invoiceData: []
         };
     },
     components: {
@@ -238,6 +216,9 @@ export default {
     float: left;
     margin: 27px 10px 0 17px;
 }
+.addinvoice ul li span.selfinvoice {
+    line-height: 48px;
+}
 .addinvoice ul li span {
     position: absolute;
     top: 10px;
@@ -276,12 +257,12 @@ export default {
     width: 18px;
     height: 18px;
     position: absolute;
-    top: 31px;
+    top: 28px;
     right: 17px;
 }
 .addinvoice ul li input {
     position: absolute;
-    top: 23px;
+    top: 28px;
     left: 16px;
 }
 

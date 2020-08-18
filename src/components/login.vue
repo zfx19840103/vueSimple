@@ -117,7 +117,7 @@ export default {
                         email: that.param.email,
                         verify: that.verifydata,
                     };
-                    debugger
+
                     pushCode(paramsdata)
                         .then(function(res) {
                             that.timecodeFunc();

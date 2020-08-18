@@ -1,7 +1,16 @@
 <template>
     <div class="bg">
         <div class="ms-content addrise">
-            <div class="unit menu" v-if="this.$route.query.edit != 1">
+            <div class="unit menu" v-if="this.$route.query.edit == 1">
+                <span>抬头类型</span>
+                <label>
+                    <input type="radio" name="riseType" disabled v-model="param.look_up" value="1" /> 个人/非企业单位
+                </label>
+                <label>
+                    <input type="radio" name="riseType" disabled v-model="param.look_up" value="2" /> 单位
+                </label>
+            </div>
+            <div class="unit menu" v-else>
                 <span>抬头类型</span>
                 <label>
                     <input type="radio" name="riseType" v-model="param.look_up" value="1" /> 个人/非企业单位
@@ -17,7 +26,7 @@
                     <span>公司抬头</span>
                     <input type="text" v-model="param.company1" maxlength="50" placeholder="输入公司抬头" />
                 </div>
-                <div class="unit">
+                <div class="unit mb10px">
                     <i>*</i>
                     <span>公司税号</span>
                     <input type="text" v-model="param.tax_number" maxlength="50"  placeholder="输入公司税号" />
@@ -41,7 +50,7 @@
             </div>
             <div v-else class="unit">
                 <i>*</i>
-                <span>公司抬头</span>
+                <span>抬头名称</span>
                 <input type="text" v-model="param.company2" maxlength="50" placeholder="请填写抬头名称" />
             </div>
             <button class="saverise" @click="saveriseFunc">保存并使用</button>
@@ -84,7 +93,8 @@ export default {
     methods: {
         initedit() {
             let query = this.$route.query;
-            if(query.edit == 2){
+
+            if(query.edit == 1){
                 this.param.id = query.id;
                 this.param.look_up = query.look_up;
                 this.param.tax_number = query.tax_number;
@@ -281,7 +291,7 @@ export default {
     font-size: 14px;
     /* padding-left: 12px; */
 }
-.unit:nth-child(3) {
+.mb10px {
     margin-bottom: 10px;
 }
 .unit:nth-child(1) label input {
@@ -293,15 +303,13 @@ export default {
 .unit:nth-child(1) label {
     float: right;
     font-size: 14px;
-    margin: 0 17px 0 13px;
+    margin: 0 0 0 30px;
 }
 .saverise {
     width: 3.4rem;
     height: 50px;
-
     background: -webkit-gradient(linear,left top, right top,from(rgba(27,123,255,1)),to(rgba(12,97,216,1)));
     background: linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
- 
     border-radius: 25px;
     color: #ffffff;
     font-size: 18px;

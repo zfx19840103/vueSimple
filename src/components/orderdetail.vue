@@ -1,5 +1,5 @@
 <template>
-    <div style="height:100%">
+    <div>
         <div class="ms_content">
             <div class="detailTip">
                 <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.pay_status)}}</h3>
@@ -395,7 +395,7 @@ export default {
     font-size: 18px;
     border-radius: 18px;
     margin-top: 15px;
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 0;
 }
@@ -569,7 +569,11 @@ div.ordernews p em {
     top: 42px;
     color: #333333;
     font-size: 12px;
-    width: 172px;
+    width: 2.9rem;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     line-height: 17px;
 }
 

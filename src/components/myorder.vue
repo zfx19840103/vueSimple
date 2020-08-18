@@ -5,7 +5,7 @@
             <div class="bscroll-container">
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
-                        <div @click="orderdetail(item)">
+                        <div @click="item.order_status == 0 ? gotoPayFunc(item) : orderdetail(item)">
                             <div class="top">
                                 <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
                                 <em
@@ -149,7 +149,6 @@ export default {
         },
         order_status_func(status) {
             var str = "";
-            if (!!status) {
                 if (status == 0) {
                     str = "待付款";
                 } else if (status == 1) {
@@ -165,7 +164,7 @@ export default {
                 } else if (status == 6) {
                     str = "交易异常";
                 }
-            }
+
             return str;
         },
         getData(callback, pages) {
@@ -180,17 +179,18 @@ export default {
                     if (res.code == 20000) {
                         callback(res);
                     } else if (!!res && res.code == 113005) {
-                        this.alertBox = {
+                        that.alertBox = {
                             visible: true,
                             tip: res.message
                         };
+                        
                         localStorage.removeItem("moon_email");
                         localStorage.removeItem("onemoreobj");
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
                     } else {
-                        this.alertBox = {
+                        that.alertBox = {
                             visible: true,
                             tip: res.message
                         };

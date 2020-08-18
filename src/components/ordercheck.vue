@@ -298,6 +298,7 @@ export default {
         initonemoreFunc() {
             // let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem('onemoreobj'));
+
             if(this.onemore == 1) {
 
                 this.skuinfoparam.images = onemoreobj.snapshoot_cnt.sku_list[0].images[0];
@@ -309,7 +310,7 @@ export default {
                 this.ordercreate.sku_list[0].sku_count = onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
                 
                 this.ordercreate.is_invoice = onemoreobj.snapshoot_cnt.is_invoice;
-                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
+                // this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
                 this.ordercreate.pay_method = onemoreobj.snapshoot_cnt.pay_method;
 
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
@@ -339,7 +340,7 @@ export default {
         initinvoiceFunc() {
             let _invoiceobj = JSON.parse(localStorage.getItem('invoiceobj'));
 
-            if(!!_invoiceobj) {
+            if(!!_invoiceobj && this.onemore != 1) {
 
                 this.ordercreate.invoice_info = {
                     id: _invoiceobj.id,
@@ -1049,8 +1050,12 @@ export default {
     top: 42px;
     color: #333333;
     font-size: 12px;
-    width: 172px;
+    width: 2.9rem;
     line-height: 17px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .order {
