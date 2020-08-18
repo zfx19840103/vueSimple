@@ -143,7 +143,7 @@ export default {
                     phone: this.param.phone,
                     address: this.param.addressbk
                 },
-                id: this.id
+                id: this.id,
             };
             if (this.param.receiver == "") {
                 this.alertBox = {
@@ -319,13 +319,14 @@ export default {
                     });
             }
         },
-        routerFunc(res) {
+        routerFunc(res, data) {
             let that = this;
             if (!!res && res.code == 20000) {
                 this.alertBox = {
                     visible: true,
                     tip: "保存成功"
                 };
+
                 setTimeout(function() {
                     that.$router.push("/ordercheck");
                 }, 1000);
