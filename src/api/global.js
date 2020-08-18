@@ -1,4 +1,4 @@
-const API = '//apitest.tsingglobal.com';
+const API = '//tsingapi.test.tsingglobal.cn';
 // const API = 'http://dev.api.byte.tsingglobal.cn';
 // const API = 'http://tsingtest.test.tsingglobal.cn';
 // 联调环境：dev.api.byte.tsingglobal.cn
