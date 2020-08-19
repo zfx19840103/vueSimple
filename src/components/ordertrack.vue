@@ -86,7 +86,7 @@ export default {
             logisticsinfo(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
-                        that.activities = that.dataeidt(res.data);
+                        that.activities = that.dataeidt(res.data.list);
                         that.Logistics_company = res.data.Logistics_company;
                     } else {
                         that.alertBox = {
