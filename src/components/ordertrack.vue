@@ -2,7 +2,7 @@
     <div>
         <div class="ms_content">
             <div class="titNews">
-                {{Logistics_company}}{{orderCode}}
+                {{Logistics_company}}{{mail_no}}
                 <span
                     class="iconCopy"
                     title="复制单号"

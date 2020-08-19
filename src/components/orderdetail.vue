@@ -5,7 +5,7 @@
                 <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.pay_status)}}</h3>
                 <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
                 <div v-if="logisticsinfo" class="tip" @click="logisticsinfoFunc">
-                    <span>仓库处理中</span>
+                    <span>{{!!logistics_status?logistics_status:'-'}}</span>
                     <em>{{info.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
                     <i class="el-icon-arrow-right"></i>
                 </div>
@@ -105,6 +105,7 @@ import {
     paypolling,
     payovertime
 } from "@/api/orderdetail";
+import { logisticsinfo } from "@/api/ordertrack";
 import AlertBox from "./alertbox";
 
 export default {
@@ -187,6 +188,7 @@ export default {
                 deleted_at: ""
             },
             paystatus: '',
+            logistics_status: '',
         };
     },
     components: {
@@ -208,6 +210,7 @@ export default {
             this.logisticsinfo = true;
         }
         this.getData();
+        this.logisticsinfoData();
     },
     methods: {
         logisticsinfoFunc() {
@@ -239,6 +242,27 @@ export default {
                 }
             }
             return str;
+        },
+        logisticsinfoData() {
+            let that = this;
+            
+            let data = {
+                orderCode: that.info.order_code,
+            };
+            logisticsinfo(data)
+                .then(function(res) {
+                    if (!!res && res.code == 20000) {
+                        that.logistics_status = res.data.logistics_status;
+                    } else {
+                        that.alertBox = {
+                            visible: true,
+                            tip: res.message
+                        };
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
         },
         getData() {
             let data = {
