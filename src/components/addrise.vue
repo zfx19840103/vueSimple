@@ -269,7 +269,7 @@ export default {
 }
 
 .unit input {
-    color: #9b9b9b;
+    /* color: #9b9b9b; */
     font-size: 14px;
     border: 0;
     text-align: right;
