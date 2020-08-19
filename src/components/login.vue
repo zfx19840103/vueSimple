@@ -196,12 +196,12 @@ export default {
                         .then(function(res) {
 
                             that.alertBoxVisible = true;
-
                             if (!!res && res.code == 20000) {
                                 localStorage.setItem(
                                     "moon_email",
                                     that.param.email
                                 );
+                                _czc.push(["_trackEvent", "login", "loginh5"]);
 
                                 that.alertBoxContent = "登录成功";
                                 setTimeout(function() {

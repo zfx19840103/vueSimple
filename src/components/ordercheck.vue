@@ -734,6 +734,7 @@ export default {
                                 visible: true
                             };
                         }
+                        _czc.push(["_trackEvent", "topay", "topayh5"]);
                     })
                     .catch(function(error) {
                         console.log(error);

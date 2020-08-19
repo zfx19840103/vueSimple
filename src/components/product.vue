@@ -194,6 +194,7 @@ export default {
                                     "moon_email",
                                     that.param.email
                                 );
+                                _czc.push(["_trackEvent", "login", "loginh5"]);
                                 that.alertBoxContent = "登陆成功";
                                 setTimeout(function() {
                                     that.$router.push("/ordercheck");
@@ -218,6 +219,7 @@ export default {
                 this.loginShow = true;
                 this.nowPayShow = false;
             }
+            _czc.push(["_trackEvent", "tobuy", "tobuyh5"]);
         },
         orderCenter() {
             if (!!localStorage.getItem("moon_email")) {
