@@ -312,21 +312,23 @@ export default {
                 let that = this;
                 addaddress(data)
                     .then(function(res) {
-                        that.routerFunc(res);
+                        that.routerFunc(res,()=>{
+                            localStorage.removeItem('addressobj');
+                        });
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
             }
         },
-        routerFunc(res, data) {
+        routerFunc(res, callback) {
             let that = this;
             if (!!res && res.code == 20000) {
                 this.alertBox = {
                     visible: true,
                     tip: "保存成功"
                 };
-
+                callback();
                 setTimeout(function() {
                     that.$router.push("/ordercheck");
                 }, 1000);

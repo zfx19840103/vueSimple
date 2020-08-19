@@ -73,19 +73,21 @@
                 </p>
                 <p v-if="!payloading" @click="linkInvoice">
                     <span>发票</span>
-                    <i class="el-icon-arrow-right"></i>
+                    <i v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <em
-                        v-else
-                    >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
+                    <span class="invoicecontent" v-else>
+                        <em >{{ordercreate.invoice_info.invoice_name}}</em>
+                        <em v-if="ordercreate.invoice_info.invoice_type == 2" class="invoice_taxpaper">{{ordercreate.invoice_info.taxpayer_number}}</em>
+                    </span>
                 </p>
                 <p v-else>
                     <span>发票</span>
-                    <i class="el-icon-arrow-right"></i>
+                    <i v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <em
-                        v-else
-                    >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
+                    <span class="invoicecontent" v-else>
+                        <em >{{ordercreate.invoice_info.invoice_name}}</em>
+                        <em v-if="ordercreate.invoice_info.invoice_type == 2" class="invoice_taxpaper">{{ordercreate.invoice_info.taxpayer_number}}</em>
+                    </span>
                 </p>
 
                 <p>
@@ -874,6 +876,20 @@ export default {
 .payloading .ordercenter span {
     color: #9b9b9b !important;
 }
+.el-icon-arrow-right.company {
+    margin: 20px 12px 0 0;
+}
+.order p span.invoicecontent {
+    float: right;
+    width: 2.7rem;
+    padding: 14px 0 5px 12px;
+}
+.order p .invoicecontent em {
+    line-height: 18px;
+    display: block;
+    width: 100%;
+    text-align: right;
+}
 .ordercheckBg {
     background: #f4f4f4;
     height: 100%;
@@ -1249,7 +1265,7 @@ export default {
     padding-left: 12px;
 }
 .order p {
-    height: 46px;
+    overflow: hidden;
     margin: 0;
     line-height: 46px;
     border-bottom: #f4f4f4 solid 1px;

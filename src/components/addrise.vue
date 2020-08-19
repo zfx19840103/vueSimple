@@ -297,7 +297,8 @@ export default {
 .unit:nth-child(1) label input {
     width: 16px;
     height: 16px;
-    overflow: hidden;
+    /* overflow: hidden; */
+    display: inline-block;
     margin-top: 15px;
 }
 .unit:nth-child(1) label {
