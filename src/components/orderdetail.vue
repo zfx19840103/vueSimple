@@ -24,7 +24,8 @@
                                 
                     <div class="ordercenter">
                         <span>{{item.itemName}}</span>
-                        <span>运费：{{item.freight == 0 ? '免运费' : '¥'+item.freight}}</span>
+                        <!-- <span>运费：{{item.freight == 0 ? '免运费' : '¥'+item.freight}}</span> -->
+                        <span></span>
                         <span>¥{{item.shop_price}}/盒</span>
                     </div>
                     <div class="orderNum">X{{item.sku_count}}</div>

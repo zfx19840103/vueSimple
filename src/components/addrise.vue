@@ -1,6 +1,7 @@
 <template>
     <div class="bg">
         <div class="ms-content addrise">
+            
             <div class="unit menu" v-if="this.$route.query.edit == 1">
                 <span>抬头类型</span>
                 <label>
@@ -53,7 +54,7 @@
                 <span>抬头名称</span>
                 <input type="text" v-model="param.company2" maxlength="50" placeholder="请填写抬头名称" />
             </div>
-            <button class="saverise" @click="saveriseFunc">保存并使用</button>
+            <button class="saverise" @click="saveriseFunc">{{this.$route.query.edit == 1 ? '编辑并使用' : '保存并使用'}}</button>
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
@@ -170,16 +171,14 @@ export default {
                             visible: true,
                         };
                         setTimeout(function() {
-
-
-                            that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
+                            // that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
+                            that.$router.push({ name: "ordercheck" });
                         }, 1000)
                     } else if(!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
                             visible:true,
                         };
-
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
@@ -199,15 +198,31 @@ export default {
         editriseapi(data) {
             let that = this;
             data.id = this.param.id;
+
+            let _invoiceobj = {
+                id: data.id,
+                invoice: 1,
+                invoice_name: data.company,
+                invoice_type: data.look_up,
+                is_invoice: 1,
+                register_address: data.address,
+                register_bank: data.account_bank,
+                register_bank_account: data.bank_card,
+                register_phone: data.tel,
+                taxpayer_number: data.tax_number,
+            }
             editrise(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
-                            tip: "保存成功",
+                            tip: "编辑成功",
                             visible: true,
                         };
+                            localStorage.setItem('invoiceobj', JSON.stringify(_invoiceobj))
+
                         setTimeout(function() {
-                            that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
+                            // that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
+                            that.$router.push({ name: "ordercheck" });
                         }, 1000)
                     } else if(!!res && res.code == 113005) {
                         that.alertBox = {
@@ -297,7 +312,6 @@ export default {
 .unit:nth-child(1) label input {
     width: 16px;
     height: 16px;
-    /* overflow: hidden; */
     display: inline-block;
     margin-top: 15px;
 }

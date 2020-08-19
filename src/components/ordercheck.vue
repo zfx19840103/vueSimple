@@ -39,7 +39,8 @@
                     />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
-                        <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span>
+                        <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
+                        <span></span>
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
                 </div>
@@ -646,7 +647,9 @@ export default {
                 let _out_biz_code =
                     this.$route.query.payloading == 1
                         ? JSON.parse(localStorage.getItem("onemoreobj"))
-                              .out_biz_code
+                              .out_biz_code.substring(JSON.parse(localStorage.getItem("onemoreobj"))
+                              .out_biz_code.indexOf('_')+1, JSON.parse(localStorage.getItem("onemoreobj"))
+                              .out_biz_code.length)
                         : new Date().getTime() +
                           "" +
                           Math.floor(Math.random() * 4000 + 1000);
