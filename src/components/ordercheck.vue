@@ -39,8 +39,7 @@
                     />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
-                        <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
-                        <span></span>
+                        <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span>
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
                 </div>
