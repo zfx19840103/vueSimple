@@ -39,7 +39,8 @@
                     />
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
-                        <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span>
+                        <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
+                        <span></span>
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
                 </div>
@@ -70,6 +71,10 @@
                         />
                         <i class="el-icon-remove-outline"></i>
                     </span>
+                </p>
+                <p>
+                    <span>运费</span>
+                    <em>{{skuinfoparam.freight != 0 ? '¥'+skuinfoparam.freight : '免费'}}</em>
                 </p>
                 <p v-if="!payloading" @click="linkInvoice">
                     <span>发票1</span>
@@ -249,7 +254,7 @@ export default {
                 created_at: "",
                 updated_at: "",
                 shop_price: "",
-                freight: ""
+                freight: "",
             },
             drawerAddress: true,
             ordercreate: {
@@ -961,14 +966,16 @@ export default {
 }
 .orderCheckaddress .delete {
     width: 0.48rem;
-    height: 0.75rem;
-    line-height: 0.75rem;
+    height: 100%;
+    line-height: 58px;
     background: #ff502c;
     font-size: 12px;
     color: #fff;
     text-align: center;
     position: absolute;
     top: 0;
+    display: table;
+    vertical-align: middle;
     right: -0.48rem;
 }
 .orderCheckaddress h3 {
@@ -985,7 +992,7 @@ export default {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    height: 75px;
+    min-height: 60px;
     border-bottom: #f4f4f4 solid 1px;
     position: relative;
     -webkit-transition: all 0.2s;
@@ -1024,15 +1031,15 @@ export default {
     font-weight: 500;
     color: rgba(51, 51, 51, 1);
     line-height: 20px;
-    display: -webkit-box;
+    /* display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow: hidden; */
 }
 .drawerAddress li em {
     position: relative;
-    top: 5px;
+    top: 7px;
     float: left;
     text-align: left;
     width: 100%;
@@ -1051,7 +1058,7 @@ export default {
     width: 18px;
     height: 18px;
     position: absolute;
-    top: 31px;
+    top: 22px;
     right: 17px;
 }
 .drawerAddress li input {

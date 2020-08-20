@@ -16,7 +16,7 @@
                                 <img :src="item.snapshoot_cnt.sku_list[0].images[0]? item.snapshoot_cnt.sku_list[0].images[0] : ''" :onerror="defaultAvatar" />
                                 <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>
                                 <p class="shopPricesku_count">
-                                    ¥{{item.snapshoot_cnt.sku_list[0].shopPrice}}
+                                    ¥{{item.snapshoot_cnt.sku_list[0].shop_price}}
                                     <br />
                                     X{{item.snapshoot_cnt.sku_list[0].sku_count}}
                                 </p>
