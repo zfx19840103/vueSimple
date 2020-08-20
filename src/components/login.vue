@@ -32,10 +32,10 @@
                     <button class="login-btn" v-else @click="submitForm()">登录</button>
                 </div>
             </div>
-            <div class="loginwrapIcon" v-if="arrow">
+            <div class="loginwrapIcon"  @click="linkproduct" v-if="arrow">
                 <span></span>
                 <span></span>
-                <i class="el-icon-arrow-down" @click="linkproduct"></i>
+                <i class="el-icon-arrow-down"></i>
             </div>
         </div>
         <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
@@ -184,10 +184,11 @@ export default {
                 that.alertBoxContent = "请输入验证码";
             } else {
                 let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@(bytedance|ad.bytedance|jiyunhudong)\.com(\r\n|\r|\n)?$/;
                 let regcode = /^\d+$/;
                 if (!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
-                    that.alertBoxContent = "请输入有效邮箱地址";
+                    that.alertBoxContent = "请输入特定的邮箱地址";
                 } else if (!regcode.test(this.param.vcCode)) {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = "验证码为数字";
@@ -208,7 +209,7 @@ export default {
                                     that.$router.push("/product");
                                 }, 1000);
                             } else {
-                                that.alertBoxContent = "登录失败";
+                                that.alertBoxContent = "验证码错误";
                             }
                         })
                         .catch(function(error) {
@@ -330,8 +331,9 @@ div.captchaClass {
 .loginwrapIcon {
     position: absolute;
     text-align: center;
-    bottom: 30px;
-    height: 60px;
+    bottom: 0;
+    height: 90px;
+
     width: 1rem;
 }
 #captcha {

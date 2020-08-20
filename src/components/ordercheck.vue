@@ -8,7 +8,7 @@
                         <span>{{detailownerParam.receiver}}</span>
                         {{detailownerParam.phone}}
                     </p>
-                    <p>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</p>
+                    <p class="detailowner_address"><span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span></p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="detailowner" v-else @click="drawer = true">
@@ -23,7 +23,7 @@
                         <span>{{detailownerParam.receiver}}</span>
                         {{detailownerParam.phone}}
                     </p>
-                    <p>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</p>
+                    <p class="detailowner_address"><span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span></p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="detailowner" v-else>
@@ -73,12 +73,11 @@
                     </span>
                 </p>
                 <p v-if="!payloading" @click="linkInvoice">
-                    <span>发票</span>
-                    <i v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"></i>
+                    <span>发票1</span>
+                    <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <span class="invoicecontent" v-else>
-                        <em >{{ordercreate.invoice_info.invoice_name}}</em>
-                        <em v-if="ordercreate.invoice_info.invoice_type == 2" class="invoice_taxpaper">{{ordercreate.invoice_info.taxpayer_number}}</em>
+                        <em >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
                     </span>
                 </p>
                 <p v-else>
@@ -200,7 +199,7 @@ export default {
     data() {
         return {
             h5html: "",
-            detailowner: false,
+            detailowner: true,
             drawer: false,
             direction: "btt",
             selectaddress: {},
@@ -294,7 +293,7 @@ export default {
     },
     created() {
         this.addaddressList();
-
+        
         if (this.onemore != 1) {
             this.skuinfoFunc();
         }
@@ -1174,25 +1173,26 @@ export default {
 .detailowner {
     margin-top: 10px;
     background: #ffffff;
-    height: 93px;
+    min-height: 73px;
     position: relative;
     overflow: hidden;
 }
 .detailowner .el-icon-arrow-right {
     position: absolute;
-    top: 38px;
+    top: 30px;
     right: 12px;
     font-size: 18px;
 }
 .detailowner .el-icon-location-outline {
-    position: absolute;
-    top: 37px;
+    position: relative;
+    top: 30px;
+    float: left;
     left: 12px;
     font-size: 25px;
 }
 .detailowner p {
-    position: absolute;
-    left: 47px;
+    position: relative;
+    left: 20px;
     text-align: left;
     margin: 0;
 }
@@ -1207,17 +1207,21 @@ export default {
     font-size: 12px;
 }
 .detailowner p:nth-child(3) {
-    top: 42px;
+    top: 35px;
     color: #333333;
     font-size: 12px;
     width: 2.9rem;
-    line-height: 17px;
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
-
+.detailowner_address span {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:left;
+}
+.detailowner p.detailowner_address {
+    display: table;
+    top: 20px;
+    padding: 0 0 30px;
+}
 .order {
     position: relative;
     overflow: hidden;

@@ -5,7 +5,7 @@
             <span class="orderCenter" @click="orderCenter">订单中心</span>
             <span class="productTitle">字节跳动中秋好礼--月饼礼盒</span>
             <span class="productimg1"></span>
-            <span class="productimg2"></span>
+            <span class="productimg2 rotation"></span>
             <span class="productTitlecenter">挣脱平庸的重力</span>
             <span class="productdes">
                 逃离平庸，需要速度，让我们一起追求极致，
@@ -110,9 +110,9 @@ export default {
 
                     let paramsdata = {
                         email: that.param.email,
-                        verify: that.verifydata,
+                        verify: that.verifydata
                     };
-                    
+
                     pushCode(paramsdata)
                         .then(function(res) {
                             that.timecodeFunc();
@@ -124,7 +124,6 @@ export default {
                             console.log(e.responseText);
                             that.smartCaptcha.fail();
                         });
-    
                 },
                 fail: function(data) {
                     console.log("ic error");
@@ -164,7 +163,7 @@ export default {
         submitForm() {
             let data = {
                 email: this.param.email,
-                captcha: this.param.vcCode,
+                captcha: this.param.vcCode
                 // verify: this.verifydata,
             };
             let that = this;
@@ -176,6 +175,7 @@ export default {
                 that.alertBoxContent = "请输入验证码";
             } else {
                 let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@(bytedance|ad.bytedance|jiyunhudong)\.com(\r\n|\r|\n)?$/;
                 let regcode = /^\d+$/;
                 if (!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
@@ -186,7 +186,6 @@ export default {
                 } else {
                     loginPost(data)
                         .then(function(res) {
-
                             that.alertBoxVisible = true;
 
                             if (!!res && res.code == 20000) {
@@ -234,7 +233,22 @@ export default {
 </script>
 
 <style scoped>
+/* @-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+} */
 
+.rotation {
+    -webkit-transform: rotate(360deg);
+    animation: rotation 3s linear infinite;
+    -moz-animation: rotation 3s linear infinite;
+    -webkit-animation: rotation 3s linear infinite;
+    -o-animation: rotation 3s linear infinite;
+}
 .productimg1 {
     position: absolute;
     width: 1.65rem;

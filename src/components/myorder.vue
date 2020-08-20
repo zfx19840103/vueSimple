@@ -20,7 +20,7 @@
                                     <br />
                                     X{{item.snapshoot_cnt.sku_list[0].sku_count}}
                                 </p>
-                                <p>共{{item.snapshoot_cnt.sku_list[0].sku_count}}盒</p>
+                                <p>共{{item.snapshoot_cnt.sku_list[0].sku_count}}盒 实付：¥{{item.snapshoot_cnt.total_price}}</p>
                             </div>
                         </div>
                         <div class="bottom">
