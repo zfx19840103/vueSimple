@@ -85,8 +85,7 @@
                     <i v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <span class="invoicecontent" v-else>
-                        <em >{{ordercreate.invoice_info.invoice_name}}</em>
-                        <em v-if="ordercreate.invoice_info.invoice_type == 2" class="invoice_taxpaper">{{ordercreate.invoice_info.taxpayer_number}}</em>
+                        <em >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
                     </span>
                 </p>
 
@@ -891,6 +890,7 @@ export default {
     display: block;
     width: 100%;
     text-align: right;
+    word-break: break-all;
 }
 .ordercheckBg {
     background: #f4f4f4;

@@ -47,7 +47,7 @@
                     <i>实付款：</i>
                 </p>
             </div>
-            <div v-bind:class="info.snapshoot_cnt.is_invoice == 2 ? 'invoice' : 'invoice gren'" v-if="info.snapshoot_cnt.is_invoice == 1">
+            <div v-bind:class="info.snapshoot_cnt.invoice_info.invoice_type == 2 ? 'invoice' : 'invoice gren'" v-if="info.snapshoot_cnt.is_invoice == 1">
                 <h3>发票</h3>
                 <p>
                     <span>发票抬头</span>
