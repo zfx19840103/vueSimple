@@ -16,7 +16,7 @@
                     <span>{{info.snapshoot_cnt.receive_info.name}}</span>
                     {{info.snapshoot_cnt.receive_info.mobile}}
                 </p>
-                <p>{{info.snapshoot_cnt.receive_info.province}} {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}} {{info.snapshoot_cnt.receive_info.detailAddress}}</p>
+                <p class="detailowner_address"><span>{{info.snapshoot_cnt.receive_info.province}} {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}} {{info.snapshoot_cnt.receive_info.detailAddress}}</span></p>
             </div>
             <div class="order">
                 <div
@@ -309,7 +309,7 @@ export default {
                         // res.data = that.logisticsinfodatadata;
                         that.logistics_status = res.data.logistics_status;
 
-                        if (res.data.list.length > 0) {
+                        if (!!res.data.list && res.data.list.length > 0) {
                             that.logisticsinfoif = true;
                         }
                     } else {
@@ -649,21 +649,32 @@ div.ordernews p em {
 .detailowner {
     margin-top: 10px;
     background: #ffffff;
-    height: 93px;
+    min-height: 73px;
     position: relative;
     overflow: hidden;
 }
 .detailowner .el-icon-location-outline {
-    position: absolute;
-    top: 37px;
+    position: relative;
+    top: 30px;
     left: 12px;
+    float: left;
     font-size: 25px;
 }
 .detailowner p {
-    position: absolute;
-    left: 47px;
+    position: relative;
+    left: 20px;
     text-align: left;
     margin: 0;
+}
+.detailowner_address span {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:left;
+}
+.detailowner p.detailowner_address {
+    display: table;
+    top: 20px;
+    padding: 0 0 30px;
 }
 .detailowner p:nth-child(2) span {
     font-size: 14px;
@@ -676,14 +687,10 @@ div.ordernews p em {
     font-size: 12px;
 }
 .detailowner p:nth-child(3) {
-    top: 42px;
+    top: 22px;
     color: #333333;
     font-size: 12px;
     width: 2.9rem;
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     line-height: 17px;
 }
 
