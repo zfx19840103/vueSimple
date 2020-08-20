@@ -77,7 +77,7 @@
                     <em>{{skuinfoparam.freight != 0 ? '¥'+skuinfoparam.freight : '免费'}}</em>
                 </p>
                 <p v-if="!payloading" @click="linkInvoice">
-                    <span>发票1</span>
+                    <span>发票</span>
                     <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <span class="invoicecontent" v-else>
