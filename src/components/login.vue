@@ -209,7 +209,7 @@ export default {
                                     that.$router.push("/product");
                                 }, 1000);
                             } else {
-                                that.alertBoxContent = "验证码错误";
+                                that.alertBoxContent = res.message;
                             }
                         })
                         .catch(function(error) {
