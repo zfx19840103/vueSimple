@@ -12,10 +12,38 @@
                         <span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span>
                     </p>
                     <i class="el-icon-arrow-right"></i>
+                    <div class="detailowner_bottom">
+                        <div class="detailowner_bottom_bg">
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="detailowner" v-else @click="drawer = true">
                     <span class="detailowneradd"></span>
                     <span class="detailowneraddress">添加收货地址</span>
+                    <div class="detailowner_bottom">
+                        <div class="detailowner_bottom_bg">
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div v-else>
@@ -29,10 +57,38 @@
                         <span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span>
                     </p>
                     <i class="el-icon-arrow-right"></i>
+                    <div class="detailowner_bottom">
+                        <div class="detailowner_bottom_bg">
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="detailowner" v-else>
                     <span class="detailowneradd"></span>
                     <span class="detailowneraddress">添加收货地址</span>
+                    <div class="detailowner_bottom">
+                        <div class="detailowner_bottom_bg">
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                            <span class="bgicon1"></span>
+                            <span class="bgicon2"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="order">
@@ -972,6 +1028,35 @@ export default {
 .payloading .ordercenter span {
     color: #9b9b9b !important;
 }
+.detailowner_bottom_bg {
+    width: 110%;
+}
+.detailowner_bottom {
+    height: 0.04rem;
+    line-height: 0.04rem;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.detailowner_bottom .bgicon1 {
+    background: #325AB4;
+}
+.detailowner_bottom .bgicon2{
+    background: #00C8D2;
+}
+.detailowner_bottom span {
+    margin: 0 0.13rem 0 0;
+    width: 0.27rem;
+    height: 0.04rem;
+    -webkit-transform: skew(-45deg);
+    -moz-transform: skew(-45deg);
+    -o-transform: skew(-45deg);
+    transform: skew(-45deg);
+    display: inline-block;
+    float: left;
+}
+
 .el-icon-arrow-right.company {
     margin: 20px 12px 0 0;
 }
@@ -1059,7 +1144,7 @@ export default {
     width: 0.48rem;
     height: 100%;
     line-height: 58px;
-    background: #ff502c;
+    background: #3C8CFF;
     font-size: 12px;
     color: #fff;
     text-align: center;
@@ -1317,7 +1402,7 @@ export default {
 .detailowner p.detailowner_address {
     display: table;
     top: 20px;
-    padding: 0 0 30px;
+    padding: 0 0 40px;
 }
 .order {
     position: relative;

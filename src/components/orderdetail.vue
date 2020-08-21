@@ -17,6 +17,20 @@
                     {{info.snapshoot_cnt.receive_info.mobile}}
                 </p>
                 <p class="detailowner_address"><span>{{info.snapshoot_cnt.receive_info.province}} {{info.snapshoot_cnt.receive_info.city}} {{info.snapshoot_cnt.receive_info.area}} {{info.snapshoot_cnt.receive_info.detailAddress}}</span></p>
+                <div class="detailowner_bottom">
+                    <div class="detailowner_bottom_bg">
+                        <span class="bgicon1"></span>
+                        <span class="bgicon2"></span>
+                        <span class="bgicon1"></span>
+                        <span class="bgicon2"></span>
+                        <span class="bgicon1"></span>
+                        <span class="bgicon2"></span>
+                        <span class="bgicon1"></span>
+                        <span class="bgicon2"></span>
+                        <span class="bgicon1"></span>
+                        <span class="bgicon2"></span>
+                    </div>
+                </div>
             </div>
             <div class="order">
                 <div
@@ -466,6 +480,34 @@ export default {
 </script>
 
 <style scoped>
+.detailowner_bottom_bg {
+    width: 110%;
+}
+.detailowner_bottom {
+    height: 0.04rem;
+    line-height: 0.04rem;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.detailowner_bottom .bgicon1 {
+    background: #325AB4;
+}
+.detailowner_bottom .bgicon2{
+    background: #00C8D2;
+}
+.detailowner_bottom span {
+    margin: 0 0.13rem 0 0;
+    width: 0.27rem;
+    height: 0.04rem;
+    -webkit-transform: skew(-45deg);
+    -moz-transform: skew(-45deg);
+    -o-transform: skew(-45deg);
+    transform: skew(-45deg);
+    display: inline-block;
+    float: left;
+}
 .no_invoice.invoice p span {
     color: #9b9b9b;
 }
@@ -674,7 +716,7 @@ div.ordernews p em {
 .detailowner p.detailowner_address {
     display: table;
     top: 20px;
-    padding: 0 0 30px;
+    padding: 0 0 40px;
 }
 .detailowner p:nth-child(2) span {
     font-size: 14px;
