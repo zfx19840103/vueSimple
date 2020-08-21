@@ -345,7 +345,7 @@ export default {
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
                 //发票
-                if(JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
+                if(!!JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
                     this.ordercreate.invoice_info = {
                         invoice_type: JSON.parse(localStorage.getItem('invoiceobj')).invoice_type,
                         register_phone: JSON.parse(localStorage.getItem('invoiceobj')).register_phone,
