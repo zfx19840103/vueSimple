@@ -173,7 +173,22 @@ export default {
             } else {
                 editaddress(data)
                     .then(function(res) {
-                        that.routerFunc(res);
+                        that.routerFunc(res,()=>{
+
+                            let _addressobj = JSON.parse(localStorage.getItem('addressobj'));
+                            _addressobj.id = data.id;
+                            _addressobj.city = data.address.city;
+                            _addressobj.area = data.address.area;
+                            _addressobj.receiver = data.address.receiver;
+                            _addressobj.phone = data.address.phone;
+                            _addressobj.address = data.address.address;
+
+                            localStorage.setItem('addressobj', JSON.stringify(_addressobj));
+                            that.alertBox = {
+                                visible: true,
+                                tip: "编辑成功"
+                            };
+                        });
                     })
                     .catch(function(error) {
                         console.log(error);
@@ -314,6 +329,10 @@ export default {
                     .then(function(res) {
                         that.routerFunc(res,()=>{
                             localStorage.removeItem('addressobj');
+                            that.alertBox = {
+                                visible: true,
+                                tip: "保存成功"
+                            };
                         });
                     })
                     .catch(function(error) {
@@ -323,14 +342,16 @@ export default {
         },
         routerFunc(res, callback) {
             let that = this;
+            let _onemore = this.$route.query.onemore;
             if (!!res && res.code == 20000) {
-                this.alertBox = {
-                    visible: true,
-                    tip: "保存成功"
-                };
+                
                 callback();
                 setTimeout(function() {
-                    that.$router.push("/ordercheck");
+                    that.$router.push({ name: "ordercheck", query: {
+                        onemore: _onemore,
+                        address: 1,
+                    } });
+                            
                 }, 1000);
             } else if(!!res && res.code == 113005) {
                 this.alertBox = {

@@ -8,7 +8,9 @@
                         <span>{{detailownerParam.receiver}}</span>
                         {{detailownerParam.phone}}
                     </p>
-                    <p class="detailowner_address"><span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span></p>
+                    <p class="detailowner_address">
+                        <span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span>
+                    </p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="detailowner" v-else @click="drawer = true">
@@ -23,7 +25,9 @@
                         <span>{{detailownerParam.receiver}}</span>
                         {{detailownerParam.phone}}
                     </p>
-                    <p class="detailowner_address"><span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span></p>
+                    <p class="detailowner_address">
+                        <span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span>
+                    </p>
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="detailowner" v-else>
@@ -81,15 +85,17 @@
                     <i class="el-icon-arrow-right"></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <span class="invoicecontent" v-else>
-                        <em >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
+                        <em>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
                     </span>
                 </p>
                 <p v-else>
                     <span>发票</span>
-                    <i v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"></i>
+                    <i
+                        v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"
+                    ></i>
                     <em v-if="ordercreate.is_invoice == 0">不开发票</em>
                     <span class="invoicecontent" v-else>
-                        <em >{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
+                        <em>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
                     </span>
                 </p>
 
@@ -254,7 +260,7 @@ export default {
                 created_at: "",
                 updated_at: "",
                 shop_price: "",
-                freight: "",
+                freight: ""
             },
             drawerAddress: true,
             ordercreate: {
@@ -296,7 +302,7 @@ export default {
     },
     created() {
         this.addaddressList();
-        
+
         if (this.onemore != 1) {
             this.skuinfoFunc();
         }
@@ -312,9 +318,9 @@ export default {
     },
     methods: {
         initonemoreFunc() {
-            // let that = this;
+            let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
-
+            let _address = this.$route.query.address;
             if (this.onemore == 1) {
                 this.skuinfoparam.images =
                     onemoreobj.snapshoot_cnt.sku_list[0].images[0];
@@ -363,10 +369,45 @@ export default {
                               .register_bank_account
                         : ""
                 };
+            }
 
-                //地址
-                this.detailowner = true;
+            //地址
+            this.detailowner = true;
+            if (_address == 1) {
 
+                that.detailownerParam = {
+                    id: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).id,
+                    receiver: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).receiver,
+                    phone: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).phone,
+                    address: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).address,
+                    user_id: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).user_id,
+                    provincial: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).provincial,
+                    created_at: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).created_at,
+                    updated_at: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).updated_at,
+                    city: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).city,
+                    area: JSON.parse(
+                        localStorage.getItem("addressobj")
+                    ).area
+                };
+            } else {
                 this.detailownerParam.receiver =
                     onemoreobj.snapshoot_cnt.receive_info.name;
                 this.detailownerParam.phone =
@@ -486,12 +527,77 @@ export default {
                             //非再来一单的时候
                             if (that.$route.query.onemore != 1) {
                                 that.detailowner = true;
+
+                                if (!!localStorage.getItem("addressobj")) {
+                                    var _addressobj = JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    );
+
+                                    that.addressData.map(itm => {
+                                        if (itm.id == _addressobj.id) {
+                                            localStorage.setItem(
+                                                "addressobj",
+                                                JSON.stringify(itm)
+                                            );
+                                            that.selectaddress = itm;
+                                        }
+                                    });
+                                    that.detailownerParam = {
+                                        id: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).id,
+                                        receiver: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).receiver,
+                                        phone: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).phone,
+                                        address: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).address,
+                                        user_id: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).user_id,
+                                        provincial: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).provincial,
+                                        created_at: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).created_at,
+                                        updated_at: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).updated_at,
+                                        city: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).city,
+                                        area: JSON.parse(
+                                            localStorage.getItem("addressobj")
+                                        ).area
+                                    };
+                                } else {
+                                    that.selectaddress = that.addressData[0];
+                                    localStorage.setItem(
+                                        "addressobj",
+                                        JSON.stringify(that.selectaddress)
+                                    );
+                                    that.detailownerParam = {
+                                        id: res.data[0].id,
+                                        receiver: res.data[0].receiver,
+                                        phone: res.data[0].phone,
+                                        address: res.data[0].address,
+                                        user_id: res.data[0].user_id,
+                                        created_at: res.data[0].created_at,
+                                        updated_at: res.data[0].updated_at,
+                                        provincial: res.data[0].provincial,
+                                        city: res.data[0].city,
+                                        area: res.data[0].area
+                                    };
+                                }
                             }
-                            if (!!localStorage.getItem("addressobj")) {
+                            if (that.$route.query.address == 1) {
                                 var _addressobj = JSON.parse(
                                     localStorage.getItem("addressobj")
                                 );
-
                                 that.addressData.map(itm => {
                                     if (itm.id == _addressobj.id) {
                                         localStorage.setItem(
@@ -501,52 +607,6 @@ export default {
                                         that.selectaddress = itm;
                                     }
                                 });
-                                that.detailownerParam = {
-                                    id: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).id,
-                                    receiver: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).receiver,
-                                    phone: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).phone,
-                                    address: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).address,
-                                    user_id: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).user_id,
-                                    provincial: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).provincial,
-                                    created_at: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).created_at,
-                                    updated_at: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).updated_at,
-                                    city: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).city,
-                                    area: JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    ).area
-                                };
-                            } else {
-                                that.selectaddress = that.addressData[0];
-                                that.detailownerParam = {
-                                    id: res.data[0].id,
-                                    receiver: res.data[0].receiver,
-                                    phone: res.data[0].phone,
-                                    address: res.data[0].address,
-                                    user_id: res.data[0].user_id,
-                                    created_at: res.data[0].created_at,
-                                    updated_at: res.data[0].updated_at,
-                                    provincial: res.data[0].provincial,
-                                    city: res.data[0].city,
-                                    area: res.data[0].area
-                                };
                             }
                             that.drawerAddress = true;
                         } else {
@@ -617,7 +677,13 @@ export default {
             }
         },
         addaddress() {
-            this.$router.push({ name: "addaddress" });
+            let _onemore = this.$route.query.onemore;
+            this.$router.push({
+                name: "addaddress",
+                query: {
+                    onemore: _onemore
+                }
+            });
         },
         handleClose() {},
         //编辑地址
@@ -626,9 +692,9 @@ export default {
             let data = e.target.getAttribute("data");
             localStorage.setItem("addressobj", data);
             data = eval("(" + data + ")");
-
+            let _onemore = this.$route.query.onemore;
             data.edit = 1;
-
+            data.onemore = _onemore;
             this.$router.push({ name: "addaddress", query: data });
         },
         //创建订单
@@ -648,10 +714,15 @@ export default {
             } else {
                 let _out_biz_code =
                     this.$route.query.payloading == 1
-                        ? JSON.parse(localStorage.getItem("onemoreobj"))
-                              .out_biz_code.substring(JSON.parse(localStorage.getItem("onemoreobj"))
-                              .out_biz_code.indexOf('_')+1, JSON.parse(localStorage.getItem("onemoreobj"))
-                              .out_biz_code.length)
+                        ? JSON.parse(
+                              localStorage.getItem("onemoreobj")
+                          ).out_biz_code.substring(
+                              JSON.parse(
+                                  localStorage.getItem("onemoreobj")
+                              ).out_biz_code.indexOf("_") + 1,
+                              JSON.parse(localStorage.getItem("onemoreobj"))
+                                  .out_biz_code.length
+                          )
                         : new Date().getTime() +
                           "" +
                           Math.floor(Math.random() * 4000 + 1000);
@@ -1220,8 +1291,8 @@ export default {
 }
 .detailowner_address span {
     display: table-cell;
-    vertical-align:middle;
-    text-align:left;
+    vertical-align: middle;
+    text-align: left;
 }
 .detailowner p.detailowner_address {
     display: table;
