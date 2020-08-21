@@ -44,6 +44,7 @@
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
                         <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
+                        <!-- <span>库存：{{}}</span> -->
                         <span></span>
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
@@ -345,7 +346,7 @@ export default {
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
                 //发票
-                if(!!JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
+                if(!!JSON.parse(localStorage.getItem('invoiceobj')) && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
                     this.ordercreate.invoice_info = {
                         invoice_type: JSON.parse(localStorage.getItem('invoiceobj')).invoice_type,
                         register_phone: JSON.parse(localStorage.getItem('invoiceobj')).register_phone,
