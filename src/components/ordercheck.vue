@@ -393,18 +393,20 @@ export default {
                     area: JSON.parse(localStorage.getItem("addressobj")).area
                 };
             } else {
-                this.detailownerParam.receiver =
+                if(!!onemoreobj) {
+                    this.detailownerParam.receiver =
                     onemoreobj.snapshoot_cnt.receive_info.name;
-                this.detailownerParam.phone =
-                    onemoreobj.snapshoot_cnt.receive_info.mobile;
-                this.detailownerParam.address =
-                    onemoreobj.snapshoot_cnt.receive_info.detailAddress;
-                this.detailownerParam.provincial =
-                    onemoreobj.snapshoot_cnt.receive_info.province;
-                this.detailownerParam.city =
-                    onemoreobj.snapshoot_cnt.receive_info.city;
-                this.detailownerParam.area =
-                    onemoreobj.snapshoot_cnt.receive_info.area;
+                    this.detailownerParam.phone =
+                        onemoreobj.snapshoot_cnt.receive_info.mobile;
+                    this.detailownerParam.address =
+                        onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                    this.detailownerParam.provincial =
+                        onemoreobj.snapshoot_cnt.receive_info.province;
+                    this.detailownerParam.city =
+                        onemoreobj.snapshoot_cnt.receive_info.city;
+                    this.detailownerParam.area =
+                        onemoreobj.snapshoot_cnt.receive_info.area;
+                }
             }
         },
         initinvoiceFunc() {

@@ -10,15 +10,27 @@
             </h5>
             <ul>
                 <li v-for="(item, index) in invoiceData" data-type="0" :key="index">
-                    <div  @touchstart="touchStart" @touchend="touchEnd" class="list-box">
+                    <div @touchstart="touchStart" @touchend="touchEnd" class="list-box">
                         <label @click="checkedFunc(item)">
-                            <input type="radio" v-model="invoiceId" name="selectinvoice" :value= item.id />
-                            <span v-bind:class="item.look_up == 2 ? '' : 'selfinvoice'">{{item.company}}</span>
-                            <em v-if="item.look_up == 2">税号:{{item.tax_number}}</em>
+                            <input
+                                type="radio"
+                                v-model="invoiceId"
+                                name="selectinvoice"
+                                :value="item.id"
+                            />
+                            <span
+                                v-bind:class="item.look_up == 2 ? '' : 'selfinvoice'"
+                            >{{item.company}}</span>
+                            <em v-if="item.look_up == 2">{{index}}税号:{{item.tax_number}}</em>
                         </label>
                         <i class="editicon" @click="editinvoiceFunc" :data="JSON.stringify(item)"></i>
                     </div>
-                    <div class="delete" @click="deleteItem" :data-index="index" :data-item="JSON.stringify(item)">删除</div>
+                    <div
+                        class="delete"
+                        @click="deleteItem"
+                        :data-index="index"
+                        :data-item="JSON.stringify(item)"
+                    >删除</div>
                 </li>
             </ul>
         </div>
@@ -37,9 +49,9 @@ export default {
         return {
             alertBox: {
                 visible: false,
-                tip: '',
+                tip: ""
             },
-            invoiceId: '',
+            invoiceId: "",
             invoiceData: []
         };
     },
@@ -55,14 +67,12 @@ export default {
             let that = this;
             getData()
                 .then(function(res) {
-
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
                             tip: "请求成功"
                         };
                         that.invoiceData = res.data;
                     } else {
-                        
                         that.alertBox = {
                             tip: res.message,
                             visible: true
@@ -73,18 +83,15 @@ export default {
                             that.$router.push("/login");
                         }, 1000);
                     }
-                    
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
         },
         addtt() {
-
             this.$router.push({ name: "addrise" });
-        },      
+        },
         editinvoiceFunc(e) {
-
             console.log(e.target);
             let data = e.target.getAttribute("data");
 
@@ -96,7 +103,7 @@ export default {
         checkedFunc(item) {
             let obj = {};
 
-            if(!!item) {
+            if (!!item) {
                 obj = {
                     id: item.id,
                     invoice_type: item.look_up,
@@ -106,24 +113,22 @@ export default {
                     invoice_name: item.company,
                     register_bank: item.account_bank,
                     register_bank_account: item.bank_card,
-                    invoice:1,
-                    is_invoice: 1,
-                }
-            }else {
+                    invoice: 1,
+                    is_invoice: 1
+                };
+            } else {
                 obj = {
-                    id:0,
-                    invoice:1,
+                    id: 0,
+                    invoice: 1,
                     is_invoice: 0,
-                    invoice_type: item.look_up,
-                }
+                    invoice_type: item.look_up
+                };
             }
             this.$router.push({
-                name: "ordercheck",
-
+                name: "ordercheck"
             });
 
-            localStorage.setItem('invoiceobj', JSON.stringify(obj))
-
+            localStorage.setItem("invoiceobj", JSON.stringify(obj));
         },
         touchStart(e) {
             this.startX = e.touches[0].clientX;
@@ -164,30 +169,42 @@ export default {
             let data = {
                 id: item.id
             };
+
             deleteinvoice(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
                             visible: true,
                             tip: "删除成功"
-                        }
+                        };
                         that.restSlide();
                         that.invoiceData.splice(index, 1);
+                        that.getDataFunc();
+                    } else if (!!res && res.code == 113005) {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true
+                        };
+
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                        localStorage.removeItem("moon_email");
                     } else {
                         that.alertBox = {
-                            visible: true,
-                            tip: res.message
-                        }
+                            tip: res.message,
+                            visible: true
+                        };
                     }
                 })
                 .catch(function(error) {
-                    that.alertBox = {
-                        visible: true,
-                        tip: "删除失败"
-                    }
-                    console.log(error);
+                    // that.alertBox = {
+                    //     visible: true,
+                    //     tip: "删除失败"
+                    // }
+                    // console.log(error);
                 });
-        },
+        }
     }
 };
 </script>

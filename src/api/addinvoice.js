@@ -6,7 +6,7 @@ import API from './global';
 export function getData(data) {
     return new Promise((resolve, reject) => {
         request
-            .get(`${API}/openapi/user/invoice/list?${qs.stringify(data)}`)
+            .get(`${API}/openapi/user/invoice/list`)
             .then(function(response) {
                 resolve(response);
             })
