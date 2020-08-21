@@ -1225,8 +1225,8 @@ export default {
     height: 50px;
     line-height: 50px;
     background: #ffffff;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    margin-top: 10px;
     width: 100%;
 }
 
