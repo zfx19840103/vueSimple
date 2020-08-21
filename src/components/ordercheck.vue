@@ -100,8 +100,7 @@
                     <div class="ordercenter">
                         <span>{{skuinfoparam.itemName}}</span>
                         <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
-                        <!-- <span>库存：{{}}</span> -->
-                        <span></span>
+                        <span>库存：{{skuinfoparam.actstock}}</span>
                         <span>¥{{skuinfoparam.shop_price}}/盒</span>
                     </div>
                 </div>
@@ -313,6 +312,7 @@ export default {
                 images: "",
                 barCode: "",
                 warehouseCode: "",
+                actstock: '',
                 status: "",
                 created_at: "",
                 updated_at: "",
@@ -360,9 +360,9 @@ export default {
     created() {
         this.addaddressList();
 
-        if (this.onemore != 1) {
+        // if (this.onemore != 1) {
             this.skuinfoFunc();
-        }
+        // }
         this.initonemoreFunc();
     },
     computed: {
@@ -378,6 +378,10 @@ export default {
             let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
             let _isaddress = this.$route.query.isaddress;
+
+            // this.skuinfoparam.actstock = 1000;
+
+
             if (this.onemore == 1) {
                 this.skuinfoparam.images =
                     onemoreobj.snapshoot_cnt.sku_list[0].images[0];
@@ -385,6 +389,10 @@ export default {
                     onemoreobj.snapshoot_cnt.sku_list[0].itemName;
                 this.skuinfoparam.freight =
                     onemoreobj.snapshoot_cnt.sku_list[0].freight;
+
+                // this.skuinfoparam.actstock =
+                    // onemoreobj.snapshoot_cnt.sku_list[0].actstock;
+
                 this.skuinfoparam.shop_price =
                     onemoreobj.snapshoot_cnt.sku_list[0].shop_price;
 
@@ -521,6 +529,7 @@ export default {
                         that.skuinfoparam.shop_price = _info.shop_price; //商品价格
                         that.skuinfoparam.images = _info.images[0];
                         that.skuinfoparam.itemName = _info.itemName;
+                        that.skuinfoparam.actstock = _info.actstock;
                         that.skuinfoparam.itemCode = _info.itemCode;
                         that.skuinfoparam.shop_price = _info.shop_price;
                         that.skuinfoparam.barCode = _info.barCode;
@@ -1353,7 +1362,6 @@ export default {
 }
 
 .detailowner {
-    margin-top: 10px;
     background: #ffffff;
     min-height: 73px;
     position: relative;

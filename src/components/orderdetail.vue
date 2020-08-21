@@ -43,7 +43,7 @@
                     <div class="ordercenter">
                         <span>{{item.itemName}}</span>
                         <!-- <span>运费：{{item.freight == 0 ? '免运费' : '¥'+item.freight}}</span> -->
-                        <span></span>
+                        <span>库存：{{item.actstock}}</span>
                         <span>¥{{item.shop_price}}/盒</span>
                     </div>
                     <div class="orderNum">X{{item.sku_count}}</div>
@@ -689,7 +689,6 @@ div.ordernews p em {
 }
 
 .detailowner {
-    margin-top: 10px;
     background: #ffffff;
     min-height: 73px;
     position: relative;
