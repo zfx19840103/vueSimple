@@ -261,7 +261,7 @@ export default {
             this.orderloading = localStorage.getItem("order_loading");
         }
         if (this.orderloading == "支付成功") {
-            this.logisticsinfoif = true;
+            // this.logisticsinfoif = true;
         }
         this.getData();
         this.logisticsinfoData();
@@ -413,7 +413,7 @@ export default {
                                             );
                                             if (res.data.pay_status == 2) {
                                                 that.orderloading = "支付成功";
-                                                that.logisticsinfoif = true;
+                                                // that.logisticsinfoif = true;
                                             } else {
                                                 that.orderloading = "支付中...";
                                             }
