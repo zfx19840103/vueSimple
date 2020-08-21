@@ -21,7 +21,7 @@
                             <span
                                 v-bind:class="item.look_up == 2 ? '' : 'selfinvoice'"
                             >{{item.company}}</span>
-                            <em v-if="item.look_up == 2">{{index}}税号:{{item.tax_number}}</em>
+                            <em v-if="item.look_up == 2">税号:{{item.tax_number}}</em>
                         </label>
                         <i class="editicon" @click="editinvoiceFunc" :data="JSON.stringify(item)"></i>
                     </div>
@@ -60,9 +60,21 @@ export default {
     },
     created() {
         this.getDataFunc();
-        this.invoiceId = this.$route.query.invoiceId;
+        
     },
     methods: {
+        initinvoiceFunc() {
+            this.invoiceId = this.$route.query.invoiceId;
+            let that = this;
+            let _invoiceobj = JSON.parse(localStorage.getItem('invoiceobj'));
+            if(!this.invoiceId) {
+                that.invoiceData.map((item)=>{
+                    if(item.company == _invoiceobj.invoice_name && item.tax_number == _invoiceobj.taxpayer_number && item.look_up == _invoiceobj.invoice_type) {
+                        that.invoiceId = item.id;
+                    }
+                })
+            }
+        },
         getDataFunc() {
             let that = this;
             getData()
@@ -71,17 +83,22 @@ export default {
                         that.alertBox = {
                             tip: "请求成功"
                         };
-                        that.invoiceData = res.data;
+                        that.invoiceData = res.data.reverse();
+                        that.initinvoiceFunc();
+                    } else if (!!res && res.code == 113005) {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true
+                        };
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                        localStorage.removeItem("moon_email");
                     } else {
                         that.alertBox = {
                             tip: res.message,
                             visible: true
                         };
-                        localStorage.removeItem("moon_email");
-
-                        setTimeout(function() {
-                            that.$router.push("/login");
-                        }, 1000);
                     }
                 })
                 .catch(function(error) {

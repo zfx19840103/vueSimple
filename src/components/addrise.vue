@@ -1,7 +1,6 @@
 <template>
     <div class="bg">
         <div class="ms-content addrise">
-            
             <div class="unit menu" v-if="this.$route.query.edit == 1">
                 <span>抬头类型</span>
                 <label>
@@ -20,17 +19,22 @@
                     <input type="radio" name="riseType" v-model="param.look_up" value="2" /> 单位
                 </label>
             </div>
-            
+
             <div v-if="param.look_up == 2">
-                 <div class="unit">
-                     <i>*</i>
+                <div class="unit">
+                    <i>*</i>
                     <span>公司抬头</span>
                     <input type="text" v-model="param.company1" maxlength="50" placeholder="输入公司抬头" />
                 </div>
                 <div class="unit mb10px">
                     <i>*</i>
                     <span>公司税号</span>
-                    <input type="text" v-model="param.tax_number" maxlength="50"  placeholder="输入公司税号" />
+                    <input
+                        type="text"
+                        v-model="param.tax_number"
+                        maxlength="50"
+                        placeholder="输入公司税号"
+                    />
                 </div>
                 <div class="unit">
                     <span>注册地址</span>
@@ -42,11 +46,21 @@
                 </div>
                 <div class="unit">
                     <span>开户银行</span>
-                    <input type="text" v-model="param.account_bank" maxlength="50" placeholder="请输入开户行名称" />
+                    <input
+                        type="text"
+                        v-model="param.account_bank"
+                        maxlength="50"
+                        placeholder="请输入开户行名称"
+                    />
                 </div>
                 <div class="unit">
                     <span>银行账号</span>
-                    <input type="text" v-model="param.bank_card" maxlength="50" placeholder="请输入开户账号" />
+                    <input
+                        type="text"
+                        v-model="param.bank_card"
+                        maxlength="50"
+                        placeholder="请输入开户账号"
+                    />
                 </div>
             </div>
             <div v-else class="unit">
@@ -54,7 +68,10 @@
                 <span>抬头名称</span>
                 <input type="text" v-model="param.company2" maxlength="50" placeholder="请填写抬头名称" />
             </div>
-            <button class="saverise" @click="saveriseFunc">{{this.$route.query.edit == 1 ? '编辑并使用' : '保存并使用'}}</button>
+            <button
+                class="saverise"
+                @click="saveriseFunc"
+            >{{this.$route.query.edit == 1 ? '编辑并使用' : '保存并使用'}}</button>
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
@@ -70,10 +87,10 @@ export default {
         return {
             alertBox: {
                 visible: false,
-                tip: '',
+                tip: ""
             },
             param: {
-                id: '',
+                id: "",
                 look_up: 2,
                 company1: "",
                 company2: "",
@@ -81,7 +98,7 @@ export default {
                 tel: "",
                 address: "",
                 account_bank: "",
-                bank_card: "",
+                bank_card: ""
             }
         };
     },
@@ -89,13 +106,13 @@ export default {
         AlertBox
     },
     created() {
-        this.initedit()
+        this.initedit();
     },
     methods: {
         initedit() {
             let query = this.$route.query;
 
-            if(query.edit == 1){
+            if (query.edit == 1) {
                 this.param.id = query.id;
                 this.param.look_up = query.look_up;
                 this.param.tax_number = query.tax_number;
@@ -103,17 +120,17 @@ export default {
                 this.param.address = query.address;
                 this.param.account_bank = query.account_bank;
                 this.param.bank_card = query.bank_card;
-                if(query.look_up == 2) {
+                if (query.look_up == 2) {
                     this.param.company1 = query.company;
-                }else {
+                } else {
                     this.param.company2 = query.company;
                 }
-            }    
+            }
         },
         saveriseFunc() {
             let that = this;
 
-            if(this.param.look_up == 2) {
+            if (this.param.look_up == 2) {
                 var data = {
                     look_up: this.param.look_up,
                     tax_number: this.param.tax_number,
@@ -121,42 +138,41 @@ export default {
                     tel: this.param.tel,
                     address: this.param.address,
                     account_bank: this.param.account_bank,
-                    bank_card: this.param.bank_card,
+                    bank_card: this.param.bank_card
                 };
-                
-                if(this.param.company1 == '') {
+
+                if (this.param.company1 == "") {
                     this.alertBox = {
                         visible: true,
-                        tip: '输入公司抬头'
-                    }
-                }else if(this.param.tax_number == '') {
+                        tip: "输入公司抬头"
+                    };
+                } else if (this.param.tax_number == "") {
                     this.alertBox = {
                         visible: true,
-                        tip: '输入公司税号'
-                    }
-                }else {
-                    
-                    if(this.$route.query.edit == 1){
-                        this.editriseapi(data)
-                    }else {
-                        this.saveriseapi(data)
+                        tip: "输入公司税号"
+                    };
+                } else {
+                    if (this.$route.query.edit == 1) {
+                        this.editriseapi(data);
+                    } else {
+                        this.saveriseapi(data);
                     }
                 }
-            }else {
+            } else {
                 var data = {
                     look_up: this.param.look_up,
-                    company: this.param.company2,
+                    company: this.param.company2
                 };
-                if(this.param.company2 == '') {
+                if (this.param.company2 == "") {
                     this.alertBox = {
                         visible: true,
-                        tip: '输入公司抬头'
-                    }
-                }else {
-                    if(this.$route.query.edit == 1){
-                        this.editriseapi(data)
-                    }else {
-                        this.saveriseapi(data)
+                        tip: "输入公司抬头"
+                    };
+                } else {
+                    if (this.$route.query.edit == 1) {
+                        this.editriseapi(data);
+                    } else {
+                        this.saveriseapi(data);
                     }
                 }
             }
@@ -168,28 +184,52 @@ export default {
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
                             tip: "保存成功",
-                            visible: true,
+                            visible: true
                         };
+                        let _invoiceobj = {};
+                        if (that.param.look_up == 2) {
+                            _invoiceobj = {
+                                invoice: 1,
+                                invoice_name: that.param.company1,
+                                invoice_type: "2",
+                                is_invoice: 1,
+                                register_address: that.param.address,
+                                register_bank: that.param.account_bank,
+                                register_bank_account: that.param.bank_card,
+                                register_phone: that.param.tel,
+                                taxpayer_number: that.param.tax_number
+                            };
+                        } else {
+                            _invoiceobj = {
+                                invoice: 1,
+                                invoice_name: that.param.company2,
+                                invoice_type: "1",
+                                is_invoice: 1
+                            };
+                        }
+                        localStorage.setItem(
+                            "invoiceobj",
+                            JSON.stringify(_invoiceobj)
+                        );
                         setTimeout(function() {
                             // that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
                             that.$router.push({ name: "ordercheck" });
-                        }, 1000)
-                    } else if(!!res && res.code == 113005) {
+                        }, 1000);
+                    } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
                         localStorage.removeItem("moon_email");
-                    }else {
+                    } else {
                         that.alertBox = {
                             tip: res.message,
-                            visible: true,
+                            visible: true
                         };
                     }
-                    
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -209,38 +249,40 @@ export default {
                 register_bank: data.account_bank,
                 register_bank_account: data.bank_card,
                 register_phone: data.tel,
-                taxpayer_number: data.tax_number,
-            }
+                taxpayer_number: data.tax_number
+            };
             editrise(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.alertBox = {
                             tip: "编辑成功",
-                            visible: true,
+                            visible: true
                         };
-                            localStorage.setItem('invoiceobj', JSON.stringify(_invoiceobj))
+                        localStorage.setItem(
+                            "invoiceobj",
+                            JSON.stringify(_invoiceobj)
+                        );
 
                         setTimeout(function() {
                             // that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
                             that.$router.push({ name: "ordercheck" });
-                        }, 1000)
-                    } else if(!!res && res.code == 113005) {
+                        }, 1000);
+                    } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
-                            visible:true,
+                            visible: true
                         };
 
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
                         localStorage.removeItem("moon_email");
-                    }else {
+                    } else {
                         that.alertBox = {
                             tip: res.message,
-                            visible: true,
+                            visible: true
                         };
                     }
-                    
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -323,8 +365,18 @@ export default {
 .saverise {
     width: 3.4rem;
     height: 50px;
-    background: -webkit-gradient(linear,left top, right top,from(rgba(27,123,255,1)),to(rgba(12,97,216,1)));
-    background: linear-gradient(90deg,rgba(27,123,255,1) 0%,rgba(12,97,216,1) 100%);
+    background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        from(rgba(27, 123, 255, 1)),
+        to(rgba(12, 97, 216, 1))
+    );
+    background: linear-gradient(
+        90deg,
+        rgba(27, 123, 255, 1) 0%,
+        rgba(12, 97, 216, 1) 100%
+    );
     border-radius: 25px;
     color: #ffffff;
     font-size: 18px;
