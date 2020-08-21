@@ -374,38 +374,23 @@ export default {
             //地址
             this.detailowner = true;
             if (_address == 1) {
-
                 that.detailownerParam = {
-                    id: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).id,
-                    receiver: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).receiver,
-                    phone: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).phone,
-                    address: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).address,
-                    user_id: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).user_id,
-                    provincial: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).provincial,
-                    created_at: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).created_at,
-                    updated_at: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).updated_at,
-                    city: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).city,
-                    area: JSON.parse(
-                        localStorage.getItem("addressobj")
-                    ).area
+                    id: JSON.parse(localStorage.getItem("addressobj")).id,
+                    receiver: JSON.parse(localStorage.getItem("addressobj"))
+                        .receiver,
+                    phone: JSON.parse(localStorage.getItem("addressobj")).phone,
+                    address: JSON.parse(localStorage.getItem("addressobj"))
+                        .address,
+                    user_id: JSON.parse(localStorage.getItem("addressobj"))
+                        .user_id,
+                    provincial: JSON.parse(localStorage.getItem("addressobj"))
+                        .provincial,
+                    created_at: JSON.parse(localStorage.getItem("addressobj"))
+                        .created_at,
+                    updated_at: JSON.parse(localStorage.getItem("addressobj"))
+                        .updated_at,
+                    city: JSON.parse(localStorage.getItem("addressobj")).city,
+                    area: JSON.parse(localStorage.getItem("addressobj")).area
                 };
             } else {
                 this.detailownerParam.receiver =
@@ -594,20 +579,35 @@ export default {
                                     };
                                 }
                             }
-                            if (that.$route.query.address == 1) {
-                                var _addressobj = JSON.parse(
-                                    localStorage.getItem("addressobj")
-                                );
-                                that.addressData.map(itm => {
-                                    if (itm.id == _addressobj.id) {
-                                        localStorage.setItem(
-                                            "addressobj",
-                                            JSON.stringify(itm)
-                                        );
-                                        that.selectaddress = itm;
-                                    }
-                                });
+
+                            if (that.$route.query.onemore == 1) {
+                                if (that.$route.query.address == 1) {
+                                    var _addressobj = JSON.parse(
+                                        localStorage.getItem("addressobj")
+                                    );
+                                    that.addressData.map(itm => {
+                                        if (itm.id == _addressobj.id) {
+                                            localStorage.setItem(
+                                                "addressobj",
+                                                JSON.stringify(itm)
+                                            );
+                                            that.selectaddress = itm;
+                                        }
+                                    });
+                                } else {
+                                    var _onemoreobj = JSON.parse(
+                                        localStorage.getItem("onemoreobj")
+                                    );
+                                    var _receive_info = _onemoreobj.snapshoot_cnt.receive_info;
+                                    that.addressData.map(itm => {
+                                        if (itm.provincial == _receive_info.province && itm.address == _receive_info.detailAddress && itm.receiver == _receive_info.name && itm.phone == _receive_info.mobile && itm.city == _receive_info.city && itm.area == _receive_info.area) {
+
+                                            that.selectaddress = itm;
+                                        }
+                                    });
+                                }
                             }
+
                             that.drawerAddress = true;
                         } else {
                             that.detailowner = false;
@@ -701,7 +701,7 @@ export default {
         paysubmit() {
             let that = this;
 
-            if (!that.selectaddress.id) {
+            if (!that.detailownerParam.provincial) {
                 that.alertBox = {
                     tip: "请添加收货地址",
                     visible: true
