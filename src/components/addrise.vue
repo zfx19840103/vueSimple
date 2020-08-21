@@ -197,14 +197,16 @@ export default {
                                 register_bank: that.param.account_bank,
                                 register_bank_account: that.param.bank_card,
                                 register_phone: that.param.tel,
-                                taxpayer_number: that.param.tax_number
+                                taxpayer_number: that.param.tax_number,
+                                isqueryinvoice: 1,
                             };
                         } else {
                             _invoiceobj = {
                                 invoice: 1,
                                 invoice_name: that.param.company2,
                                 invoice_type: "1",
-                                is_invoice: 1
+                                is_invoice: 1,
+                                isqueryinvoice: 1,
                             };
                         }
                         localStorage.setItem(
@@ -213,7 +215,11 @@ export default {
                         );
                         setTimeout(function() {
                             // that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
-                            that.$router.push({ name: "ordercheck" });
+                            that.$router.push({ name: "ordercheck",
+                            query: {
+                                onemore: that.$route.query.onemore,
+                                isaddress: that.$route.query.isaddress,
+                            } });
                         }, 1000);
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
@@ -249,7 +255,8 @@ export default {
                 register_bank: data.account_bank,
                 register_bank_account: data.bank_card,
                 register_phone: data.tel,
-                taxpayer_number: data.tax_number
+                taxpayer_number: data.tax_number,
+                isqueryinvoice: 1,
             };
             editrise(data)
                 .then(function(res) {
@@ -265,7 +272,11 @@ export default {
 
                         setTimeout(function() {
                             // that.$router.push({ name: "addinvoice", query: {invoiceId: that.$route.query.invoiceId} });
-                            that.$router.push({ name: "ordercheck" });
+                            that.$router.push({ name: "ordercheck", 
+                            query: {
+                                onemore: that.$route.query.onemore,
+                                isaddress: that.$route.query.isaddress,
+                            } });
                         }, 1000);
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {

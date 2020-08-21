@@ -106,7 +106,12 @@ export default {
                 });
         },
         addtt() {
-            this.$router.push({ name: "addrise" });
+            this.$router.push({ name: "addrise",
+            query: {
+                    onemore: this.$route.query.onemore,
+                    isaddress: this.$route.query.isaddress,
+                }
+            });
         },
         editinvoiceFunc(e) {
             console.log(e.target);
@@ -115,6 +120,9 @@ export default {
             data = eval("(" + data + ")");
             data.edit = 1;
             data.invoiceId = this.$route.query.invoiceId;
+            data.onemore = this.$route.query.onemore;
+            data.isaddress = this.$route.query.isaddress;
+
             this.$router.push({ name: "addrise", query: data });
         },
         checkedFunc(item) {
@@ -131,18 +139,24 @@ export default {
                     register_bank: item.account_bank,
                     register_bank_account: item.bank_card,
                     invoice: 1,
-                    is_invoice: 1
+                    is_invoice: 1,
+                    isqueryinvoice: 1,
                 };
             } else {
                 obj = {
                     id: 0,
                     invoice: 1,
                     is_invoice: 0,
-                    invoice_type: item.look_up
+                    invoice_type: item.look_up,
+                    isqueryinvoice: 1,
                 };
             }
             this.$router.push({
-                name: "ordercheck"
+                name: "ordercheck",
+                query: {
+                    onemore: this.$route.query.onemore,
+                    isaddress: this.$route.query.isaddress,
+                }
             });
 
             localStorage.setItem("invoiceobj", JSON.stringify(obj));

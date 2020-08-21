@@ -320,7 +320,7 @@ export default {
         initonemoreFunc() {
             let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
-            let _address = this.$route.query.address;
+            let _isaddress = this.$route.query.isaddress;
             if (this.onemore == 1) {
                 this.skuinfoparam.images =
                     onemoreobj.snapshoot_cnt.sku_list[0].images[0];
@@ -345,8 +345,20 @@ export default {
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
                 //发票
-                this.ordercreate.invoice_info = {
-                    invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info
+                if(JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
+                    this.ordercreate.invoice_info = {
+                        invoice_type: JSON.parse(localStorage.getItem('invoiceobj')).invoice_type,
+                        register_phone: JSON.parse(localStorage.getItem('invoiceobj')).register_phone,
+                        register_address: JSON.parse(localStorage.getItem('invoiceobj')).register_address,
+                        taxpayer_number: JSON.parse(localStorage.getItem('invoiceobj')).taxpayer_number,
+                        invoice_name: JSON.parse(localStorage.getItem('invoiceobj')).invoice_name,
+                        register_bank: JSON.parse(localStorage.getItem('invoiceobj')).register_bank,
+                        register_bank_account: JSON.parse(localStorage.getItem('invoiceobj')).register_bank_account,
+                    }
+                }else {
+
+                    this.ordercreate.invoice_info = {
+                        invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info
                         ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type
                         : "",
                     register_phone: onemoreobj.snapshoot_cnt.invoice_info
@@ -368,12 +380,13 @@ export default {
                         ? onemoreobj.snapshoot_cnt.invoice_info
                               .register_bank_account
                         : ""
+                }
                 };
             }
 
             //地址
             this.detailowner = true;
-            if (_address == 1) {
+            if (_isaddress == 1) {
                 that.detailownerParam = {
                     id: JSON.parse(localStorage.getItem("addressobj")).id,
                     receiver: JSON.parse(localStorage.getItem("addressobj"))
@@ -583,7 +596,7 @@ export default {
                             }
 
                             if (that.$route.query.onemore == 1) {
-                                if (that.$route.query.address == 1) {
+                                if (that.$route.query.isaddress == 1) {
                                     var _addressobj = JSON.parse(
                                         localStorage.getItem("addressobj")
                                     );
@@ -842,7 +855,11 @@ export default {
                 : 0;
             this.$router.push({
                 name: "addinvoice",
-                query: { invoiceId: _invoiceId }
+                query: { 
+                    invoiceId: _invoiceId,
+                    onemore: this.$route.query.onemore,
+                    isaddress: this.$route.query.isaddress,
+                }
             });
         },
         touchStart(e) {

@@ -349,7 +349,7 @@ export default {
                 setTimeout(function() {
                     that.$router.push({ name: "ordercheck", query: {
                         onemore: _onemore,
-                        address: 1,
+                        isaddress: 1,
                     } });
                             
                 }, 1000);
