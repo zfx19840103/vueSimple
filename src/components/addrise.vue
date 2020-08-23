@@ -4,11 +4,12 @@
             <div class="unit menu" v-if="this.$route.query.edit == 1">
                 <span>抬头类型</span>
                 <label>
-                    <input type="radio" name="riseType" disabled v-model="param.look_up" value="1" /> 个人/非企业单位
+                    <input type="radio" name="riseType" v-model="param.look_up" value="1" /> 个人/非企业单位
                 </label>
                 <label>
-                    <input type="radio" name="riseType" disabled v-model="param.look_up" value="2" /> 单位
+                    <input type="radio" name="riseType" v-model="param.look_up" value="2" /> 单位
                 </label>
+                <div class="menu_mk"></div>
             </div>
             <div class="unit menu" v-else>
                 <span>抬头类型</span>
@@ -304,6 +305,14 @@ export default {
 </script>
 
 <style scoped>
+.menu_mk {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.6);
+}
 .bg {
     height: 100%;
     background: #f4f4f4;

@@ -51,7 +51,7 @@ export default {
                 visible: false,
                 tip: ""
             },
-            invoiceId: "",
+            invoiceId: 0,
             invoiceData: []
         };
     },
@@ -64,16 +64,16 @@ export default {
     },
     methods: {
         initinvoiceFunc() {
-            this.invoiceId = this.$route.query.invoiceId;
+            // this.invoiceId = this.$route.query.invoiceId;
             let that = this;
             let _invoiceobj = JSON.parse(localStorage.getItem('invoiceobj'));
-            if(!this.invoiceId) {
+            // if(!this.invoiceId) {
                 that.invoiceData.map((item)=>{
                     if(item.company == _invoiceobj.invoice_name && item.tax_number == _invoiceobj.taxpayer_number && item.look_up == _invoiceobj.invoice_type) {
                         that.invoiceId = item.id;
                     }
                 })
-            }
+            // }
         },
         getDataFunc() {
             let that = this;

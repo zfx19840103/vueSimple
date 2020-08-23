@@ -164,6 +164,7 @@
                             type="text"
                             class="orderdes"
                             v-model="ordercreate.orderdes"
+                            @input="orderlll"
                             placeholder="点击填写备注"
                             maxlength="100"
                         />
@@ -173,6 +174,7 @@
                             type="text"
                             class="orderdes"
                             v-model="ordercreate.orderdes"
+                            @input="orderlll"
                             placeholder="点击填写备注"
                             maxlength="100"
                         />
@@ -188,6 +190,7 @@
                         name="payType"
                         v-model="ordercreate.pay_method"
                         value="2"
+                        @change="paymethodFunc"
                     />
                 </label>
                 <label>
@@ -197,6 +200,7 @@
                         name="payType"
                         v-model="ordercreate.pay_method"
                         value="1"
+                        @change="paymethodFunc"
                     />
                 </label>
             </div>
@@ -351,7 +355,13 @@ export default {
                 !!this.$route.query.payloading &&
                 this.$route.query.payloading == 1
                     ? this.$route.query.payloading
-                    : false
+                    : false,
+            numordersmethodobj: {
+                sku_count: 1,
+                orderdes: '',
+                pay_method: 2,//1，支付宝 2，微信
+            },
+            
         };
     },
     components: {
@@ -364,6 +374,8 @@ export default {
             this.skuinfoFunc();
         // }
         this.initonemoreFunc();
+
+        this.numordersmethod();
     },
     computed: {
         defaultAvatar() {
@@ -374,6 +386,33 @@ export default {
         this.initinvoiceFunc();
     },
     methods: {
+        orderlll() {
+            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;
+            this.numordersmethodobj.orderdes = this.ordercreate.orderdes;
+            localStorage.setItem(
+                "numordersmethodobj",
+                JSON.stringify(this.numordersmethodobj)
+            );
+        },
+        paymethodFunc() {
+            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;            
+            this.numordersmethodobj.pay_method = this.ordercreate.pay_method;
+            localStorage.setItem(
+                "numordersmethodobj",
+                JSON.stringify(this.numordersmethodobj)
+            );
+        },
+        numordersmethod() {
+            let _l_nom = JSON.parse(localStorage.getItem('numordersmethodobj'));
+            console.log(_l_nom)
+            if(!!_l_nom) {
+                if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
+                    this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
+                    this.ordercreate.orderdes = _l_nom.orderdes;
+                    this.ordercreate.pay_method = _l_nom.pay_method;
+                }
+            }
+        },
         initonemoreFunc() {
             let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
@@ -403,7 +442,7 @@ export default {
 
                 this.ordercreate.is_invoice =
                     onemoreobj.snapshoot_cnt.is_invoice;
-                // this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
+                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
                 this.ordercreate.pay_method =
                     onemoreobj.snapshoot_cnt.pay_method;
 
@@ -452,7 +491,7 @@ export default {
             //地址
             this.detailowner = true;
             if (_isaddress == 1) {
-                that.detailownerParam = {
+                that.detailownerParam = !!JSON.parse(localStorage.getItem("addressobj")) ? {
                     id: JSON.parse(localStorage.getItem("addressobj")).id,
                     receiver: JSON.parse(localStorage.getItem("addressobj"))
                         .receiver,
@@ -469,7 +508,7 @@ export default {
                         .updated_at,
                     city: JSON.parse(localStorage.getItem("addressobj")).city,
                     area: JSON.parse(localStorage.getItem("addressobj")).area
-                };
+                } : {};
             } else {
                 if(!!onemoreobj) {
                     this.detailownerParam.receiver =
@@ -720,6 +759,7 @@ export default {
             if (this.ordercreate.sku_list[0].sku_count == "") {
                 this.ordercreate.sku_list[0].sku_count = 1;
             }
+            this.storagecount();
         },
 
         paynumplus() {
@@ -731,6 +771,7 @@ export default {
                     this.ordercreate.sku_list[0].sku_count
                 );
             }
+            this.storagecount();
         },
         paynumremove() {
             if (this.ordercreate.sku_list[0].sku_count > 1) {
@@ -743,6 +784,7 @@ export default {
                 this.skuinfoparam.shop_price,
                 this.ordercreate.sku_list[0].sku_count
             );
+            this.storagecount();
         },
         paynuminput() {
             if (Number(this.ordercreate.sku_list[0].sku_count) > this.maxnum) {
@@ -756,6 +798,16 @@ export default {
                     this.ordercreate.sku_list[0].sku_count
                 );
             }
+            this.storagecount();
+        },
+        storagecount() {
+            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;
+            this.numordersmethodobj.sku_count = this.ordercreate.sku_list[0].sku_count;
+            console.log(this.numordersmethodobj)
+            localStorage.setItem(
+                "numordersmethodobj",
+                JSON.stringify(this.numordersmethodobj)
+            );
         },
         addaddress() {
             let _onemore = this.$route.query.onemore;
@@ -916,13 +968,49 @@ export default {
             document.querySelector("#alipay").children[0].submit();
         },
         linkInvoice() {
-            let _invoiceId = !!localStorage.getItem("invoiceobj")
-                ? JSON.parse(localStorage.getItem("invoiceobj")).id
-                : 0;
+            let _invoiceobjsss = localStorage.getItem("invoiceobj")
+            //     ? JSON.parse(localStorage.getItem("invoiceobj")).id
+            //     : 0;
+
+            let obj = {};
+            if(!_invoiceobjsss && !!JSON.parse(localStorage.getItem("onemoreobj"))){
+                let _invoiceinfo = JSON.parse(localStorage.getItem("onemoreobj")).snapshoot_cnt.invoice_info;
+                if(_invoiceinfo.invoice_type == 2) {
+                    obj = {
+                        invoice: 1,
+                        invoice_name: _invoiceinfo.invoice_name,
+                        invoice_type: "2",
+                        isqueryinvoice: 1,
+                        is_invoice: 1,
+                        register_address: _invoiceinfo.register_address,
+                        register_bank: _invoiceinfo.register_bank,
+                        register_bank_account: _invoiceinfo.register_bank_account,
+                        register_phone: _invoiceinfo.register_phone,
+                        taxpayer_number: _invoiceinfo.taxpayer_number,
+                    }
+                }else if(_invoiceinfo.invoice_type == 1) {
+                    obj = {
+                        invoice: 1,
+                        invoice_name: _invoiceinfo.invoice_name,
+                        invoice_type: "1",
+                        is_invoice: 1,
+                        isqueryinvoice: 1,
+                    }
+                }else {
+                    obj = {
+                        id: 0,
+                        invoice: 1,
+                        is_invoice: 0,
+                        isqueryinvoice: 1,
+                    }
+                }
+                localStorage.setItem('invoiceobj', JSON.stringify(obj));
+            }
+
             this.$router.push({
                 name: "addinvoice",
                 query: { 
-                    invoiceId: _invoiceId,
+                    // invoiceId: _invoiceId,
                     onemore: this.$route.query.onemore,
                     isaddress: this.$route.query.isaddress,
                 }

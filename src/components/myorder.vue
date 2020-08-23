@@ -210,7 +210,9 @@ export default {
                     payloading: 1
                 }
             });
-
+            localStorage.removeItem('numordersmethodobj');
+            localStorage.removeItem('addressobj');
+            localStorage.removeItem('invoiceobj');
             localStorage.setItem("onemoreobj", JSON.stringify(item));
         },
 
@@ -223,7 +225,9 @@ export default {
                     onemore: 1
                 }
             });
-
+            localStorage.removeItem('numordersmethodobj');
+            localStorage.removeItem('addressobj');
+            localStorage.removeItem('invoiceobj');
             localStorage.setItem("onemoreobj", JSON.stringify(item));
         }
     }
