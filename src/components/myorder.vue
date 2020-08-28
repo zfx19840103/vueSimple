@@ -30,17 +30,18 @@
                         </div>
                         <div class="bottom">
                             <button
-                                v-if="item.pay_status == 2"
-                                @click="deleteorder(item.order_code)"
-                            >取消订单</button>
-                            <button v-if="item.invoice_status == 0 && item.pay_status == 2" @click="invoiceopen(item)">申请开票</button>
-                            <button v-if="item.invoice_status == 4" @click="invoiceshow(item)">查看开票</button>
-                            <button
                                 v-bind:class="{ 'pay': item.pay_status == 0 }"
                                 v-if="item.pay_status == 0"
                                 @click="gotoPayFunc(item)"
                             >去支付</button>
                             <button v-else @click="onemorePayFunc(item)">再来一单</button>
+                            <button
+                                v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
+                                @click="deleteorder(item)"
+                            >取消订单</button>
+                            <button v-if="item.invoice_status == 0 && item.pay_status == 2" @click="invoiceopen(item)">申请开票</button>
+                            <button v-if="item.invoice_status == 4" @click="invoiceshow(item)">查看开票</button>
+                            
                         </div>
                     </li>
                 </ul>
@@ -111,7 +112,8 @@ export default {
             tipppp: "",
             _scroll: {},
             total: 1,
-            _order_code: ""
+            _order_code: "",
+            imgaddress: '',
         };
     },
     components: {
@@ -148,7 +150,8 @@ export default {
                 invoice_name: item.snapshoot_cnt.invoice_info.invoice_name,
                 taxpayer_number:
                     item.snapshoot_cnt.invoice_info.taxpayer_number,
-                created_at: item.created_at
+                created_at: item.created_at,
+                imgaddress: item.invoice_res.URL,
             };
             this.$router.push({ name: "invoiceshow", query: data });
         },
@@ -204,11 +207,20 @@ export default {
                 });
         },
         callphoneFunc() {},
-        deleteorder(code) {
-            this._order_code = code;
-            this.doda = true;
-            this.dodb = false;
-            this.deleteorderDialog = true;
+
+        deleteorder(item) {
+            if (item.order_status == 4) {
+                this._order_code = item.order_code;
+                this.doda = false;
+                this.dodb = true;
+                this.deleteorderDialog = true;
+            }else {
+
+                this._order_code = item.order_code;
+                this.doda = true;
+                this.dodb = false;
+                this.deleteorderDialog = true;
+            }
         },
 
         orderdetail(item) {

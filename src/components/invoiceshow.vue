@@ -103,7 +103,7 @@ export default {
                 str = "待开票";
             } else if (status == 2) {
                 str = "开票中";
-            } else if (status == 3) {
+            } else if (status == 4) {
                 str = "已经开票";
             }
             return str;
@@ -118,7 +118,7 @@ export default {
         //查看发票
         invoiceaddress() {
             let data = {
-                imgaddress: '',
+                imgaddress: this.$route.query.imgaddress,
             }
             this.$router.push({ name: "invoiceaddress", query: data });
         },
@@ -138,7 +138,9 @@ export default {
                          
                         that.alertBoxVisible = true;
                         that.alertBoxContent = "发送邮件成功";
-                        that.$router.push("/myorder");
+                        setTimeout(function() {
+                            that.$router.push("/myorder");
+                        }, 1000);
                         localStorage.removeItem('ivnews');
                     } else if (!!res && res.code == 113005) {
                         that.alertBoxVisible = true;

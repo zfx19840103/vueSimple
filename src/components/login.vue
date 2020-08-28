@@ -3,7 +3,7 @@
 
         <div class="loginBg"></div>
         <div class="login-wrap">
-            <span class="orderCenter" @click="orderCenter">订单中心</span>
+            <span class="orderCenter" @click="orderCenter"><i>订单中心</i></span>
             <div class="login_wrap_content" v-if="loginShow">
                 <div class="loginunit">
                     <label>
@@ -317,25 +317,32 @@ export default {
     left: 0;
     padding: 0.08rem 0.2rem;
 }
-.orderCenter {
-
-    position: absolute;
-    top: 0.32rem;
-    right: 0.06rem;
+.orderCenter i {
+    font-size: 13px;
+    font-weight: 800;
+    color: #FFFFFF;
+    width: 40px;
+    height: 40px;
+    background: #FF6671;
+    display: block;
+    border-radius: 20px;
+    font-style: normal;
+    line-height: 15px;
     box-sizing: border-box;
-    padding: 9px;
-    letter-spacing: 1px;
-    width:44px;
-    height:44px;
-    background:linear-gradient(180deg,rgba(145,255,234,1) 0%,rgba(141,229,255,1) 100%);
-    box-shadow:2px 2px 4px 1px rgba(44,93,106,0.33);
-    border-radius:22px;
-    z-index: 99999;
-    font-size:12px;
-    font-family:FZLTHJW--GB1-0,FZLTHJW--GB1;
-    font-weight:normal;
-    color:rgba(11,83,133,1);
-    line-height:13px;
+    padding: 6px 3px 0;
+    position: absolute;
+    top: 7px;
+    left: 10px;
+}
+.orderCenter {
+    width: 63px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 27px 0 0 27px;
+    position: absolute;
+    top: 27px;
+    right: 0;
+
 }
 div.captchaClass {
     visibility: inherit;
