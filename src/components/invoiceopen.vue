@@ -130,9 +130,10 @@ export default {
                     if (res.code == 20000) {
                         that.alertBoxVisible = true;
                         that.alertBoxContent = "提交申请成功";
-
-                        that.$router.push("/myorder");
-                        localStorage.removeItem('ivnews');
+                        setTimeout(function() {
+                            that.$router.push("/myorder");
+                            localStorage.removeItem('ivnews');
+                        }, 1000);
                     } else if (!!res && res.code == 113005) {
                          
                         that.alertBoxVisible = true;

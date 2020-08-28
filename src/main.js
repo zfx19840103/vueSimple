@@ -62,7 +62,9 @@ function getQueryVariable(variable)
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title}`;
     let realname = getQueryVariable('real_name');
+    
     if(!!realname) {
+        realname = decodeURIComponent(realname);
         localStorage.setItem('moon_email', realname);
     }
 
