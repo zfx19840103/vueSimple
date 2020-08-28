@@ -1,18 +1,13 @@
 <template>
     <div class="loginParent" ref="wrapper">
 
-        <div class="loginBg"></div>
+        <div class="loginBgtop"></div>
+        <div class="loginBgbottom"></div>
+        <div class="nowPay" v-if="nowPayShow" @click="nowPayFunc">
+                <span>¥{{payNow}}立即购买</span>
+            </div>
         <div class="login-wrap">
             <span class="orderCenter" @click="orderCenter"><i>订单中心</i></span>
-            <span class="productTitle">字节跳动中秋好礼--月饼礼盒</span>
-            <span class="productimg1"></span>
-            <span class="productimg2 rotation"></span>
-            <span class="productTitlecenter">挣脱平庸的重力</span>
-            <span class="productdes">
-                逃离平庸，需要速度，让我们一起追求极致，
-                <br />不断成长——建立更高视角，全局寻找最优解，
-                <br />在多元环境下激发创造。
-            </span>
             <div class="login_wrap_content" v-if="loginShow">
                 <div class="loginunit">
                     <label>
@@ -44,9 +39,6 @@
                 <a :href= feishuhref class="feis">
                     <i></i>飞书登录
                 </a>
-            </div>
-            <div class="nowPay" v-if="nowPayShow" @click="nowPayFunc">
-                <span>¥{{payNow}}立即购买</span>
             </div>
         </div>
         <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
@@ -91,7 +83,7 @@ export default {
     },
     mounted() {
         this.pushCodeFunc();
-        this.touchFunc();
+        // this.touchFunc();
     },
     methods: {
         pushCodeFunc() {
@@ -268,6 +260,32 @@ export default {
         -webkit-transform: rotate(360deg);
     }
 } */
+.loginBgtop {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 3.75rem;
+    height: 7.5rem;
+    background-image: url("../assets/img/productBgtop.jpg");
+    background-color: #3267c7;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.loginBgbottom {
+    position: absolute;
+    top: 7.5rem;
+    left: 0;
+    z-index: 0;
+    width: 3.75rem;
+    height: 6.42rem;
+    background-image: url("../assets/img/productBgbottom.jpg");
+    background-color: #3267c7;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
 .feis i {
     background-image: url(../assets/img/logofeis.png);
     background-size: 100% 100%;
@@ -361,10 +379,11 @@ export default {
     color: rgba(255, 255, 255, 1);
 }
 .nowPay {
-    width: 195px;
-    height: 121px;
+    width: 1.95rem;
+    height: 1.21rem;
     position: absolute;
-    bottom: 67px;
+    top: 12.31rem;
+    left: 0.9rem;
     background-image: url(../assets/img/productBtn.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -419,11 +438,11 @@ div.captchaClass {
 }
 .loginParent {
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    /* min-height: 100%; */
     background: #3469c9;
 }
 
@@ -595,7 +614,7 @@ div.captchaClass {
 }
 .login_wrap_content {
     width: 2.6rem;
-    position: absolute;
+    position: fixed;
     bottom: 0.6rem;
 }
 
