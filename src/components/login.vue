@@ -38,8 +38,8 @@
                 </a>
             </div>
             
-            <!-- <div class="loginwrapIcon"  @click="linkproduct" v-if="arrow"> -->
-            <div class="loginwrapIcon" @click="linkproduct">
+            <div class="loginwrapIcon"  @click="linkproduct" v-if="arrow">
+            <!-- <div class="loginwrapIcon" @click="linkproduct"> -->
                 <i class="el-icon-arrow-down"></i>
                 <span></span>
                 <span></span>
