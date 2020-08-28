@@ -268,7 +268,7 @@ export default {
     z-index: 0;
     width: 3.75rem;
     height: 7.5rem;
-    background-image: url("../assets/img/productBgtop.jpg");
+    background-image: url("../assets/img/productBgtop.png");
     background-color: #3267c7;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -280,7 +280,7 @@ export default {
     z-index: 0;
     width: 3.75rem;
     height: 6.42rem;
-    background-image: url("../assets/img/productBgbottom.jpg");
+    background-image: url("../assets/img/productBgbottom.png");
     background-color: #3267c7;
     background-repeat: no-repeat;
     background-size: 100% 100%;
