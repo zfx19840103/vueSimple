@@ -1,5 +1,6 @@
 <template>
-    <div class="loginParent">
+    <div class="loginParent" ref="wrapper">
+
         <div class="loginBg"></div>
         <div class="login-wrap">
             <span class="orderCenter" @click="orderCenter">订单中心</span>
@@ -40,6 +41,9 @@
                     >登录</button>
                     <button class="login-btn" v-else @click="submitForm()">登录</button>
                 </div>
+                <a :href= feishuhref class="feis">
+                    <i></i>飞书登录
+                </a>
             </div>
             <div class="nowPay" v-if="nowPayShow" @click="nowPayFunc">
                 <span>¥{{payNow}}立即购买</span>
@@ -57,9 +61,11 @@
 
 <script>
 import { loginPost, pushCode } from "@/api/login";
+
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
 import AlertBox from "./alertbox";
+import BScroll from "better-scroll";
 export default {
     data() {
         return {
@@ -72,6 +78,7 @@ export default {
             payNow: "299",
             loginShow: false,
             nowPayShow: true,
+            feishuhref: 'https://apidev.tsingglobal.com/openapi/auth/login/feishu',
             param: {
                 email: "",
                 vcCode: "",
@@ -84,6 +91,7 @@ export default {
     },
     mounted() {
         this.pushCodeFunc();
+        this.touchFunc();
     },
     methods: {
         pushCodeFunc() {
@@ -227,7 +235,26 @@ export default {
                 this.loginShow = true;
                 this.nowPayShow = false;
             }
-        }
+        },
+        touchFunc() {
+
+            let that = this;
+            this.$nextTick(() => {
+                this.scroll = new BScroll(this.$refs.wrapper, {
+                    //初始化better-scroll
+                    probeType: 1, //1 滚动的时候会派发scroll事件，会截流。2滚动的时候实时派发scroll事件，不会截流。 3除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
+                    click: true //是否派发click事件
+                });
+                //滑动结束松开事件
+                this.scroll.on("touchEnd", pos => {
+                    if (pos.y > 65) {
+                        this.$router.push('/login');
+                    }
+                        this.text = pos.y
+                });
+            });
+        },
+        
     }
 };
 </script>
@@ -241,7 +268,28 @@ export default {
         -webkit-transform: rotate(360deg);
     }
 } */
-
+.feis i {
+    background-image: url(../assets/img/logofeis.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    top: 3px;
+    left: -7px;
+    width: 17px;
+    height: 17px;
+    position: relative;
+    display: inline-block;
+}
+.feis {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    position: absolute;
+    bottom: -0.38rem;
+    left: 0.8rem;
+    padding: 0.08rem 0.2rem;
+    text-decoration: none;
+    display: block;
+}
 .rotation {
     -webkit-transform: rotate(360deg);
     animation: rotation 3s linear infinite;
@@ -322,20 +370,23 @@ export default {
     background-size: 100% 100%;
 }
 .orderCenter {
-    font-size: 14px;
     position: absolute;
-    top: 23px;
-    right: 0;
-    width: 77px;
+    top: 0.32rem;
+    right: 0.06rem;
     box-sizing: border-box;
-    padding-left: 5px;
-    height: 31px;
-    background: rgba(33, 129, 212, 0.8);
-    border-top-left-radius: 17px;
-    border-bottom-left-radius: 17px;
-    font-weight: 400;
-    color: rgba(225, 235, 255, 1);
-    line-height: 31px;
+    padding: 9px;
+    letter-spacing: 1px;
+    width:44px;
+    height:44px;
+    background:linear-gradient(180deg,rgba(145,255,234,1) 0%,rgba(141,229,255,1) 100%);
+    box-shadow:2px 2px 4px 1px rgba(44,93,106,0.33);
+    border-radius:22px;
+    z-index: 99999;
+    font-size:12px;
+    font-family:FZLTHJW--GB1-0,FZLTHJW--GB1;
+    font-weight:normal;
+    color:rgba(11,83,133,1);
+    line-height:13px;
 }
 div.captchaClass {
     visibility: inherit;
@@ -528,7 +579,7 @@ div.captchaClass {
     width: 100%;
     height: 38px;
     border-radius: 19px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.4);
     position: relative;
     margin-top: 13px;
     top: 0;
@@ -537,7 +588,7 @@ div.captchaClass {
 .login_wrap_content {
     width: 2.6rem;
     position: absolute;
-    bottom: 47px;
+    bottom: 0.6rem;
 }
 
 .login-tips {

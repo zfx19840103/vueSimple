@@ -70,6 +70,30 @@ export default new Router({
             name: 'addinvoice',
             component: () => import(/* webpackChunkName: "addinvoice" */ '../components/addinvoice.vue'),
             meta: { title: '添加发票信息' }
+        },
+        {
+            path: '/invoicetime',
+            name: 'invoicetime',
+            component: () => import(/* webpackChunkName: "invoicetime" */ '../components/invoicetime.vue'),
+            meta: { title: '申请开票' }
+        },
+        {
+            path: '/invoiceopen',
+            name: 'invoiceopen',
+            component: () => import(/* webpackChunkName: "invoiceopen" */ '../components/invoiceopen.vue'),
+            meta: { title: '申请开票' }
+        },
+        {
+            path: '/invoiceshow',
+            name: 'invoiceshow',
+            component: () => import(/* webpackChunkName: "invoiceshow" */ '../components/invoiceshow.vue'),
+            meta: { title: '查看开票' }
+        },
+        {
+            path: '/invoiceaddress',
+            name: 'invoiceaddress',
+            component: () => import(/* webpackChunkName: "invoiceaddress" */ '../components/invoiceaddress.vue'),
+            meta: { title: '查看开票' }
         }
     ]
 })

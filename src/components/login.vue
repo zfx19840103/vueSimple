@@ -1,5 +1,6 @@
 <template>
-    <div class="loginParent">
+    <div class="loginParent" ref="wrapper">
+
         <div class="loginBg"></div>
         <div class="login-wrap">
             <span class="orderCenter" @click="orderCenter">订单中心</span>
@@ -31,11 +32,17 @@
                     >登录</button>
                     <button class="login-btn" v-else @click="submitForm()">登录</button>
                 </div>
+                <!-- <div class="feis" @click="feisFunc"> -->
+                <a :href= feishuhref class="feis">
+                    <i></i>飞书登录
+                </a>
             </div>
-            <div class="loginwrapIcon"  @click="linkproduct" v-if="arrow">
-                <span></span>
-                <span></span>
+            
+            <!-- <div class="loginwrapIcon"  @click="linkproduct" v-if="arrow"> -->
+            <div class="loginwrapIcon" @click="linkproduct">
                 <i class="el-icon-arrow-down"></i>
+                <span></span>
+                <span></span>
             </div>
         </div>
         <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
@@ -53,6 +60,7 @@ import { loginPost, pushCode, verify } from "@/api/login";
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
 import AlertBox from "./alertbox";
+import BScroll from "better-scroll";
 export default {
     data() {
         return {
@@ -64,6 +72,7 @@ export default {
             arrow: true,
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
+            feishuhref: 'https://apidev.tsingglobal.com/openapi/auth/login/feishu',
             param: {
                 email: "",
                 vcCode: "",
@@ -75,19 +84,38 @@ export default {
         AlertBox
     },
     created() {
-        this.urlparamFunc()
+        this.urlparamFunc();
         // if(!!localStorage.getItem('moon_vcodetime')) {
         //     this.timecodeFunc();
         //     this.param.email = Cookie.getItem('moon_email')
         //     this.loginShow = true;
         // }
+        this.touchFunc();
     },
     mounted() {
         this.pushCodeFunc();
     },
     methods: {
+       
+        touchFunc() {
+            let that = this;
+            this.$nextTick(() => {
+                this.scroll = new BScroll(this.$refs.wrapper, {
+                    //初始化better-scroll
+                    probeType: 1, //1 滚动的时候会派发scroll事件，会截流。2滚动的时候实时派发scroll事件，不会截流。 3除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
+                    click: true //是否派发click事件
+                });
+                //滑动结束松开事件
+                this.scroll.on("touchEnd", pos => {
+                    if (pos.y < -65) {
+                        this.$router.push('/product');
+                    }
+                        // this.text = pos.y
+                });
+            });
+        },
         urlparamFunc() {
-            if(!!this.$route.query.loginShow){
+            if (!!this.$route.query.loginShow) {
                 this.loginShow = true;
             }
         },
@@ -115,7 +143,7 @@ export default {
 
                     let paramsdata = {
                         email: that.param.email,
-                        verify: that.verifydata,
+                        verify: that.verifydata
                     };
 
                     pushCode(paramsdata)
@@ -129,7 +157,6 @@ export default {
                             console.log(e.responseText);
                             that.smartCaptcha.fail();
                         });
-    
                 },
                 fail: function(data) {
                     console.log("ic error");
@@ -150,19 +177,21 @@ export default {
             }
         },
         timecodeFunc() {
-            let n = !!localStorage.getItem('moon_vcodetime') ? localStorage.getItem('moon_vcodetime') : 59,
+            let n = !!localStorage.getItem("moon_vcodetime")
+                    ? localStorage.getItem("moon_vcodetime")
+                    : 59,
                 that = this;
-                // Cookie.setItem('moon_email', that.param.email);
+            // Cookie.setItem('moon_email', that.param.email);
             let timecode = () => {
                 if (n >= 0) {
                     that.vcCodepostfontcontent = n + "秒";
-                    localStorage.setItem('moon_vcodetime', n);
+                    localStorage.setItem("moon_vcodetime", n);
                     n -= 1;
                     setTimeout(function() {
                         timecode();
                     }, 1000);
                 } else {
-                    localStorage.removeItem('moon_vcodetime');
+                    localStorage.removeItem("moon_vcodetime");
                     that.vcCodepostfontcontent = "发送验证";
                     that.smartCaptcha.reset();
                 }
@@ -172,7 +201,7 @@ export default {
         submitForm() {
             let data = {
                 email: this.param.email,
-                captcha: this.param.vcCode,
+                captcha: this.param.vcCode
                 // verify: this.verifydata,
             };
             let that = this;
@@ -188,14 +217,13 @@ export default {
                 let regcode = /^\d+$/;
                 if (!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
-                    that.alertBoxContent = "请输入特定的邮箱地址";
+                    that.alertBoxContent = "邮箱地址输入错误";
                 } else if (!regcode.test(this.param.vcCode)) {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = "验证码为数字";
                 } else {
                     loginPost(data)
                         .then(function(res) {
-
                             that.alertBoxVisible = true;
                             if (!!res && res.code == 20000) {
                                 localStorage.setItem(
@@ -222,13 +250,14 @@ export default {
             this.$router.push("/product");
         },
         orderCenter() {
-            if (!!localStorage.getItem('moon_email')) {
+            if (!!localStorage.getItem("moon_email")) {
                 this.$router.push("/myorder");
             } else {
                 this.loginShow = true;
                 this.arrow = false;
             }
-        }
+        },
+        
     }
 };
 </script>
@@ -236,13 +265,13 @@ export default {
 <style scoped>
 @keyframes bounce-down {
     25% {
-        transform: translateY(-5px);
+        transform: translateY(5px);
     }
     50% {
         transform: translateY(0);
     }
     75% {
-        transform: translateY(5px);
+        transform: translateY(-5px);
     }
     100% {
         transform: translateY(0);
@@ -250,13 +279,13 @@ export default {
 }
 @-webkit-keyframes bounce-down {
     25% {
-        transform: translateY(-5px);
+        transform: translateY(5px);
     }
     50% {
         transform: translateY(0);
     }
     75% {
-        transform: translateY(5px);
+        transform: translateY(-5px);
     }
     100% {
         transform: translateY(0);
@@ -266,21 +295,47 @@ export default {
     -webkit-animation: bounce-down 1s linear infinite;
     animation: bounce-down 1s linear infinite;
 }
-.orderCenter {
-    font-size: 14px;
-    position: absolute;
-    top: 23px;
-    right: 0;
-    width: 77px;
-    box-sizing: border-box;
-    padding-left: 5px;
-    height: 31px;
-    background: rgba(33, 129, 212, 0.8);
-    border-top-left-radius: 17px;
-    border-bottom-left-radius: 17px;
+.feis i {
+    background-image: url(../assets/img/logofeis.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    top: 3px;
+    left: -7px;
+    width: 17px;
+    height: 17px;
+    position: relative;
+    display: inline-block;
+}
+.feis {
+    display: block;
     font-weight: 400;
-    color: rgba(225, 235, 255, 1);
-    line-height: 31px;
+    color: rgba(255, 255, 255, 1);
+    text-decoration: none;
+    font-size: 12px;
+    position: relative;
+    bottom:0;
+    left: 0;
+    padding: 0.08rem 0.2rem;
+}
+.orderCenter {
+
+    position: absolute;
+    top: 0.32rem;
+    right: 0.06rem;
+    box-sizing: border-box;
+    padding: 9px;
+    letter-spacing: 1px;
+    width:44px;
+    height:44px;
+    background:linear-gradient(180deg,rgba(145,255,234,1) 0%,rgba(141,229,255,1) 100%);
+    box-shadow:2px 2px 4px 1px rgba(44,93,106,0.33);
+    border-radius:22px;
+    z-index: 99999;
+    font-size:12px;
+    font-family:FZLTHJW--GB1-0,FZLTHJW--GB1;
+    font-weight:normal;
+    color:rgba(11,83,133,1);
+    line-height:13px;
 }
 div.captchaClass {
     visibility: inherit;
@@ -313,7 +368,8 @@ div.captchaClass {
     background: #3469c9;
 }
 .loginwrapIcon i {
-    font-size: 24px;
+    transform: rotate(180deg);
+    font-size: 16px;
     color: #ffffff;
     position: relative;
     top: 0;
@@ -321,19 +377,18 @@ div.captchaClass {
     display: block;
 }
 .loginwrapIcon span {
-    width: 0.04rem;
-    height: 0.04rem;
+    width: 0.03rem;
+    height: 0.03rem;
     background: #ffffff;
     border-radius: 50%;
     display: block;
-    margin: 8px auto 0;
+    margin: 0 auto 0.06rem;
 }
 .loginwrapIcon {
     position: absolute;
     text-align: center;
-    bottom: 0;
-    height: 90px;
-
+    bottom: 0.1rem;
+    height: 38px;
     width: 1rem;
 }
 #captcha {
@@ -413,7 +468,7 @@ div.captchaClass {
     z-index: 0;
     width: 3.75rem;
     height: 6.04rem;
-    background-image: url("../assets/img/loginBg.png");
+    background-image: url(../assets/img/loginBg.jpg);
     background-color: #3267c7;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -501,7 +556,7 @@ div.captchaClass {
 .login_wrap_content {
     width: 2.6rem;
     position: absolute;
-    bottom: 47px;
+    bottom: 0.6rem;
     z-index: 1;
 }
 

@@ -47,12 +47,26 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title}`;
-    const role = localStorage.getItem('moon_email');
+    let realname = getQueryVariable('real_name');
+    if(!!realname) {
+        localStorage.setItem('moon_email', realname);
+    }
 
-    // const token = Cookie.get('access_token');
+    const role = localStorage.getItem('moon_email');
 
     if (!role && to.path !== '/login') {
 

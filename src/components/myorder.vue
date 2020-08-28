@@ -5,7 +5,9 @@
             <div class="bscroll-container">
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
-                        <div @click="item.order_status == 0 ? gotoPayFunc(item) : orderdetail(item)">
+                        <div
+                            @click="item.order_status == 0 ? gotoPayFunc(item) : orderdetail(item)"
+                        >
                             <div class="top">
                                 <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
                                 <em
@@ -13,7 +15,10 @@
                                 >{{order_status_func(item.order_status)}}</em>
                             </div>
                             <div class="center">
-                                <img :src="item.snapshoot_cnt.sku_list[0].images[0]? item.snapshoot_cnt.sku_list[0].images[0] : ''" :onerror="defaultAvatar" />
+                                <img
+                                    :src="item.snapshoot_cnt.sku_list[0].images[0]? item.snapshoot_cnt.sku_list[0].images[0] : ''"
+                                    :onerror="defaultAvatar"
+                                />
                                 <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>
                                 <p class="shopPricesku_count">
                                     ¥{{item.snapshoot_cnt.sku_list[0].shop_price}}
@@ -25,8 +30,14 @@
                         </div>
                         <div class="bottom">
                             <button
-                                v-bind:class="{ 'pay': item.order_status == 0 }"
-                                v-if="item.order_status == 0"
+                                v-if="item.pay_status == 2"
+                                @click="deleteorder(item.order_code)"
+                            >取消订单</button>
+                            <button v-if="item.invoice_status == 0 && item.pay_status == 2" @click="invoiceopen(item)">申请开票</button>
+                            <button v-if="item.invoice_status == 4" @click="invoiceshow(item)">查看开票</button>
+                            <button
+                                v-bind:class="{ 'pay': item.pay_status == 0 }"
+                                v-if="item.pay_status == 0"
                                 @click="gotoPayFunc(item)"
                             >去支付</button>
                             <button v-else @click="onemorePayFunc(item)">再来一单</button>
@@ -39,15 +50,37 @@
                 </div>
             </div>
         </div>
-
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
+
+        <div class="deleteorderDialog" v-if="deleteorderDialog">
+            <div class="deleteorderDialogBg" @click="closedodFunc"></div>
+            <div class="dodcontent">
+                <div class="doda" v-if="doda">
+                    <h3>确认取消订单吗？</h3>
+                    <p>
+                        <button class="deleteorder" @click="deleteorderFunc">取消订单</button>
+                        <button class="wrong" @click="closedodFunc">点错了</button>
+                    </p>
+                </div>
+                <div class="dodb" v-if="dodb">
+                    <h3>订单已发货，请联系客服。</h3>
+                    <span>客服电话：13344657454</span>
+                    <p>
+                        <button class="deleteorder" @click="closedodFunc">取消</button>
+                        <button class="callphone">
+                            <a href="tel:13344657454">拨打</a>
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import Cookie from "js-cookie";
 
-import { orderlist } from "@/api/myorder";
+import { orderlist, orderrefund } from "@/api/myorder";
 import { ordercreateapi } from "@/api/ordercheck";
 import { paycreate } from "@/api/orderdetail";
 import AlertBox from "./alertbox";
@@ -57,6 +90,10 @@ import BScroll from "better-scroll";
 export default {
     data() {
         return {
+            deleteorderDialog: false,
+            doda: true,
+            dodb: false,
+
             alertBox: {
                 visible: false,
                 tip: ""
@@ -73,7 +110,8 @@ export default {
             pullupMsg: "加载更多",
             tipppp: "",
             _scroll: {},
-            total: 1
+            total: 1,
+            _order_code: ""
         };
     },
     components: {
@@ -86,27 +124,97 @@ export default {
     },
     created() {
         let that = this;
-        this.getData(res => {
-            if (res.data.list.length > 0) {
-                this.myorderData.list = res.data.list;
-                this.myorderDatapage++;
-                this.total = res.data.total;
-                if(this.total < this.myorderDatapagesize) {
-                    this.pullupMsg = "已是最后一页";
-                }
-            } else {
-                this.nodata = true;
-            }
-        }, 1);
+        this.initData();
         this.pulldownFunc();
     },
     mounted() {},
     watch: {},
     methods: {
+        invoiceopen(item) {
+            let data = {
+                ivnewscode: item.order_code,
+                ivnewsprice: item.snapshoot_cnt.total_price
+            };
+
+            this.$router.push({ name: "invoiceopen", query: data });
+        },
+        invoiceshow(item) {
+            let data = {
+                ivnewscode: item.order_code,
+                ivnewsprice: item.snapshoot_cnt.total_price,
+
+                invoice_status: item.invoice_status,
+                invoice_type: item.snapshoot_cnt.invoice_info.invoice_type,
+                invoice_name: item.snapshoot_cnt.invoice_info.invoice_name,
+                taxpayer_number:
+                    item.snapshoot_cnt.invoice_info.taxpayer_number,
+                created_at: item.created_at
+            };
+            this.$router.push({ name: "invoiceshow", query: data });
+        },
+        closedodFunc() {
+            this.deleteorderDialog = false;
+        },
+        initData() {
+            this.getData(res => {
+                if (res.data.list.length > 0) {
+                    this.myorderData.list = res.data.list;
+                    this.myorderDatapage++;
+                    this.total = res.data.total;
+                    if (this.total < this.myorderDatapagesize) {
+                        this.pullupMsg = "已是最后一页";
+                    }
+                } else {
+                    this.nodata = true;
+                }
+            }, 1);
+        },
+        deleteorderFunc() {
+            let that = this;
+            let data = {
+                order_code: this._order_code
+            };
+
+            orderrefund(data)
+                .then(function(res) {
+                    if (res.code == 20000) {
+                        this.doda = false;
+                        this.dodb = false;
+                        this.initData();
+                    } else if (!!res && res.code == 113005) {
+                        that.alertBox = {
+                            visible: true,
+                            tip: res.message
+                        };
+
+                        localStorage.removeItem("moon_email");
+                        localStorage.removeItem("onemoreobj");
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                    } else {
+                        that.alertBox = {
+                            visible: true,
+                            tip: res.message
+                        };
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        callphoneFunc() {},
+        deleteorder(code) {
+            this._order_code = code;
+            this.doda = true;
+            this.dodb = false;
+            this.deleteorderDialog = true;
+        },
+
         orderdetail(item) {
             let that = this;
             localStorage.setItem("order_code", item.order_code);
-            that.$router.push({ name: "orderdetail", query: {myorder:1} });
+            that.$router.push({ name: "orderdetail", query: { myorder: 1 } });
         },
         pulldownFunc() {
             let that = this;
@@ -125,7 +233,11 @@ export default {
                     //上拉刷新
 
                     if (pos.y < this.scroll.maxScrollY - 50) {
-                        if (that.myorderDatapage > 1 && that.myorderDatapage <= Math.ceil(that.total / that.myorderDatapagesize)) {
+                        if (
+                            that.myorderDatapage > 1 &&
+                            that.myorderDatapage <=
+                                Math.ceil(that.total / that.myorderDatapagesize)
+                        ) {
                             //下拉加载
                             this.pullupMsg = "加载中。。。";
 
@@ -149,21 +261,41 @@ export default {
         },
         order_status_func(status) {
             var str = "";
-                if (status == 0) {
-                    str = "待付款";
-                } else if (status == 1) {
-                    str = "取消订单";
-                } else if (status == 2) {
-                    str = "下单成功";
-                } else if (status == 3) {
-                    str = "待发货";
-                } else if (status == 4) {
-                    str = "已发货";
-                } else if (status == 5) {
-                    str = "交易完成";
-                } else if (status == 6) {
-                    str = "交易异常";
-                }
+            if (status == 0) {
+                str = "待付款";
+            } else if (status == 1) {
+                str = "取消订单";
+            } else if (status == 2) {
+                str = "下单成功";
+            } else if (status == 3) {
+                str = "待发货";
+            } else if (status == 4) {
+                str = "已发货";
+            } else if (status == 5) {
+                str = "交易完成";
+            } else if (status == 6) {
+                str = "交易异常";
+            }
+
+            return str;
+        },
+        pay_status_func(status) {
+            var str = "";
+            if (status == 0) {
+                str = "待支付";
+            } else if (status == 1) {
+                str = "支付超时";
+            } else if (status == 2) {
+                str = "支付成功";
+            } else if (status == 3) {
+                str = "发起退款";
+            } else if (status == 4) {
+                str = "退款失败";
+            } else if (status == 5) {
+                str = "退款成功";
+            } else if (status == 6) {
+                str = "支付异常";
+            }
 
             return str;
         },
@@ -183,7 +315,7 @@ export default {
                             visible: true,
                             tip: res.message
                         };
-                        
+
                         localStorage.removeItem("moon_email");
                         localStorage.removeItem("onemoreobj");
                         setTimeout(function() {
@@ -210,12 +342,11 @@ export default {
                     payloading: 1
                 }
             });
-            localStorage.removeItem('numordersmethodobj');
-            localStorage.removeItem('addressobj');
-            localStorage.removeItem('invoiceobj');
+            localStorage.removeItem("numordersmethodobj");
+            localStorage.removeItem("addressobj");
+            localStorage.removeItem("invoiceobj");
             localStorage.setItem("onemoreobj", JSON.stringify(item));
         },
-
         onemorePayFunc(item) {
             let that = this;
 
@@ -225,9 +356,9 @@ export default {
                     onemore: 1
                 }
             });
-            localStorage.removeItem('numordersmethodobj');
-            localStorage.removeItem('addressobj');
-            localStorage.removeItem('invoiceobj');
+            localStorage.removeItem("numordersmethodobj");
+            localStorage.removeItem("addressobj");
+            localStorage.removeItem("invoiceobj");
             localStorage.setItem("onemoreobj", JSON.stringify(item));
         }
     }
@@ -235,6 +366,99 @@ export default {
 </script>
 
 <style scoped>
+.doda {
+}
+.dodb span {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0.08rem 0 0;
+    color: rgba(51, 51, 51, 1);
+}
+div.dodb button:focus {
+    outline: none;
+}
+div.dodb button.callphone a {
+    color: #ffffff;
+    text-decoration: none;
+}
+div.dodb button {
+    top: 0.95rem;
+}
+.doda button,
+.dodb button {
+    width: 0.9rem;
+    height: 0.3rem;
+    border-radius: 18px;
+    font-size: 14px;
+
+    font-weight: 400;
+    position: absolute;
+
+    top: 0.92rem;
+}
+.doda button.wrong,
+.dodb button.callphone {
+    background: linear-gradient(
+        90deg,
+        rgba(60, 140, 255, 1) 0%,
+        rgba(12, 97, 216, 1) 100%
+    );
+    color: #ffffff;
+    border: 0;
+    right: 0.46rem;
+}
+.doda button.deleteorder,
+.dodb button.deleteorder {
+    color: rgba(15, 101, 222, 1);
+    display: inline-block;
+    outline: 0;
+    border: 1px solid rgba(12, 98, 217, 1);
+    background: #ffffff;
+    left: 0.46rem;
+}
+.doda p,
+.dodb p {
+    padding: 0.37rem 0 0;
+}
+.doda h3,
+.dodb h3 {
+    padding: 0;
+    font-size: 18px;
+    padding: 0.3rem 0 0;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 25px;
+}
+.dodcontent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -0.75rem 0 0 -1.49rem;
+    width: 2.98rem;
+    height: 1.5rem;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 14px;
+    z-index: 2;
+}
+.deleteorderDialog {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+.deleteorderDialogBg {
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
 .nodata {
     width: 100%;
     font-size: 16px;
@@ -362,19 +586,15 @@ ul li {
 
 .myorder ul li .bottom button {
     float: right;
-    margin: 8px 0 0;
-    color: #fff;
+    margin: 8px 0 0 10px;
+    color: #0f65de;
     font-size: 14px;
-    background: linear-gradient(
-        90deg,
-        rgba(27, 123, 255, 1) 0%,
-        rgba(12, 97, 216, 1) 100%
-    );
+    background: #ffffff;
     outline: 0;
     width: 90px;
     height: 30px;
     border-radius: 18px;
-    border: 0;
+    border: 1px solid rgba(12, 98, 217, 1);
 }
 .myorder ul li .bottom {
     height: 46px;
@@ -382,7 +602,12 @@ ul li {
 }
 
 .myorder ul li .bottom button.pay {
-    background: #ff502c;
+    background: linear-gradient(
+        90deg,
+        rgba(60, 140, 255, 1) 0%,
+        rgba(12, 97, 216, 1) 100%
+    );
+    border: 0;
     color: #ffffff;
 }
 </style>
