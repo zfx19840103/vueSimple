@@ -39,7 +39,7 @@
                                 v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
                                 @click="deleteorder(item)"
                             >取消订单</button>
-                            <button v-if="item.invoice_status == 0 && item.pay_status == 2" @click="invoiceopen(item)">申请开票</button>
+                            <button v-if="item.order_status == 5" @click="invoiceopen(item)">申请开票</button>
                             <button v-if="item.invoice_status == 2 || item.invoice_status == 4" @click="invoiceshow(item)">查看开票</button>
                             
                         </div>
@@ -151,7 +151,7 @@ export default {
                 taxpayer_number:
                     item.snapshoot_cnt.invoice_info.taxpayer_number,
                 created_at: item.created_at,
-                imgaddress: item.invoice_res.URL,
+                imgaddress: !!item.invoice_res ? item.invoice_res.URL : '',
             };
             this.$router.push({ name: "invoiceshow", query: data });
         },

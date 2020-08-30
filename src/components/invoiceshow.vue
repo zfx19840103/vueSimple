@@ -18,7 +18,7 @@
         </div>
         <div class="ivtime">申请时间：{{created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</div>
         <button class="ivbutton ivbuttontop" @click="postemail">发送邮箱</button>
-        <button class="ivbutton" @click="invoiceaddress">查看发票</button>
+        <button class="ivbutton" :class="{'isshowinvoice': !this.$route.query.imgaddress}" :disabled="!this.$route.query.imgaddress" @click="invoiceaddress">查看发票</button>
         <div class="deleteorderDialog" v-if="deleteorderDialog">
             <div class="deleteorderDialogBg" @click="closedodFunc"></div>
             <div class="dodcontent">
@@ -167,6 +167,9 @@ export default {
 </script>
 
 <style scoped>
+.ivbutton.isshowinvoice {
+    background: #D3D3D3;
+}
 .postmail:focus {
     outline: 0;
 }
