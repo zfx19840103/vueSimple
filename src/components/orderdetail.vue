@@ -43,7 +43,8 @@
                     <div class="ordercenter">
                         <span>{{item.itemName}}</span>
                         <!-- <span>运费：{{item.freight == 0 ? '免运费' : '¥'+item.freight}}</span> -->
-                        <span>库存：{{item.actstock}}</span>
+                        <!-- <span>库存：{{item.actstock}}</span> -->
+                        <span></span>
                         <span>¥{{item.shop_price}}/盒</span>
                     </div>
                     <div class="orderNum">X{{item.sku_count}}</div>
@@ -72,12 +73,12 @@
                     <em>{{info.snapshoot_cnt.invoice_info.taxpayer_number}}</em>
                 </p>
             </div>
-            <div class="no_invoice invoice" v-else>
+            <!-- <div class="no_invoice invoice" v-else>
                 <h3>发票</h3>
                 <p>
                     <span>不开发票</span>
                 </p>
-            </div>
+            </div> -->
             <div class="ordernews">
                 <h3>订单信息：</h3>
                 <p>
@@ -523,10 +524,10 @@ export default {
     padding-bottom: 50px;
 }
 .orderdetailbtn {
+    width: 3.3rem;
     height: 50px;
     line-height: 50px;
     color: #ffffff;
-    width: 100%;
     background: -webkit-gradient(
         linear,
         left top,
@@ -539,12 +540,11 @@ export default {
         rgba(27, 123, 255, 1) 0%,
         rgba(12, 97, 216, 1) 100%
     );
-    margin-bottom: 20px;
     outline: 0;
     border: 0;
     font-size: 18px;
     border-radius: 18px;
-    margin-top: 15px;
+    margin-top: 120px;
     position: relative;
     bottom: 0;
     left: 0;
