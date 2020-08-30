@@ -1240,7 +1240,7 @@ export default {
     outline: 0;
     width: 2.4rem;
     float: right;
-    margin: 15px 12px 0 0;
+    margin: 15px 2px 0 0;
     text-align: right;
 }
 .orderCheckaddress p {
@@ -1269,7 +1269,7 @@ export default {
     padding: 0;
 }
 .paynumall .el-icon-circle-plus-outline {
-    margin-right: 16px;
+    margin-right: 12px;
 }
 .orderCheckaddress .delete {
     width: 0.48rem;
@@ -1410,7 +1410,7 @@ export default {
 
 .payTogo button {
     float: right;
-    margin: 7px 10px 0 0;
+    margin: 7px 12px 0 0;
     width: 90px;
     height: 36px;
     background: linear-gradient(
@@ -1492,7 +1492,7 @@ export default {
 .detailowner .el-icon-arrow-right {
     position: absolute;
     top: 30px;
-    right: 12px;
+    right: 6px;
     font-size: 18px;
 }
 .detailowner .el-icon-location-outline {
