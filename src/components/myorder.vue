@@ -181,9 +181,17 @@ export default {
             orderrefund(data)
                 .then(function(res) {
                     if (res.code == 20000) {
-                        this.doda = false;
-                        this.dodb = false;
-                        this.initData();
+                        setTimeout(function() {
+                            that.doda = false;
+                            that.dodb = false;
+                            that.deleteorderDialog = false;
+
+                            that.getData();
+                        }, 1000)
+                        that.alertBox = {
+                            visible: true,
+                            tip: "取消成功"
+                        };
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             visible: true,

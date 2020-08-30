@@ -126,7 +126,6 @@ export default {
             }
             orderinvoice(data)
                 .then(function(res) {
-
                     if (res.code == 20000) {
                         that.alertBoxVisible = true;
                         that.alertBoxContent = "提交申请成功";
