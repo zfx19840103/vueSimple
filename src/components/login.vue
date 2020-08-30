@@ -7,7 +7,7 @@
             <div class="login_wrap_content" v-if="loginShow">
                 <div class="loginunit">
                     <label>
-                        <span class="logintitle">邮箱：</span>
+                        <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
                         <input class="emailinput" v-model="param.email" />
                     </label>
                 </div>
