@@ -162,9 +162,9 @@
                     <em>交易完成后可开具发票</em>
                 </p>
 
-                <p>
+                <!-- <p>
                     <span>订单备注</span>
-                    <!-- <i class="el-icon-arrow-right"></i> -->
+                    <i class="el-icon-arrow-right"></i>
                     <em>
                         <input
                             v-if="!payloading"
@@ -186,7 +186,7 @@
                             maxlength="100"
                         />
                     </em>
-                </p>
+                </p> -->
             </div>
             <div class="payType">
                 <h3>支付方式</h3>
