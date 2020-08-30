@@ -413,7 +413,8 @@ export default {
             let _l_nom = JSON.parse(localStorage.getItem('numordersmethodobj'));
             console.log(_l_nom)
             if(!!_l_nom) {
-                if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
+                if(this.$route.query.isaddress == 1){
+                // if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
                     this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
                     this.ordercreate.orderdes = _l_nom.orderdes;
                     this.ordercreate.pay_method = _l_nom.pay_method;
@@ -426,7 +427,6 @@ export default {
             let _isaddress = this.$route.query.isaddress;
 
             // this.skuinfoparam.actstock = 1000;
-
 
             if (this.onemore == 1) {
                 this.skuinfoparam.images =
@@ -456,7 +456,8 @@ export default {
                 this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
 
                 //发票
-                if(!!JSON.parse(localStorage.getItem('invoiceobj')) && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
+                if(!!JSON.parse(localStorage.getItem('invoiceobj'))) {
+                // if(!!JSON.parse(localStorage.getItem('invoiceobj')) && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
                     this.ordercreate.invoice_info = {
                         invoice_type: JSON.parse(localStorage.getItem('invoiceobj')).invoice_type,
                         register_phone: JSON.parse(localStorage.getItem('invoiceobj')).register_phone,
@@ -708,19 +709,41 @@ export default {
                             }
 
                             if (that.$route.query.onemore == 1) {
+
                                 if (that.$route.query.isaddress == 1) {
                                     var _addressobj = JSON.parse(
                                         localStorage.getItem("addressobj")
                                     );
-                                    that.addressData.map(itm => {
-                                        if (itm.id == _addressobj.id) {
-                                            localStorage.setItem(
-                                                "addressobj",
-                                                JSON.stringify(itm)
-                                            );
-                                            that.selectaddress = itm;
-                                        }
-                                    });
+                                    if (!!_addressobj) { 
+                                    
+                                        that.addressData.map(itm => {
+                                            if (itm.id == _addressobj.id) {
+                                                localStorage.setItem(
+                                                    "addressobj",
+                                                    JSON.stringify(itm)
+                                                );
+                                                that.selectaddress = itm;
+                                            }
+                                        });
+                                    }else {
+                                        that.selectaddress = that.addressData[0];
+                                        localStorage.setItem(
+                                            "addressobj",
+                                            JSON.stringify(that.selectaddress)
+                                        );
+                                        that.detailownerParam = {
+                                            id: res.data[0].id,
+                                            receiver: res.data[0].receiver,
+                                            phone: res.data[0].phone,
+                                            address: res.data[0].address,
+                                            user_id: res.data[0].user_id,
+                                            created_at: res.data[0].created_at,
+                                            updated_at: res.data[0].updated_at,
+                                            provincial: res.data[0].provincial,
+                                            city: res.data[0].city,
+                                            area: res.data[0].area
+                                        };
+                                    }
                                 } else {
                                     var _onemoreobj = JSON.parse(
                                         localStorage.getItem("onemoreobj")
@@ -737,7 +760,11 @@ export default {
 
                             that.drawerAddress = true;
                         } else {
-                            that.detailowner = false;
+                            if (that.$route.query.onemore == 1) {
+                                that.detailowner = true;
+                            }else {
+                                that.detailowner = false;
+                            }
                             that.drawerAddress = false;
                         }
                     } else if (!!res && res.code == 113005) {
@@ -974,55 +1001,55 @@ export default {
             document.body.appendChild(div);
             document.querySelector("#alipay").children[0].submit();
         },
-        linkInvoice() {
-            let _invoiceobjsss = localStorage.getItem("invoiceobj")
-            //     ? JSON.parse(localStorage.getItem("invoiceobj")).id
-            //     : 0;
+        // linkInvoice() {
+        //     let _invoiceobjsss = localStorage.getItem("invoiceobj")
+        //     //     ? JSON.parse(localStorage.getItem("invoiceobj")).id
+        //     //     : 0;
 
-            let obj = {};
-            if(!_invoiceobjsss && !!JSON.parse(localStorage.getItem("onemoreobj"))){
-                let _invoiceinfo = JSON.parse(localStorage.getItem("onemoreobj")).snapshoot_cnt.invoice_info;
-                if(_invoiceinfo.invoice_type == 2) {
-                    obj = {
-                        invoice: 1,
-                        invoice_name: _invoiceinfo.invoice_name,
-                        invoice_type: "2",
-                        isqueryinvoice: 1,
-                        is_invoice: 1,
-                        register_address: _invoiceinfo.register_address,
-                        register_bank: _invoiceinfo.register_bank,
-                        register_bank_account: _invoiceinfo.register_bank_account,
-                        register_phone: _invoiceinfo.register_phone,
-                        taxpayer_number: _invoiceinfo.taxpayer_number,
-                    }
-                }else if(_invoiceinfo.invoice_type == 1) {
-                    obj = {
-                        invoice: 1,
-                        invoice_name: _invoiceinfo.invoice_name,
-                        invoice_type: "1",
-                        is_invoice: 1,
-                        isqueryinvoice: 1,
-                    }
-                }else {
-                    obj = {
-                        id: 0,
-                        invoice: 1,
-                        is_invoice: 0,
-                        isqueryinvoice: 1,
-                    }
-                }
-                localStorage.setItem('invoiceobj', JSON.stringify(obj));
-            }
+        //     let obj = {};
+        //     if(!_invoiceobjsss && !!JSON.parse(localStorage.getItem("onemoreobj"))){
+        //         let _invoiceinfo = JSON.parse(localStorage.getItem("onemoreobj")).snapshoot_cnt.invoice_info;
+        //         if(_invoiceinfo.invoice_type == 2) {
+        //             obj = {
+        //                 invoice: 1,
+        //                 invoice_name: _invoiceinfo.invoice_name,
+        //                 invoice_type: "2",
+        //                 isqueryinvoice: 1,
+        //                 is_invoice: 1,
+        //                 register_address: _invoiceinfo.register_address,
+        //                 register_bank: _invoiceinfo.register_bank,
+        //                 register_bank_account: _invoiceinfo.register_bank_account,
+        //                 register_phone: _invoiceinfo.register_phone,
+        //                 taxpayer_number: _invoiceinfo.taxpayer_number,
+        //             }
+        //         }else if(_invoiceinfo.invoice_type == 1) {
+        //             obj = {
+        //                 invoice: 1,
+        //                 invoice_name: _invoiceinfo.invoice_name,
+        //                 invoice_type: "1",
+        //                 is_invoice: 1,
+        //                 isqueryinvoice: 1,
+        //             }
+        //         }else {
+        //             obj = {
+        //                 id: 0,
+        //                 invoice: 1,
+        //                 is_invoice: 0,
+        //                 isqueryinvoice: 1,
+        //             }
+        //         }
+        //         localStorage.setItem('invoiceobj', JSON.stringify(obj));
+        //     }
 
-            this.$router.push({
-                name: "addinvoice",
-                query: { 
-                    // invoiceId: _invoiceId,
-                    onemore: this.$route.query.onemore,
-                    isaddress: this.$route.query.isaddress,
-                }
-            });
-        },
+        //     this.$router.push({
+        //         name: "addinvoice",
+        //         query: { 
+        //             // invoiceId: _invoiceId,
+        //             onemore: this.$route.query.onemore,
+        //             isaddress: this.$route.query.isaddress,
+        //         }
+        //     });
+        // },
         touchStart(e) {
             this.startX = e.touches[0].clientX;
         },
