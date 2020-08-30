@@ -112,6 +112,7 @@ export default {
             tipppp: "",
             _scroll: {},
             total: 1,
+            pagesthis: 1,
             _order_code: "",
             imgaddress: '',
         };
@@ -320,12 +321,12 @@ export default {
             return str;
         },
         getData(callback, pages) {
+            let that = this;
             let data = {
-                page: pages,
+                page: !!pages ? pages : (that.myorderDatapage>1?that.myorderDatapage-1:1),
                 pagesize: this.myorderDatapagesize,
                 usage_scenario: "bytemoon_pay"
             };
-            let that = this;
             orderlist(data)
                 .then(function(res) {
                     if (res.code == 20000) {
