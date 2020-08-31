@@ -38,7 +38,7 @@
                                 v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
                                 @click="deleteorder(item, index)"
                             >取消订单</button>
-                            <button v-if="item.order_status == 5 && item.invoice_status == 1" @click="invoiceopen(item)">申请开票</button>
+                            <button v-if="item.order_status == 5 && item.invoice_status == 0" @click="invoiceopen(item)">申请开票</button>
                             <button
                                 v-if="item.order_status == 5 && (item.invoice_status == 2 || item.invoice_status == 4)"
                                 @click="invoiceshow(item)"
