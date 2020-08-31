@@ -75,7 +75,8 @@ export default {
                 email: "",
                 vcCode: "",
                 disabled: true
-            }
+            },
+            routerurl: 'ordercheck',
         };
     },
     components: {
@@ -196,7 +197,12 @@ export default {
                                 _czc.push(["_trackEvent", "login", "loginh5"]);
                                 that.alertBoxContent = "登陆成功";
                                 setTimeout(function() {
-                                    that.$router.push("/ordercheck");
+                                    if(that.routerurl == 'ordercheck') {
+                                        that.$router.push("/ordercheck");
+                                    }
+                                    if(that.routerurl == 'myorder') {
+                                        that.$router.push("/myorder");
+                                    }
                                 }, 1000);
                             } else {
                                 that.alertBoxContent = res.message;
@@ -217,6 +223,7 @@ export default {
             } else {
                 this.loginShow = true;
                 this.nowPayShow = false;
+                this.routerurl = 'ordercheck';
             }
             _czc.push(["_trackEvent", "tobuy", "tobuyh5"]);
         },
@@ -226,6 +233,7 @@ export default {
             } else {
                 this.loginShow = true;
                 this.nowPayShow = false;
+                this.routerurl = 'myorder';
             }
         },
         touchFunc() {

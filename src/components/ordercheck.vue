@@ -577,6 +577,7 @@ export default {
                         that.skuinfoparam.images = _info.images[0];
                         that.skuinfoparam.itemName = _info.itemName;
                         that.skuinfoparam.actstock = _info.actstock;
+                        // that.maxnum = _info.actstock;
                         that.skuinfoparam.itemCode = _info.itemCode;
                         that.skuinfoparam.shop_price = _info.shop_price;
                         that.skuinfoparam.barCode = _info.barCode;
@@ -1485,7 +1486,7 @@ export default {
 
 .detailowner {
     background: #ffffff;
-    min-height: 73px;
+    min-height: 88px;
     position: relative;
     overflow: hidden;
 }

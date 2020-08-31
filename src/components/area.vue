@@ -77,7 +77,7 @@ export default {
                     city: [
                         {
                             id: 3,
-                            name: "北京市市辖区",
+                            name: "北京市",
                             district: [
                                 "东城区",
                                 "西城区",
@@ -105,7 +105,7 @@ export default {
                     city: [
                         {
                             id: 21,
-                            name: "天津市市辖区",
+                            name: "天津市",
                             district: [
                                 "和平区",
                                 "河东区",

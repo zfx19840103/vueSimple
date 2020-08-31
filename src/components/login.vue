@@ -77,7 +77,8 @@ export default {
                 email: "",
                 vcCode: "",
                 disabled: true
-            }
+            },
+            routerurl: 'ordercheck',
         };
     },
     components: {
@@ -234,7 +235,7 @@ export default {
 
                                 that.alertBoxContent = "登录成功";
                                 setTimeout(function() {
-                                    that.$router.push("/product");
+                                        that.$router.push("/myorder");
                                 }, 1000);
                             } else {
                                 that.alertBoxContent = res.message;
@@ -255,6 +256,7 @@ export default {
             } else {
                 this.loginShow = true;
                 this.arrow = false;
+
             }
         },
         
