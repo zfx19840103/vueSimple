@@ -5,9 +5,7 @@
             <div class="bscroll-container">
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
-                        <div
-                            @click="orderdetail(item)"
-                        >
+                        <div @click="orderdetail(item)">
                             <div class="top">
                                 <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
                                 <em
@@ -41,8 +39,10 @@
                                 @click="deleteorder(item, index)"
                             >取消订单</button>
                             <button v-if="item.order_status == 5" @click="invoiceopen(item)">申请开票</button>
-                            <button v-if="item.invoice_status == 2 || item.invoice_status == 4" @click="invoiceshow(item)">查看开票</button>
-                            
+                            <button
+                                v-if="item.invoice_status == 2 || item.invoice_status == 4"
+                                @click="invoiceshow(item)"
+                            >查看开票</button>
                         </div>
                     </li>
                 </ul>
@@ -115,8 +115,8 @@ export default {
             total: 1,
             pagesthis: 1,
             _order_code: "",
-            imgaddress: '',
-            deleteorderindex: 1,
+            imgaddress: "",
+            deleteorderindex: 1
         };
     },
     components: {
@@ -154,7 +154,7 @@ export default {
                 taxpayer_number:
                     item.snapshoot_cnt.invoice_info.taxpayer_number,
                 created_at: item.created_at,
-                imgaddress: !!item.invoice_res ? item.invoice_res.URL : '',
+                imgaddress: !!item.invoice_res ? item.invoice_res.URL : ""
             };
             this.$router.push({ name: "invoiceshow", query: data });
         },
@@ -180,6 +180,11 @@ export default {
             let data = {
                 order_code: this._order_code
             };
+            let newarr = [];
+            let thispage =
+                Math.ceil(that.deleteorderindex / 10) > 0
+                    ? Math.ceil(that.deleteorderindex / 10)
+                    : 1;
 
             orderrefund(data)
                 .then(function(res) {
@@ -189,23 +194,19 @@ export default {
                             that.dodb = false;
                             that.deleteorderDialog = false;
 
-                            // that.getData();
                             that.getData(res => {
-                                debugger
-                                // that.myorderData.list = that.myorderData.list.concat(
-                                //     res.data.list
-                                // );
-                                if (
-                                    that.myorderDatapage >
-                                    Math.ceil(
-                                        that.total / that.myorderDatapagesize
-                                    )
-                                ) {
-                                    that.pullupMsg = "已是最后一页";
-                                }
-                            });
 
-                        }, 1000)
+                                newarr = (thispage == 1 ? res.data.list : that.myorderData.list.slice(0, (thispage>1?(thispage-1)*10:10)));
+
+                                if(thispage > 1) {
+                                    newarr = newarr.concat(res.data.list);
+                                }
+
+                                newarr = newarr.concat(that.myorderData.list.slice(thispage*10, that.myorderData.list.length))
+                                that.myorderData.list = newarr;
+
+                            }, thispage);
+                        }, 1000);
                         that.alertBox = {
                             visible: true,
                             tip: "取消成功"
@@ -235,14 +236,14 @@ export default {
         callphoneFunc() {},
 
         deleteorder(item, index) {
+            let that = this;
             that.deleteorderindex = index;
             if (item.order_status == 4) {
                 this._order_code = item.order_code;
                 this.doda = false;
                 this.dodb = true;
                 this.deleteorderDialog = true;
-            }else {
-
+            } else {
                 this._order_code = item.order_code;
                 this.doda = true;
                 this.dodb = false;
@@ -341,7 +342,7 @@ export default {
         getData(callback, pages) {
             let that = this;
             let data = {
-                page: !!pages ? pages : (that.myorderDatapage>1?that.myorderDatapage-1:1),
+                page: pages,
                 pagesize: this.myorderDatapagesize,
                 usage_scenario: "bytemoon_pay"
             };
