@@ -6,7 +6,7 @@
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
                         <div
-                            @click="item.order_status == 0 ? gotoPayFunc(item) : orderdetail(item)"
+                            @click="orderdetail(item)"
                         >
                             <div class="top">
                                 <span>{{item.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
@@ -35,9 +35,10 @@
                                 @click="gotoPayFunc(item)"
                             >去支付</button>
                             <button v-else @click="onemorePayFunc(item)">再来一单</button>
+
                             <button
                                 v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
-                                @click="deleteorder(item)"
+                                @click="deleteorder(item, index)"
                             >取消订单</button>
                             <button v-if="item.order_status == 5" @click="invoiceopen(item)">申请开票</button>
                             <button v-if="item.invoice_status == 2 || item.invoice_status == 4" @click="invoiceshow(item)">查看开票</button>
@@ -115,6 +116,7 @@ export default {
             pagesthis: 1,
             _order_code: "",
             imgaddress: '',
+            deleteorderindex: 1,
         };
     },
     components: {
@@ -187,7 +189,22 @@ export default {
                             that.dodb = false;
                             that.deleteorderDialog = false;
 
-                            that.getData();
+                            // that.getData();
+                            that.getData(res => {
+                                debugger
+                                // that.myorderData.list = that.myorderData.list.concat(
+                                //     res.data.list
+                                // );
+                                if (
+                                    that.myorderDatapage >
+                                    Math.ceil(
+                                        that.total / that.myorderDatapagesize
+                                    )
+                                ) {
+                                    that.pullupMsg = "已是最后一页";
+                                }
+                            });
+
                         }, 1000)
                         that.alertBox = {
                             visible: true,
@@ -217,7 +234,8 @@ export default {
         },
         callphoneFunc() {},
 
-        deleteorder(item) {
+        deleteorder(item, index) {
+            that.deleteorderindex = index;
             if (item.order_status == 4) {
                 this._order_code = item.order_code;
                 this.doda = false;

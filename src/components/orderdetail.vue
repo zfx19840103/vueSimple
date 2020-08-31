@@ -2,7 +2,7 @@
     <div>
         <div class="ms_content">
             <div class="detailTip">
-                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.pay_status)}}</h3>
+                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.order_status)}}</h3>
                 <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
                 <div v-if="!!logisticsinfoif" class="tip" @click="logisticsinfoFunc">
                     <span>{{logistics_status}}</span>
@@ -115,7 +115,8 @@
                     <em v-else></em>
                 </p>
             </div>
-            <button class="orderdetailbtn" @click="paycreateFunc">再来一单</button>
+            <button class="orderdetailbtn" v-if="info.pay_status == 0" @click="gotoPayFunc">立即支付</button>
+            <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button>
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
@@ -292,8 +293,7 @@ export default {
             });
         },
         order_status_func(status) {
-            var str = "";
-            if (!!status) {
+            let str = "";
                 if (status == 0) {
                     str = "待付款";
                 } else if (status == 1) {
@@ -309,7 +309,6 @@ export default {
                 } else if (status == 6) {
                     str = "交易异常";
                 }
-            }
             return str;
         },
         logisticsinfoData() {
@@ -375,6 +374,21 @@ export default {
                 name: "ordercheck",
                 query: {
                     onemore: 1
+                }
+            });
+            localStorage.removeItem('numordersmethodobj');
+            localStorage.removeItem('addressobj');
+            localStorage.removeItem('invoiceobj');
+            localStorage.setItem("onemoreobj", JSON.stringify(that.info));
+        },
+        gotoPayFunc() {
+            let that = this;
+
+            that.$router.push({
+                name: "ordercheck",
+                query: {
+                    onemore: 1,
+                    payloading: 1,
                 }
             });
             localStorage.removeItem('numordersmethodobj');
