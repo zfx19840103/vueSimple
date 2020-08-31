@@ -383,6 +383,12 @@ export default {
         this.initonemoreFunc();
 
         this.numordersmethod();
+
+        if(!!localStorage.getItem('onemoreobj')) {
+            this.$router.push({ name: "ordercheck", query: {
+                onemore:1
+            } });
+        }
     },
     computed: {
         defaultAvatar() {
@@ -868,7 +874,7 @@ export default {
         //创建订单
         paysubmit() {
             let that = this;
-
+        
             if (!that.detailownerParam.provincial) {
                 that.alertBox = {
                     tip: "请添加收货地址",
