@@ -17,7 +17,8 @@
                 企业
                 </label>
             </p>
-            <p><span class="left"><i>*</i>发票抬头</span><input maxlength="50" v-model.trim="invoice_info.invoice_name" class="right inputtext" type="text" :placeholder="invoice_info.invoice_type == 2 ? '抬头名称' : '填写需开具的抬头名称，默认为“个人”'" /></p>
+            <p v-if="invoice_info.invoice_type==2"><span class="left"><i>*</i>发票抬头</span><input maxlength="50" v-model.trim="invoice_info.invoice_name2" class="right inputtext" type="text" placeholder="抬头名称" /></p>
+            <p v-if="invoice_info.invoice_type==1"><span class="left"><i></i>发票抬头</span><input maxlength="50" v-model.trim="invoice_info.invoice_name1" class="right inputtext" type="text" placeholder="填写需开具的抬头名称，默认为“个人”" /></p>
             <p v-if="invoice_info.invoice_type == 2"><span class="left"><i>*</i>税号</span><input maxlength="50" v-model.trim="invoice_info.taxpayer_number" class="right inputtext"  type="text" placeholder="纳税人识别号" /></p>
         </div>
         <div class="ivtextarea">
@@ -60,6 +61,8 @@ export default {
             invoice_info: {
                 invoice_type: 1, //1个人，2公司
                 invoice_name: "",
+                invoice_name1: "",
+                invoice_name2: "",
                 taxpayer_number: "",
                 register_address: "",
                 register_phone: "",
@@ -91,11 +94,12 @@ export default {
             this.ivnewsprice = _ivnews.ivnewsprice;
         },
         inputradio() {
-            this.invoice_info.invoice_name = '';
+            this.invoice_info.invoice_name1 = '';
+            this.invoice_info.invoice_name2 = '';
             this.invoice_info.taxpayer_number = '';
         },
         opensubmit() {
-            if (this.invoice_info.invoice_name == '') {
+            if (this.invoice_info.invoice_type == 2 && this.invoice_info.invoice_name2 == '') {
                 this.alertBoxVisible = true;
                 this.alertBoxContent = "请输入抬头名称";
             }else if (this.invoice_info.invoice_type == 2 && this.invoice_info.taxpayer_number == '') {
@@ -116,7 +120,7 @@ export default {
                 order_code: this.ivnewscode,
                 invoice_info: {
                     invoice_type: this.invoice_info.invoice_type, //1个人，2公司
-                    invoice_name: this.invoice_info.invoice_name,
+                    invoice_name: this.invoice_info.invoice_type == 2 ? this.invoice_info.invoice_name2 : (this.invoice_info.invoice_name1 != '' ? this.invoice_info.invoice_name1 : '个人'),
                     taxpayer_number: this.invoice_info.taxpayer_number,
                     register_address: "",
                     register_phone: "",
