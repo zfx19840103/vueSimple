@@ -386,7 +386,8 @@ export default {
 
         if(!!localStorage.getItem('onemoreobj')) {
             this.$router.push({ name: "ordercheck", query: {
-                onemore:1
+                onemore:1,
+                payloading:this.$route.query.payloading,
             } });
         }
     },
