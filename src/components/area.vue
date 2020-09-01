@@ -5490,6 +5490,16 @@ export default {
             // 点击选择当前
             this.info.map(a => (a.selected = false));
             this.info[index].selected = true;
+
+            if(this.showCityList.length == 0){
+                this.closeAdd();
+                let areaparam = {
+                    p: this.Province,
+                    c: !!this.City ? this.City : '',
+                    d: !!this.District ? this.District : '',
+                };
+                this.$emit("listenareaFunc", areaparam);
+            }
         },
         provinceSelected: function() {
             // 清除市级和区级列表
@@ -5517,6 +5527,7 @@ export default {
             // 选择当前添加active
             this.showCityList.map(a => (a.selected = false));
             this.showCityList[index].selected = true;
+
             if (this.showDistrictList.length == 0) {
                 this.closeAdd();
                 let areaparam = {

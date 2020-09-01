@@ -137,8 +137,8 @@ export default {
             let data = {
                 address: {
                     provincial: this.param.areaobj.p,
-                    city: this.param.areaobj.c,
-                    area: this.param.areaobj.d,
+                    city: !!this.param.areaobj.c ? this.param.areaobj.c : '',
+                    area: !!this.param.areaobj.d ? this.param.areaobj.d : '',
                     receiver: this.param.receiver,
                     phone: this.param.phone,
                     address: this.param.addressbk
@@ -317,8 +317,8 @@ export default {
                 let data = {
                     address: {
                         provincial: this.param.areaobj.p,
-                        city: this.param.areaobj.c,
-                        area: this.param.areaobj.d,
+                        city: !!this.param.areaobj.c ? this.param.areaobj.c : '',
+                        area: !!this.param.areaobj.d ? this.param.areaobj.d : '',
                         receiver: this.param.receiver,
                         phone: this.param.phone,
                         address: this.param.addressbk
@@ -442,7 +442,7 @@ export default {
   background: #ffffff;
 } */
 .unit input.areaaddress {
-    width: 2rem;
+    width: 2.3rem;
 }
 .unit {
     height: 46px;
