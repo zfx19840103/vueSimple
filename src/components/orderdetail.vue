@@ -1,7 +1,7 @@
 <template>
         <div class="ms_content">
             <div class="detailTip">
-                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.order_status)}}</h3>
+                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(_order_status)}}</h3>
                 <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
                 <div v-if="!!logisticsinfoif" class="tip" @click="logisticsinfoFunc">
                     <span>{{logistics_status}}</span>
@@ -115,7 +115,7 @@
                 </p>
             </div>
             <div class="orderdetailbtnbg"></div>
-            <button class="orderdetailbtn" v-if="info.pay_status == 0" @click="gotoPayFunc">立即支付</button>
+            <button class="orderdetailbtn" v-if="_pay_status == 0" @click="gotoPayFunc">立即支付</button>
             <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button>
 
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
@@ -259,7 +259,10 @@ export default {
                 logistics_status: "已签收",
                 mail_no: "4305395863531",
                 Logistics_company: "韵达"
-            }
+            },
+            _pay_status: '',
+            _order_status: '',
+            timeFunc: {},
         };
     },
     components: {
@@ -273,6 +276,7 @@ export default {
     created() {
         if (localStorage.getItem("order_isload") == 1) {
             this.pollpay();
+
         } else {
             this.orderloading = localStorage.getItem("order_loading");
         }
@@ -346,6 +350,9 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.info = res.data.info;
+                        that._pay_status = res.data.info.pay_status;
+                        that._order_status = res.data.info.order_status;
+
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
@@ -376,6 +383,8 @@ export default {
                     onemore: 1
                 }
             });
+            clearTimeout(that.timeFunc);
+            localStorage.removeItem('order_loading');
             localStorage.removeItem('numordersmethodobj');
             localStorage.removeItem('addressobj');
             localStorage.removeItem('invoiceobj');
@@ -420,9 +429,9 @@ export default {
             let that = this;
             var n = 60 * 5,
                 t = 0;
-            var timeFunc;
+            that.timeFunc;
             function timec() {
-                timeFunc = setTimeout(function() {
+                that.timeFunc = setTimeout(function() {
                     t += 1;
                     timec();
                     if (t <= n) {
@@ -437,11 +446,12 @@ export default {
                                             res.code == 20000 &&
                                             !res.data.is_continue
                                         ) {
-                                            clearTimeout(timeFunc);
+                                            clearTimeout(that.timeFunc);
                                             localStorage.setItem(
                                                 "order_isload",
                                                 0
                                             );
+                                            that._pay_status = 2;
                                             if (res.data.pay_status == 2) {
                                                 that.orderloading = "支付成功";
                                                 // that.logisticsinfoif = true;
@@ -453,7 +463,7 @@ export default {
                                             res.code == 520002 ||
                                             res.code == 88888
                                         ) {
-                                            clearTimeout(timeFunc);
+                                            clearTimeout(that.timeFunc);
                                             localStorage.setItem(
                                                 "order_isload",
                                                 0
@@ -471,7 +481,7 @@ export default {
                                 });
                         }
                     } else {
-                        clearTimeout(timeFunc);
+                        clearTimeout(that.timeFunc);
                         that.payovertimeFunc();
                     }
                 }, 1000);
