@@ -2,18 +2,18 @@
     <div>
         <div class="ms_content">
             <div class="titNews">
-                {{Logistics_company}}{{mail_no}}
+                {{data.Logistics_company}}{{data.mail_no}}
                 <span
                     class="iconCopy"
                     title="复制单号"
-                    :data-clipboard-text= orderCode
+                    :data-clipboard-text="orderCode"
                     @click="copy"
                 ></span>
             </div>
             <div class="orderTrackContent">
                 <el-timeline>
                     <el-timeline-item
-                        v-for="(activity, index) in activities"
+                        v-for="(activity, index) in data.list"
                         :key="index"
                         :icon="activity.icon"
                         :type="activity.type"
@@ -49,10 +49,46 @@ export default {
                 tip: ""
             },
             orderCode: this.$route.query.orderCode,
-            Logistics_company: '',
-            activities: [
-                
-            ]
+            
+            data: {
+                list: [
+                    // {
+                    //     "time": "2020-05-09 19:12:08",
+                    //     "desc": "【宁波市】浙江鄞州KH公司小港服务部 已揽收"
+                    // },
+                    // {
+                    //     "time": "2020-05-09 20:51:53",
+                    //     "desc": "【宁波市】已到达 浙江宁波分拨中心"
+                    // },
+                    // {
+                    //     "time": "2020-05-09 21:01:41",
+                    //     "desc": "【宁波市】已离开 浙江宁波分拨中心；发往 京西地区包"
+                    // },
+                    // {
+                    //     "time": "2020-05-09 21:29:13",
+                    //     "desc": "【宁波市】已离开 浙江宁波分拨中心；发往 北京分拨中心"
+                    // },
+                    // {
+                    //     "time": "2020-05-10 21:17:40",
+                    //     "desc": "【北京市】已到达 北京分拨中心"
+                    // },
+                    // {
+                    //     "time": "2020-05-10 21:57:21",
+                    //     "desc": "【北京市】已离开 北京分拨中心；发往 北京海淀区中关村西北区公司"
+                    // },
+                    // {
+                    //     "time": "2020-05-11 07:54:23",
+                    //     "desc": "【北京市】北京海淀区中关村西北区公司派件员：贾荣跃 电话：17610655872 当前正在为您派件"
+                    // },
+                    // {
+                    //     "time": "2020-05-11 12:34:06",
+                    //     "desc": "【北京市】您的快件已签收，签收人：二华联，如有问题请电联快递员：贾荣跃【17610655872】，投诉电话：010-58545550。起早摸黑不停忙，如有不妥您见谅，好评激励我向上，求个五星暖心房感谢使用韵达快递，期待再次为您服务"
+                    // }
+                ],
+                logistics_status: "",
+                mail_no: "",
+                Logistics_company: ""
+            },
         };
     },
     components: {
@@ -83,11 +119,23 @@ export default {
             let data = {
                 orderCode: query.orderCode
             };
+            that.data.list = that.dataeidt(that.data.list);
             logisticsinfo(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
-                        that.activities = that.dataeidt(res.data.list);
-                        that.Logistics_company = res.data.Logistics_company;
+                            that.data = res.data;
+                            that.data.list = that.dataeidt(that.data.list);
+                    } else if (!!res && res.code == 113005) {
+                        that.alertBox = {
+                            visible: true,
+                            tip: res.message
+                        };
+
+                        localStorage.removeItem("moon_email");
+                        localStorage.removeItem("onemoreobj");
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
                     } else {
                         that.alertBox = {
                             visible: true,
@@ -109,7 +157,7 @@ export default {
                 if (i == 0) {
                     obj = {
                         content: data[i].desc,
-                        address: '',
+                        address: "",
                         timestamp: data[i].time,
                         type: "primary",
                         color: "#ffffff"
@@ -117,7 +165,7 @@ export default {
                 } else {
                     obj = {
                         content: data[i].desc,
-                        address: '',
+                        address: "",
                         timestamp: data[i].time
                     };
                 }
@@ -180,10 +228,10 @@ export default {
     color: #9b9b9b;
 }
 .el-timeline-item:nth-child(1) .el-timeline-item__content span {
-    color: #ff502c;
+    color: #3C8CFF;
 }
 .el-timeline-item:nth-child(1) .el-timeline-item__content p {
-    color: #ff502c;
+    color: #3C8CFF;
 }
 .el-timeline-item__content .time {
     position: absolute;
