@@ -17,8 +17,8 @@
             <p><span class="left">发票状态</span><span class="right">{{invoice_status_func(invoice_status)}}</span></p>
         </div>
         <div class="ivtime">申请时间：{{created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</div>
-        <button class="ivbutton ivbuttontop" @click="postemail">发送邮箱</button>
-        <button class="ivbutton" :class="{'isshowinvoice': !this.$route.query.imgaddress}" :disabled="!this.$route.query.imgaddress" @click="invoiceaddress">查看发票</button>
+        <button class="ivbutton ivbuttontop" :class="{'isshowinvoice': invoice_status != 4}" :disabled="invoice_status != 4" @click="postemail">发送邮箱</button>
+        <button class="ivbutton" :class="{'isshowinvoice': invoice_status != 4}" :disabled="invoice_status != 4" @click="invoiceaddress">查看发票</button>
         <div class="deleteorderDialog" v-if="deleteorderDialog">
             <div class="deleteorderDialogBg" @click="closedodFunc"></div>
             <div class="dodcontent">
@@ -75,7 +75,7 @@ export default {
                 ivnewsprice: this.$route.query.ivnewsprice,
 
                 invoice_type: this.$route.query.invoice_type,
-                invoice_name: this.$route.query.invoice_name,
+                invoice_name: this.invoice_type == 1 ? (!!this.$route.query.invoice_name ? this.$route.query.invoice_name : '个人') : this.$route.query.invoice_name,
                 taxpayer_number: this.$route.query.taxpayer_number,
                 invoice_status: this.$route.query.invoice_status,
                 created_at: this.$route.query.created_at,
@@ -104,7 +104,7 @@ export default {
             } else if (status == 2) {
                 str = "开票中";
             } else if (status == 4) {
-                str = "已经开票";
+                str = "已开票";
             }
             return str;
         },
