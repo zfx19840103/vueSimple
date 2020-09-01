@@ -10,7 +10,7 @@
                 <span class="left"><i>*</i>抬头类型</span>
                 <span class="right">{{invoice_type == "2" ? '企业' : '个人'}}</span>
             </p>
-            <p><span class="left"><i>*</i>发票抬头</span><span class="right col9B9B9B">{{invoice_name}}</span></p>
+            <p><span class="left"><i v-if="invoice_type == 2">*</i>发票抬头</span><span class="right col9B9B9B">{{invoice_name}}</span></p>
             <p v-if="invoice_type == 2"><span class="left"><i>*</i>税号</span><span class="right col9B9B9B">{{taxpayer_number}}</span></p>
         </div>
         <div class="ivtextarea">

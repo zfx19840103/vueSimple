@@ -8,6 +8,7 @@
             </div>
         <div class="login-wrap">
             <span class="orderCenter" @click="orderCenter"><i>订单中心</i></span>
+            <div class="login_wrap_content_bg" v-if="loginShow"></div>
             <div class="login_wrap_content" v-if="loginShow">
                 <div class="loginunit">
                     <label>
@@ -620,10 +621,20 @@ div.captchaClass {
     top: 0;
     left: 0;
 }
+.login_wrap_content_bg {
+    width: 3.75rem;
+    position: fixed;
+    height: 2.97rem;
+    bottom: 0;
+    z-index: 1;
+    background-image: url(../assets/img/login_bgc.png);
+    background-size: 100% 100%;
+}
 .login_wrap_content {
     width: 2.6rem;
     position: fixed;
     bottom: 0.6rem;
+    z-index: 2;
 }
 
 .login-tips {
