@@ -220,6 +220,7 @@ export default {
         },
         nowPayFunc() {
             if (localStorage.getItem("moon_email")) {
+                localStorage.removeItem('onemoreobj');
                 this.$router.push("/ordercheck");
             } else {
                 this.loginShow = true;
