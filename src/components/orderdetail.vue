@@ -1,7 +1,7 @@
 <template>
         <div class="ms_content">
             <div class="detailTip">
-                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(_order_status)}}</h3>
+                <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(order_statusbk)}}</h3>
                 <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
                 <div v-if="!!logisticsinfoif" class="tip" @click="logisticsinfoFunc">
                     <span>{{logistics_status}}</span>
@@ -115,7 +115,7 @@
                 </p>
             </div>
             <div class="orderdetailbtnbg"></div>
-            <button class="orderdetailbtn" v-if="_pay_status == 0" @click="gotoPayFunc">立即支付</button>
+            <button class="orderdetailbtn" v-if="pay_statusbk == 0" @click="gotoPayFunc">立即支付</button>
             <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button>
 
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
@@ -260,8 +260,8 @@ export default {
                 mail_no: "4305395863531",
                 Logistics_company: "韵达"
             },
-            _pay_status: '',
-            _order_status: '',
+            pay_statusbk: 1,
+            order_statusbk: 1,
             timeFunc: {},
         };
     },
@@ -350,9 +350,9 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.info = res.data.info;
-                        that._pay_status = res.data.info.pay_status;
-                        that._order_status = res.data.info.order_status;
-
+                        that.pay_statusbk = res.data.info.pay_status;
+                        that.order_statusbk = res.data.info.order_status;
+                        console.log(that.pay_statusbk)
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
@@ -435,7 +435,7 @@ export default {
                     t += 1;
                     timec();
                     if (t <= n) {
-                        console.log(t);
+                        // console.log(t);
                         that.orderloadingtime = t;
                         localStorage.setItem("orderloadingtime", t);
                         if (t % 2 == 0) {
@@ -451,7 +451,8 @@ export default {
                                                 "order_isload",
                                                 0
                                             );
-                                            that._pay_status = 2;
+                                            that.pay_statusbk = 2;
+                                            console.log(that.pay_statusbk)
                                             if (res.data.pay_status == 2) {
                                                 that.orderloading = "支付成功";
                                                 // that.logisticsinfoif = true;
