@@ -211,6 +211,7 @@
                     />
                 </label>
             </div>
+            <div class="payTogotop"></div>
             <div class="payTogo">
                 <span>
                     合计：
@@ -1170,6 +1171,12 @@ export default {
 .detailowner_bottom_bg {
     width: 110%;
 }
+.payTogotop {
+    position: relative;
+    height: 50px;
+    top: 10px;
+    overflow: hidden;
+}
 .detailowner_bottom {
     height: 0.04rem;
     line-height: 0.04rem;
@@ -1450,8 +1457,9 @@ export default {
     height: 50px;
     line-height: 50px;
     background: #ffffff;
-    position: relative;
-    margin-top: 10px;
+    position: fixed;
+
+    bottom: 0;
     width: 100%;
 }
 

@@ -1,5 +1,4 @@
 <template>
-    <div>
         <div class="ms_content">
             <div class="detailTip">
                 <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(info.order_status)}}</h3>
@@ -115,9 +114,10 @@
                     <em v-else></em>
                 </p>
             </div>
+            <div class="orderdetailbtnbg"></div>
             <button class="orderdetailbtn" v-if="info.pay_status == 0" @click="gotoPayFunc">立即支付</button>
             <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button>
-        </div>
+
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
 </template>
@@ -497,6 +497,9 @@ export default {
 </script>
 
 <style scoped>
+div.ordernews p em {
+    margin-left: 0.12rem;
+}
 .detailowner_bottom_bg {
     width: 110%;
 }
@@ -537,6 +540,13 @@ export default {
     background: #f4f4f4;
     padding-bottom: 50px;
 }
+.orderdetailbtnbg {
+    position: relative;
+    width: 100%;
+    height: 66px;
+    top: 0;
+    background: #f4f4f4;
+}
 .orderdetailbtn {
     width: 3.3rem;
     height: 50px;
@@ -558,10 +568,10 @@ export default {
     border: 0;
     font-size: 18px;
     border-radius: 18px;
-    margin-top: 120px;
-    position: relative;
-    bottom: 0;
-    left: 0;
+
+    position: fixed;
+    bottom: 6px;
+    left: 0.23rem;
 }
 .ordernews {
     margin-top: 10px;
@@ -656,7 +666,7 @@ div.ordernews p em {
     top: 15px;
 }
 .ordercenter span:nth-child(3) {
-    top: 40px;
+    top: 55px;
 }
 .orderNum {
     font-size: 14px;

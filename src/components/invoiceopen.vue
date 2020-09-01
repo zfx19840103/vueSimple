@@ -305,7 +305,7 @@ div.dodb button {
     margin: 15px auto;
     }
     .ivbutton.ivbuttontop {
-        margin: 133px auto 0;
+        margin: 103px auto 0;
         text-align: center;
     }
     .ivtextarea p {
