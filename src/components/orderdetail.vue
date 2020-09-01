@@ -3,9 +3,10 @@
             <div class="detailTip">
                 <h3 v-if="this.$route.query.myorder == 1">{{order_status_func(order_statusbk)}}</h3>
                 <h3 v-else>{{orderloadingtime}} {{orderloading}}</h3>
+                
                 <div v-if="!!logisticsinfoif" class="tip" @click="logisticsinfoFunc">
                     <span>{{logistics_status}}</span>
-                    <em>{{info.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
+                    <em>{{logistics_status_time}}</em>
                     <i class="el-icon-arrow-right"></i>
                 </div>
             </div>
@@ -260,6 +261,7 @@ export default {
                 mail_no: "4305395863531",
                 Logistics_company: "韵达"
             },
+            logistics_status_time: '',
             pay_statusbk: 1,
             order_statusbk: 1,
             timeFunc: {},
@@ -325,7 +327,7 @@ export default {
                     if (!!res && res.code == 20000) {
                         // res.data = that.logisticsinfodatadata;
                         that.logistics_status = res.data.logistics_status;
-
+                        that.logistics_status_time = res.data.list.reverse()[0].time;
                         if (!!res.data.list && res.data.list.length > 0) {
                             that.logisticsinfoif = true;
                         }
@@ -414,7 +416,7 @@ export default {
             payovertime(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
-                        that.orderloading = "交易失败";
+                        that.orderloading = "交易超时";
                     }
                 })
                 .catch(function(error) {
@@ -429,6 +431,7 @@ export default {
             };
             let that = this;
             var n = 60 * 5,
+            // var n = 10,
                 t = 0;
             that.timeFunc;
             function timec() {
@@ -733,6 +736,7 @@ div.ordernews p em {
     min-height: 73px;
     position: relative;
     overflow: hidden;
+    margin: 10px 0 0;
 }
 .detailowner .el-icon-location-outline {
     position: relative;
