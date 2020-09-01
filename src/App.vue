@@ -34,6 +34,7 @@ html, body {
   height: 100%;
   width: 100%;
 }
+*{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;}
 .copyTip {
     font-size: 14px;
 }
