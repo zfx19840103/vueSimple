@@ -110,8 +110,8 @@
                 <p>
                     <span>完成时间：</span>
                     <em
-                        v-if="!!info.deleted_at"
-                    >{{info.deleted_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
+                        v-if="!!info.success_time"
+                    >{{info.success_time|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
                     <em v-else></em>
                 </p>
             </div>
