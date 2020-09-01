@@ -274,9 +274,8 @@ export default {
         }
     },
     created() {
-        if (localStorage.getItem("order_isload") == 1) {
+        if (localStorage.getItem("order_isload") == 1 && this.$route.query.myorder != 1) {
             this.pollpay();
-
         } else {
             this.orderloading = localStorage.getItem("order_loading");
         }
@@ -350,8 +349,10 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         that.info = res.data.info;
-                        that.pay_statusbk = res.data.info.pay_status;
-                        that.order_statusbk = res.data.info.order_status;
+                        if(that.$route.query.myorder == 1) {
+                            that.pay_statusbk = res.data.info.pay_status;
+                            that.order_statusbk = res.data.info.order_status;
+                        }
                         console.log(that.pay_statusbk)
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
@@ -442,6 +443,9 @@ export default {
                             paypolling(data)
                                 .then(function(res) {
                                     if (!!res) {
+                                        // debugger
+                                        that.pay_statusbk = 2;
+                                            console.log(that.pay_statusbk)
                                         if (
                                             res.code == 20000 &&
                                             !res.data.is_continue
@@ -451,8 +455,7 @@ export default {
                                                 "order_isload",
                                                 0
                                             );
-                                            that.pay_statusbk = 2;
-                                            console.log(that.pay_statusbk)
+                                            
                                             if (res.data.pay_status == 2) {
                                                 that.orderloading = "支付成功";
                                                 // that.logisticsinfoif = true;
