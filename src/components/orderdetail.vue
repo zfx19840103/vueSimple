@@ -55,7 +55,7 @@
                 </p>
                 <p class="freight">
                     <span>运费：</span>
-                    <em>{{info.snapshoot_cnt.freight == 0 ? '免运费' : '¥'+info.snapshoot_cnt.freight}}</em>
+                    <em>{{info.snapshoot_cnt.freight == 0 ? '包邮' : '¥'+info.snapshoot_cnt.freight}}</em>
                 </p>
                 <p class="total_price">
                     <em>¥{{info.snapshoot_cnt.total_price}}</em>

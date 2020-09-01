@@ -134,7 +134,7 @@
                 </p>
                 <p>
                     <span>运费</span>
-                    <em>{{skuinfoparam.freight != 0 ? '¥'+skuinfoparam.freight : '免费'}}</em>
+                    <em>{{skuinfoparam.freight != 0 ? '¥'+skuinfoparam.freight : '包邮'}}</em>
                 </p>
                 <!-- <p v-if="!payloading" @click="linkInvoice"> -->
                 <!-- <p v-if="!payloading" @click="linkInvoice">
@@ -384,12 +384,12 @@ export default {
 
         this.numordersmethod();
 
-        if(!!localStorage.getItem('onemoreobj')) {
-            this.$router.push({ name: "ordercheck", query: {
-                onemore:1,
-                payloading:this.$route.query.payloading,
-            } });
-        }
+        // if(!!localStorage.getItem('onemoreobj')) {
+        //     this.$router.push({ name: "ordercheck", query: {
+        //         onemore:1,
+        //         payloading:this.$route.query.payloading,
+        //     } });
+        // }
     },
     computed: {
         defaultAvatar() {
