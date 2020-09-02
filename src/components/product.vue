@@ -68,7 +68,7 @@ export default {
             captchaClass: false,
             vcCodepostfontcontent: "发送验证",
             captchaBg: "请先输入邮箱发送验证码",
-            payNow: "299",
+            payNow: "136",
             loginShow: false,
             nowPayShow: true,
             feishuhref: 'https://tsingapi.tsingglobal.com/openapi/auth/login/feishu',
@@ -387,6 +387,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
+    font-family: SimHei;
 }
 .nowPay {
     width: 1.95rem;
