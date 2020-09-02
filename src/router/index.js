@@ -27,25 +27,25 @@ export default new Router({
             path: '/addaddress',
             name: 'addaddress',
             component: () => import(/* webpackChunkName: "addaddress" */ '../components/addaddress.vue'),
-            meta: { title: '2020中秋商城2020中秋商城' }
+            meta: { title: '2020中秋商城' }
         },
         {
             path: '/ordercheck',
             name: 'ordercheck',
             component: () => import(/* webpackChunkName: "ordercheck" */ '../components/ordercheck.vue'),
-            meta: { title: '2020中秋商城2020中秋商城' }
+            meta: { title: '2020中秋商城' }
         },
         {
             path: '/ordertrack',
             name: 'ordertrack',
             component: () => import(/* webpackChunkName: "ordertrack" */ '../components/ordertrack.vue'),
-            meta: { title: '2020中秋商城2020中秋商城' }
+            meta: { title: '2020中秋商城' }
         },
         {
             path: '/myorder',
             name: 'myorder',
             component: () => import(/* webpackChunkName: "myorder" */ '../components/myorder.vue'),
-            meta: { title: '2020中秋商城2020中秋商城' }
+            meta: { title: '2020中秋商城' }
         },
         {
             path: '/addrise',
