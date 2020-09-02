@@ -483,7 +483,9 @@ export default {
                                 console.log(error);
                             });
                         }
-                        that.orderloadingtime = t;
+                        if(t>0) {
+                            that.orderloadingtime = t;
+                        }
                         localStorage.setItem("orderloadingtime", t);
                         t += 1;
 
