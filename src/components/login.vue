@@ -1,13 +1,16 @@
 <template>
-   
-        <div class="loginParent" @touchstart="touchstartFunc"
-        @touchmove="touchmoveFunc"
-        @touchend="touchendFunc">
+    <div style="height:100%;">
+        <span class="orderCenter" @click="orderCenter">
+            <i>订单中心</i>
+        </span>
+        <div
+            class="loginParent"
+            @touchstart="touchstartFunc"
+            @touchmove="touchmoveFunc"
+            @touchend="touchendFunc"
+        >
             <div class="loginBg"></div>
             <div class="login-wrap">
-                <span class="orderCenter" @click="orderCenter">
-                    <i>订单中心</i>
-                </span>
                 <div class="login_wrap_content" v-if="loginShow">
                     <div class="loginunit">
                         <label>
@@ -57,7 +60,7 @@
             </div>
             <AlertBox :alertBox="alertBoxVisible" @close="alertBoxVisible=false">{{alertBoxContent}}</AlertBox>
         </div>
-
+    </div>
 </template>
 
 <script>
@@ -90,7 +93,7 @@ export default {
             swiper: "",
             touchIndex: "",
             tranX: "",
-            tranBack: "",
+            tranBack: ""
         };
     },
     components: {
@@ -111,28 +114,28 @@ export default {
     methods: {
         touchstartFunc(event) {
             let that = this;
-            event.preventDefault();
+            // event.preventDefault();
             var ctouch = event.changedTouches[0];
-            console.log('start' + ctouch.pageY);
-            that.startIndex = ctouch.pageY;//获取到刚开始的X
+            console.log("start" + ctouch.pageY);
+            that.startIndex = ctouch.pageY; //获取到刚开始的X
         },
         touchmoveFunc(event) {
             let that = this;
-            event.preventDefault();
+            // event.preventDefault();
             that.touchIndex = event.changedTouches[0].pageY; //获取到移动时不断改变的X轴上的值
-            that.tranX = that.touchIndex - that.startIndex;//移动过程中X轴上的差值
+            that.tranX = that.touchIndex - that.startIndex; //移动过程中X轴上的差值
             // console.log(that.tranX);
         },
         touchendFunc(event) {
             let that = this;
             event.preventDefault();
-            //获取最终触摸的X轴（手指离开屏幕时获取的）    
+            //获取最终触摸的X轴（手指离开屏幕时获取的）
             that.endIndex = event.changedTouches[0].pageY;
             that.tranBack = Math.abs(that.endIndex) - Math.abs(that.startIndex);
             that.tranBack = Math.abs(that.tranBack);
-            console.log('end'+that.endIndex);
+            console.log("end" + that.endIndex);
             console.log(that.tranBack);
-            if(that.tranBack>60) {
+            if (that.tranBack > 60) {
                 this.$router.push("/product");
             }
         },
@@ -205,11 +208,20 @@ export default {
             this.smartCaptcha.init();
         },
         vcCodepostfont() {
+            let that = this;
+            // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+
             if (this.param.email !== "") {
-                if (this.vcCodepostfontcontent !== "发送验证") {
-                    return;
+                if (!reg.test(this.param.email)) {
+                    that.alertBoxVisible = true;
+                    that.alertBoxContent = "请输入有效邮箱地址";
                 } else {
-                    this.captchaClass = true;
+                    if (this.vcCodepostfontcontent !== "发送验证") {
+                        return;
+                    } else {
+                        this.captchaClass = true;
+                    }
                 }
             } else {
                 this.alertBoxVisible = true;
@@ -253,12 +265,13 @@ export default {
                 that.alertBoxContent = "请输入验证码";
             } else {
                 // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+                // let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
                 let regcode = /^\d+$/;
-                if (!reg.test(this.param.email)) {
-                    that.alertBoxVisible = true;
-                    that.alertBoxContent = "邮箱地址输入错误";
-                } else if (!regcode.test(this.param.vcCode)) {
+                // if (!reg.test(this.param.email)) {
+                //     that.alertBoxVisible = true;
+                //     that.alertBoxContent = "邮箱地址输入错误";
+                // } else if (!regcode.test(this.param.vcCode)) {
+                if (!regcode.test(this.param.vcCode)) {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = "验证码为数字";
                 } else {
@@ -381,6 +394,7 @@ export default {
     position: absolute;
     top: 27px;
     right: 0;
+    z-index: 999999;
 }
 div.captchaClass {
     visibility: inherit;

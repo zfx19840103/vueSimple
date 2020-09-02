@@ -134,11 +134,20 @@ export default {
             this.smartCaptcha.init();
         },
         vcCodepostfont() {
+            let that = this;
+            // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+            
             if (this.param.email !== "") {
-                if (this.vcCodepostfontcontent !== "发送验证") {
-                    return;
-                } else {
-                    this.captchaClass = true;
+                if(!reg.test(this.param.email)) {
+                    that.alertBoxVisible = true;
+                    that.alertBoxContent = "请输入有效邮箱地址";
+                }else {
+                    if (this.vcCodepostfontcontent !== "发送验证") {
+                        return;
+                    } else {
+                        this.captchaClass = true;
+                    }
                 }
             } else {
                 this.alertBoxVisible = true;
@@ -177,12 +186,9 @@ export default {
                 that.alertBoxContent = "请输入验证码";
             } else {
                 // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+                // let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
                 let regcode = /^\d+$/;
-                if (!reg.test(this.param.email)) {
-                    that.alertBoxVisible = true;
-                    that.alertBoxContent = "请输入有效邮箱地址";
-                } else if (!regcode.test(this.param.vcCode)) {
+                if(!regcode.test(this.param.vcCode)) {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = "验证码为数字";
                 } else {
