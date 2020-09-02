@@ -10,13 +10,12 @@ build:
   stage: build
   only:
     refs:
-    - master
-
+    - develop
+    - tags
   script:
     - npm install --progress=false --registry=https://mirrors.huaweicloud.com/repository/npm/
     - npm run build
     - ls -al
-
   artifacts:
     expire_in: 1 week
     paths:
@@ -41,7 +40,7 @@ deploy_test:
   allow_failure: false
   #when: manual
   only:
-    - master
+    - develop
 
 deploy_prod:
   tags:
