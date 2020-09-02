@@ -80,10 +80,10 @@ export default {
                 invoice_status: this.$route.query.invoice_status,
                 created_at: this.$route.query.created_at,
             }
-            if (!!obj.ivnewscode && !!obj.ivnewsprice) {
-                localStorage.setItem('ivnews', JSON.stringify(obj))
-            }
-            let _ivnews = JSON.parse(localStorage.getItem('ivnews'));
+            // if (!!obj.ivnewscode && !!obj.ivnewsprice) {
+            //     localStorage.setItem('ivnews', JSON.stringify(obj))
+            // }
+            let _ivnews = obj;
 
             this.ivnewscode = _ivnews.ivnewscode;
             this.ivnewsprice = _ivnews.ivnewsprice;
