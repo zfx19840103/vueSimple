@@ -2,7 +2,7 @@
     <div class="timeoutbg">
         <div class="timeouticon"></div>
         <p>该订单在线申请已超时，请联系客服</p>
-        <p class="f15">客服电话：33333333</p>
+        <p class="f15">客服电话：+86 17610095818</p>
     </div>
 </template>
 
