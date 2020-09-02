@@ -38,7 +38,10 @@
                                 v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
                                 @click="deleteorder(item, index)"
                             >取消订单</button>
-                            <button v-if="item.order_status == 5 && item.invoice_status == 0" @click="invoiceopen(item)">申请开票</button>
+                            <button
+                                v-if="item.order_status == 5 && item.invoice_status == 0"
+                                @click="invoiceopen(item)"
+                            >申请开票</button>
                             <button
                                 v-if="item.order_status == 5 && (item.invoice_status == 2 || item.invoice_status == 4)"
                                 @click="invoiceshow(item)"
@@ -144,18 +147,20 @@ export default {
             this.$router.push({ name: "invoiceopen", query: data });
         },
         invoiceshow(item) {
+            console.log(item.snapshoot_cnt.invoice_info)
             let data = {
                 ivnewscode: item.order_code,
                 ivnewsprice: item.snapshoot_cnt.total_price,
 
                 invoice_status: item.invoice_status,
-                invoice_type: item.snapshoot_cnt.invoice_info.invoice_type,
-                invoice_name: item.snapshoot_cnt.invoice_info.invoice_name,
+                invoice_type: item.invoice_info.invoice_type,
+                invoice_name: item.invoice_info.invoice_name,
                 taxpayer_number:
-                    item.snapshoot_cnt.invoice_info.taxpayer_number,
+                    item.invoice_info.taxpayer_number,
                 created_at: item.created_at,
                 imgaddress: !!item.invoice_res ? item.invoice_res.URL : ""
             };
+
             this.$router.push({ name: "invoiceshow", query: data });
         },
         closedodFunc() {
@@ -195,16 +200,27 @@ export default {
                             that.deleteorderDialog = false;
 
                             that.getData(res => {
+                                newarr =
+                                    thispage == 1
+                                        ? res.data.list
+                                        : that.myorderData.list.slice(
+                                              0,
+                                              thispage > 1
+                                                  ? (thispage - 1) * 10
+                                                  : 10
+                                          );
 
-                                newarr = (thispage == 1 ? res.data.list : that.myorderData.list.slice(0, (thispage>1?(thispage-1)*10:10)));
-
-                                if(thispage > 1) {
+                                if (thispage > 1) {
                                     newarr = newarr.concat(res.data.list);
                                 }
 
-                                newarr = newarr.concat(that.myorderData.list.slice(thispage*10, that.myorderData.list.length))
+                                newarr = newarr.concat(
+                                    that.myorderData.list.slice(
+                                        thispage * 10,
+                                        that.myorderData.list.length
+                                    )
+                                );
                                 that.myorderData.list = newarr;
-
                             }, thispage);
                         }, 1000);
                         that.alertBox = {
