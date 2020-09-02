@@ -432,24 +432,68 @@ export default {
             };
             let that = this;
             var n = 60 * 5,
-            // var n = 10,
+                // var n = 10,
                 t = 0;
             that.timeFunc;
             function timec() {
                 that.timeFunc = setTimeout(function() {
-                    t += 1;
                     timec();
                     if (t <= n) {
-                        // console.log(t);
+                        console.log(t);
+                        if (t == 0) {
+                            paypolling(data).then(function(res) {
+                                if (!!res) {
+                                    // debugger
+                                    that.pay_statusbk = 2;
+                                    // console.log(that.pay_statusbk);
+                                    if (
+                                        res.code == 20000 &&
+                                        !res.data.is_continue
+                                    ) {
+                                        clearTimeout(that.timeFunc);
+                                        localStorage.setItem(
+                                            "order_isload",
+                                            0
+                                        );
+                                        if (res.data.pay_status == 2) {
+                                            that.orderloading = "支付成功";
+                                            // that.logisticsinfoif = true;
+                                        } else {
+                                            that.orderloading = "支付中...";
+                                        }
+                                    } else if (
+                                        res.code == 520001 ||
+                                        res.code == 520002 ||
+                                        res.code == 88888
+                                    ) {
+                                        clearTimeout(that.timeFunc);
+                                        localStorage.setItem(
+                                            "order_isload",
+                                            0
+                                        );
+                                        that.orderloading = res.message;
+                                    }
+                                    localStorage.setItem(
+                                        "order_loading",
+                                        that.orderloading
+                                    );
+                                }
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            });
+                        }
                         that.orderloadingtime = t;
                         localStorage.setItem("orderloadingtime", t);
+                        t += 1;
+
                         if (t % 2 == 0) {
                             paypolling(data)
                                 .then(function(res) {
                                     if (!!res) {
                                         // debugger
                                         that.pay_statusbk = 2;
-                                            console.log(that.pay_statusbk)
+                                        // console.log(that.pay_statusbk);
                                         if (
                                             res.code == 20000 &&
                                             !res.data.is_continue
@@ -459,7 +503,6 @@ export default {
                                                 "order_isload",
                                                 0
                                             );
-                                            
                                             if (res.data.pay_status == 2) {
                                                 that.orderloading = "支付成功";
                                                 // that.logisticsinfoif = true;
