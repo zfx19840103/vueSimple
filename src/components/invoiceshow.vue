@@ -120,7 +120,8 @@ export default {
             let data = {
                 imgaddress: this.$route.query.imgaddress,
             }
-            this.$router.push({ name: "invoiceaddress", query: data });
+            location.href = this.$route.query.imgaddress;
+            // this.$router.push({ name: "invoiceaddress", query: data });
         },
         submitivopen() {
             let that = this;
