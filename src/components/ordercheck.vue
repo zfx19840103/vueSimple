@@ -1311,6 +1311,10 @@ export default {
     line-height: 40px;
     height: 40px;
 }
+.drawerAddress li label:focus {
+    outline: 0;
+}
+
 .drawerAddress li {
     list-style-type: none;
     margin: 0;

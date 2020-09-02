@@ -1320,7 +1320,7 @@ export default {
                     city: [
                         {
                             id: 850,
-                            name: "上海市市辖区",
+                            name: "上海市",
                             district: [
                                 "黄浦区",
                                 "徐汇区",
@@ -2801,8 +2801,7 @@ export default {
                         },
                         {
                             id: 1830,
-                            name: "济源市",
-                            district: []
+                            name: "济源市",district: []
                         }
                     ]
                 },
@@ -3001,23 +3000,19 @@ export default {
                         },
                         {
                             id: 1956,
-                            name: "仙桃市",
-                            district: []
+                            name: "仙桃市",district: []
                         },
                         {
                             id: 1957,
-                            name: "潜江市",
-                            district: []
+                            name: "潜江市",district: []
                         },
                         {
                             id: 1958,
-                            name: "天门市",
-                            district: []
+                            name: "天门市",district: []
                         },
                         {
                             id: 1959,
-                            name: "神农架林区",
-                            district: []
+                            name: "神农架林区",district: []
                         }
                     ]
                 },
@@ -3473,18 +3468,15 @@ export default {
                         },
                         {
                             id: 2252,
-                            name: "东莞市",
-                            district: []
+                            name: "东莞市",district: [],district: []
                         },
                         {
                             id: 2253,
-                            name: "中山市",
-                            district: []
+                            name: "中山市",district: [],district: []
                         },
                         {
                             id: 2254,
-                            name: "东沙群岛",
-                            district: []
+                            name: "东沙群岛",district: [],district: []
                         },
                         {
                             id: 2255,
@@ -3770,83 +3762,117 @@ export default {
                         },
                         {
                             id: 2430,
-                            name: "儋州市",
-                            district: []
+                            name: "儋州市",district: []
                         },
                         {
                             id: 2431,
-                            name: "五指山市",
-                            district: []
+                            name: "五指山市",district: []
                         },
                         {
                             id: 2432,
-                            name: "琼海市",
-                            district: []
+                            name: "琼海市",district: []
                         },
                         {
                             id: 2433,
-                            name: "文昌市",
-                            district: []
+                            name: "文昌市",district: []
                         },
                         {
                             id: 2434,
-                            name: "万宁市",
-                            district: []
+                            name: "万宁市",district: []
                         },
                         {
                             id: 2435,
-                            name: "东方市",
-                            district: []
+                            name: "东方市",district: []
                         },
                         {
                             id: 2436,
-                            name: "定安县",
-                            district: []
+                            name: "定安县",district: []
                         },
                         {
                             id: 2437,
-                            name: "屯昌县",
-                            district: []
+                            name: "屯昌县",district: []
                         },
                         {
                             id: 2438,
-                            name: "澄迈县",
-                            district: []
+                            name: "澄迈县",district: []
                         },
                         {
                             id: 2439,
-                            name: "临高县",
-                            district: []
+                            name: "临高县",district: []
                         },
                         {
                             id: 2440,
-                            name: "白沙黎族自治县",
-                            district: []
+                            name: "白沙黎族自治县",district: []
                         },
                         {
                             id: 2441,
-                            name: "昌江黎族自治县",
-                            district: []
+                            name: "昌江黎族自治县",district: []
                         },
                         {
                             id: 2442,
-                            name: "乐东黎族自治县",
-                            district: []
+                            name: "乐东黎族自治县",district: []
                         },
                         {
                             id: 2443,
-                            name: "陵水黎族自治县",
-                            district: []
+                            name: "陵水黎族自治县",district: []
                         },
                         {
                             id: 2444,
-                            name: "保亭黎族苗族自治县",
-                            district: []
+                            name: "保亭黎族苗族自治县",district: []
                         },
                         {
                             id: 2445,
-                            name: "琼中黎族苗族自治县",
-                            district: []
+                            name: "琼中黎族苗族自治县",district: []
+                        }
+                    ]
+                },
+                {
+                    id: 500000,
+                    name: "重庆市",
+                    city: [
+                        {
+                            id: 500100,
+                            name: "重庆市",
+                            district: [
+                                "万州区",
+                                "涪陵区",
+                                "渝中区",
+                                "大渡口区",
+                                "江北区",
+                                "沙坪坝区",
+                                "九龙坡区",
+                                "南岸区",
+                                "北碚区",
+                                "綦江区",
+                                "大足区",
+                                "渝北区",
+                                "巴南区",
+                                "黔江区",
+                                "长寿区",
+                                "江津区",
+                                "合川区",
+                                "永川区",
+                                "南川区",
+                                "璧山区",
+                                "铜梁区",
+                                "潼南区",
+                                "荣昌区",
+                                "开州区",
+                                "梁平区",
+                                "武隆区",
+                                "城口县",
+                                "丰都县",
+                                "垫江县",
+                                "忠县",
+                                "云阳县",
+                                "奉节县",
+                                "巫山县",
+                                "巫溪县",
+                                "石柱土家族自治县",
+                                "秀山土家族苗族自治县",
+                                "酉阳土家族苗族自治县",
+                                "彭水苗族土家族自治县"
+                            ]
                         }
                     ]
                 },
@@ -5252,8 +5278,7 @@ export default {
                         },
                         {
                             id: 3398,
-                            name: "胡杨河市",
-                            district: []
+                            name: "胡杨河市",district: []
                         },
                         {
                             id: 3399,
@@ -5400,65 +5425,74 @@ export default {
                         },
                         {
                             id: 3491,
-                            name: "石河子市",
-                            district: []
+                            name: "石河子市",district: []
                         },
                         {
                             id: 3492,
-                            name: "阿拉尔市",
-                            district: []
+                            name: "阿拉尔市",district: []
                         },
                         {
                             id: 3493,
-                            name: "图木舒克市",
-                            district: []
+                            name: "图木舒克市",district: []
                         },
                         {
                             id: 3494,
-                            name: "五家渠市",
-                            district: []
+                            name: "五家渠市",district: []
                         },
                         {
                             id: 3495,
-                            name: "北屯市",
-                            district: []
+                            name: "北屯市",district: []
                         },
                         {
                             id: 3496,
-                            name: "铁门关市",
-                            district: []
+                            name: "铁门关市",district: []
                         },
                         {
                             id: 3497,
-                            name: "双河市",
-                            district: []
+                            name: "双河市",district: []
                         },
                         {
                             id: 3498,
-                            name: "可克达拉市",
-                            district: []
+                            name: "可克达拉市",district: []
                         },
                         {
                             id: 3499,
-                            name: "昆玉市",
-                            district: []
+                            name: "昆玉市",district: []
                         }
                     ]
                 },
                 {
                     id: 3500,
                     name: "台湾省",
-                    city: []
+                    city: [
+                        {
+                            id: 3511,
+                            name: "台湾省",
+                            district: []
+                        }
+                    ]
                 },
                 {
                     id: 3501,
                     name: "香港特别行政区",
-                    city: []
+                    city: [
+                        {
+                            id: 3513,
+                            name: "香港特别行政区",
+                            district: []
+                        }
+                    ]
                 },
                 {
                     id: 3520,
                     name: "澳门特别行政区",
-                    city: []
+                    city: [
+                        {
+                            id: 3521,
+                            name: "澳门特别行政区",
+                            district: []
+                        }
+                    ]
                 }
             ]
         };
@@ -5491,12 +5525,12 @@ export default {
             this.info.map(a => (a.selected = false));
             this.info[index].selected = true;
 
-            if(this.showCityList.length == 0){
+            if (this.showCityList.length == 0) {
                 this.closeAdd();
                 let areaparam = {
                     p: this.Province,
-                    c: !!this.City ? this.City : '',
-                    d: !!this.District ? this.District : '',
+                    c: !!this.City ? this.City : "",
+                    d: !!this.District ? this.District : ""
                 };
                 this.$emit("listenareaFunc", areaparam);
             }

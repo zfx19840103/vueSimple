@@ -160,11 +160,6 @@ export default {
                     visible: true,
                     tip: this.placeholder.phone + "格式不对"
                 };
-            } else if (this.param.area == "") {
-                this.alertBox = {
-                    visible: true,
-                    tip: "请输入" + this.placeholder.area
-                };
             } else if (this.param.address == "") {
                 this.alertBox = {
                     visible: true,
@@ -302,11 +297,6 @@ export default {
                 this.alertBox = {
                     visible: true,
                     tip: this.placeholder.phone + "格式不对"
-                };
-            } else if (this.param.area == "") {
-                this.alertBox = {
-                    visible: true,
-                    tip: "请输入" + this.placeholder.area
                 };
             } else if (this.param.address == "") {
                 this.alertBox = {

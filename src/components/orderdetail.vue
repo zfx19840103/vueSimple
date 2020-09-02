@@ -302,7 +302,7 @@ export default {
                 if (status == 0) {
                     str = "待付款";
                 } else if (status == 1) {
-                    str = "取消订单";
+                    str = "已取消";
                 } else if (status == 2) {
                     str = "下单成功";
                 } else if (status == 3) {
