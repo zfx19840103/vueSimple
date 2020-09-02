@@ -43,7 +43,7 @@
                                 @click="invoiceopen(item)"
                             >申请开票</button>
                             <button
-                                v-if="item.order_status == 5 && (item.invoice_status == 2 || item.invoice_status == 4)"
+                                v-if="item.order_status == 5 && (item.invoice_status == 1 || item.invoice_status == 2 || item.invoice_status == 4)"
                                 @click="invoiceshow(item)"
                             >查看发票</button>
                         </div>
