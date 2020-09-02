@@ -117,7 +117,8 @@
             </div>
             <div class="orderdetailbtnbg"></div>
             <button class="orderdetailbtn" v-if="pay_statusbk == 0" @click="gotoPayFunc">立即支付</button>
-            <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button>
+            <!-- <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button> -->
+            <button class="orderdetailbtn" v-else @click="gotoindex">返回主页</button>
 
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
     </div>
@@ -508,6 +509,12 @@ export default {
             div.innerHTML = form;
             document.body.appendChild(div);
             document.querySelector("#alipay").children[0].submit();
+        },
+        gotoindex() {
+            this.$router.push({
+                name: "product"
+            });
+
         }
     }
 };

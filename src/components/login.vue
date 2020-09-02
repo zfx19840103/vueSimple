@@ -72,7 +72,7 @@ export default {
             arrow: true,
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
-            feishuhref: 'https://apidev.tsingglobal.com/openapi/auth/login/feishu',
+            feishuhref: 'https://tsingapi.tsingglobal.com/openapi/auth/login/feishu',
             param: {
                 email: "",
                 vcCode: "",
@@ -213,8 +213,8 @@ export default {
                 that.alertBoxVisible = true;
                 that.alertBoxContent = "请输入验证码";
             } else {
-                let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@(bytedance|ad.bytedance|jiyunhudong)\.com(\r\n|\r|\n)?$/;
+                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@(bytedance|ad\.bytedance|jiyunhudong)\.com$/;
                 let regcode = /^\d+$/;
                 if (!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
