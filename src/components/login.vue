@@ -1,58 +1,63 @@
 <template>
-    <div class="loginParent" ref="wrapper">
-
-        <div class="loginBg"></div>
-        <div class="login-wrap">
-            <span class="orderCenter" @click="orderCenter"><i>订单中心</i></span>
-            <div class="login_wrap_content" v-if="loginShow">
-                <div class="loginunit">
-                    <label>
-                        <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
-                        <input class="emailinput" v-model="param.email" />
-                    </label>
-                </div>
-                <div class="loginunit">
-                    <label>
-                        <span class="logintitle">验证码：</span>
-                        <input v-model="param.vcCode" maxlength="6" />
-                    </label>
-                    <div class="vcCodepost">
-                        <div class="vcCodepostfont" @click="vcCodepostfont">
-                            <em></em>
-                            {{vcCodepostfontcontent}}
+   
+        <div class="loginParent" @touchstart="touchstartFunc"
+        @touchmove="touchmoveFunc"
+        @touchend="touchendFunc">
+            <div class="loginBg"></div>
+            <div class="login-wrap">
+                <span class="orderCenter" @click="orderCenter">
+                    <i>订单中心</i>
+                </span>
+                <div class="login_wrap_content" v-if="loginShow">
+                    <div class="loginunit">
+                        <label>
+                            <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
+                            <input class="emailinput" v-model="param.email" />
+                        </label>
+                    </div>
+                    <div class="loginunit">
+                        <label>
+                            <span class="logintitle">验证码：</span>
+                            <input v-model="param.vcCode" maxlength="6" />
+                        </label>
+                        <div class="vcCodepost">
+                            <div class="vcCodepostfont" @click="vcCodepostfont">
+                                <em></em>
+                                {{vcCodepostfontcontent}}
+                            </div>
                         </div>
                     </div>
+                    <div class="loginunitbtn">
+                        <button
+                            class="login-btn"
+                            v-if="!param.disabled"
+                            @click="submitForm()"
+                            disabled
+                        >登录</button>
+                        <button class="login-btn" v-else @click="submitForm()">登录</button>
+                    </div>
+                    <!-- <div class="feis" @click="feisFunc"> -->
+                    <a :href="feishuhref" class="feis">
+                        <i></i>飞书登录
+                    </a>
                 </div>
-                <div class="loginunitbtn">
-                    <button
-                        class="login-btn"
-                        v-if="!param.disabled"
-                        @click="submitForm()"
-                        disabled
-                    >登录</button>
-                    <button class="login-btn" v-else @click="submitForm()">登录</button>
+
+                <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
+                    <!-- <div class="loginwrapIcon" @click="linkproduct"> -->
+                    <i class="el-icon-arrow-down"></i>
+                    <span></span>
+                    <span></span>
                 </div>
-                <!-- <div class="feis" @click="feisFunc"> -->
-                <a :href= feishuhref class="feis">
-                    <i></i>飞书登录
-                </a>
             </div>
-            
-            <div class="loginwrapIcon"  @click="linkproduct" v-if="arrow">
-            <!-- <div class="loginwrapIcon" @click="linkproduct"> -->
-                <i class="el-icon-arrow-down"></i>
-                <span></span>
-                <span></span>
+            <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
+                <div class="captchacontentBg" @click="captchaClass = false"></div>
+                <div class="captchacontent">
+                    <div id="captcha"></div>
+                </div>
             </div>
+            <AlertBox :alertBox="alertBoxVisible" @close="alertBoxVisible=false">{{alertBoxContent}}</AlertBox>
         </div>
-        <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
-            <div class="captchacontentBg" @click="captchaClass = false"></div>
-            <div class="captchacontent">
-                <div id="captcha"></div>
-            </div>
-        </div>
-        <AlertBox :alertBox="alertBoxVisible" @close="alertBoxVisible=false">{{alertBoxContent}}</AlertBox>
-    </div>
+
 </template>
 
 <script>
@@ -72,13 +77,20 @@ export default {
             arrow: true,
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
-            feishuhref: 'https://apidev.tsingglobal.com/openapi/auth/login/feishu',
+            feishuhref:
+                "https://tsingapi.tsingglobal.com/openapi/auth/login/feishu",
             param: {
                 email: "",
                 vcCode: "",
                 disabled: true
             },
-            routerurl: 'ordercheck',
+            routerurl: "ordercheck",
+            startIndex: "",
+            endIndex: "",
+            swiper: "",
+            touchIndex: "",
+            tranX: "",
+            tranBack: "",
         };
     },
     components: {
@@ -91,13 +103,40 @@ export default {
         //     this.param.email = Cookie.getItem('moon_email')
         //     this.loginShow = true;
         // }
-        this.touchFunc();
+        // this.touchFunc();
     },
     mounted() {
         this.pushCodeFunc();
     },
     methods: {
-       
+        touchstartFunc(event) {
+            let that = this;
+            // event.preventDefault();
+            var ctouch = event.changedTouches[0];
+            console.log('start' + ctouch.pageY);
+            that.startIndex = ctouch.pageY;//获取到刚开始的X
+        },
+        touchmoveFunc(event) {
+            let that = this;
+            // event.preventDefault();
+            that.touchIndex = event.changedTouches[0].pageY; //获取到移动时不断改变的X轴上的值
+            that.tranX = that.touchIndex - that.startIndex;//移动过程中X轴上的差值
+            // console.log(that.tranX);
+        },
+        touchendFunc(event) {
+            let that = this;
+            // event.preventDefault();
+            //获取最终触摸的X轴（手指离开屏幕时获取的）    
+            that.endIndex = event.changedTouches[0].pageY;
+            that.tranBack = that.endIndex - that.startIndex;
+            // that.tranBack = that.tranBack;
+            console.log('end'+that.endIndex);
+
+            if(that.tranBack<0 && Math.abs(that.tranBack)>100) {
+                this.$router.push("/product");
+            }
+        },
+
         touchFunc() {
             let that = this;
             this.$nextTick(() => {
@@ -109,9 +148,9 @@ export default {
                 //滑动结束松开事件
                 this.scroll.on("touchEnd", pos => {
                     if (pos.y < -65) {
-                        this.$router.push('/product');
+                        this.$router.push("/product");
                     }
-                        // this.text = pos.y
+                    // this.text = pos.y
                 });
             });
         },
@@ -213,8 +252,8 @@ export default {
                 that.alertBoxVisible = true;
                 that.alertBoxContent = "请输入验证码";
             } else {
-                let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@(bytedance|ad.bytedance|jiyunhudong)\.com(\r\n|\r|\n)?$/;
+                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+                let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
                 let regcode = /^\d+$/;
                 if (!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
@@ -235,7 +274,7 @@ export default {
 
                                 that.alertBoxContent = "登录成功";
                                 setTimeout(function() {
-                                        that.$router.push("/myorder");
+                                    that.$router.push("/myorder");
                                 }, 1000);
                             } else {
                                 that.alertBoxContent = res.message;
@@ -256,10 +295,8 @@ export default {
             } else {
                 this.loginShow = true;
                 this.arrow = false;
-
             }
-        },
-        
+        }
     }
 };
 </script>
@@ -315,17 +352,17 @@ export default {
     text-decoration: none;
     font-size: 12px;
     position: relative;
-    bottom:0;
+    bottom: 0;
     left: 0;
     padding: 0.08rem 0.2rem;
 }
 .orderCenter i {
     font-size: 13px;
     font-weight: 800;
-    color: #FFFFFF;
+    color: #ffffff;
     width: 40px;
     height: 40px;
-    background: #FF6671;
+    background: #ff6671;
     display: block;
     border-radius: 20px;
     font-style: normal;
@@ -344,7 +381,6 @@ export default {
     position: absolute;
     top: 27px;
     right: 0;
-
 }
 div.captchaClass {
     visibility: inherit;
@@ -366,6 +402,14 @@ div.captchaClass {
     top: 0;
     left: 0;
     visibility: hidden;
+}
+.loginParentbk {
+    position: relative;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 .loginParent {
     position: relative;
