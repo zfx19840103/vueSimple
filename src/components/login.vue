@@ -1,65 +1,65 @@
 <template>
-    <div style="height:100%;">
-        <span class="orderCenter" @click="orderCenter">
-            <i>订单中心</i>
-        </span>
+    <div style="height: 100%;">
         <div
-            class="loginParent"
+            class="scrollFunc"
             @touchstart="touchstartFunc"
             @touchmove="touchmoveFunc"
             @touchend="touchendFunc"
-        >
+        ></div>
+        <span class="orderCenter" @click="orderCenter">
+            <i>订单中心</i>
+        </span>
+        <div class="loginParent">
             <div class="loginBg"></div>
-            <div class="login-wrap">
-                <div class="login_wrap_content" v-if="loginShow">
-                    <div class="loginunit">
-                        <label>
-                            <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
-                            <input class="emailinput" v-model="param.email" />
-                        </label>
-                    </div>
-                    <div class="loginunit">
-                        <label>
-                            <span class="logintitle">验证码：</span>
-                            <input v-model="param.vcCode" maxlength="6" />
-                        </label>
-                        <div class="vcCodepost">
-                            <div class="vcCodepostfont" @click="vcCodepostfont">
-                                <em></em>
-                                {{vcCodepostfontcontent}}
-                            </div>
+        </div>
+        <div class="login-wrap" v-if="loginShow">
+            <div class="login_wrap_content" v-if="loginShow">
+                <div class="loginunit">
+                    <label>
+                        <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
+                        <input class="emailinput" v-model="param.email" />
+                    </label>
+                </div>
+                <div class="loginunit">
+                    <label>
+                        <span class="logintitle">验证码：</span>
+                        <input v-model="param.vcCode" maxlength="6" />
+                    </label>
+                    <div class="vcCodepost">
+                        <div class="vcCodepostfont" @click="vcCodepostfont">
+                            <em></em>
+                            {{vcCodepostfontcontent}}
                         </div>
                     </div>
-                    <div class="loginunitbtn">
-                        <button
-                            class="login-btn"
-                            v-if="!param.disabled"
-                            @click="submitForm()"
-                            disabled
-                        >登录</button>
-                        <button class="login-btn" v-else @click="submitForm()">登录</button>
-                    </div>
-                    <!-- <div class="feis" @click="feisFunc"> -->
-                    <a :href="feishuhref" class="feis">
-                        <i></i>飞书登录
-                    </a>
                 </div>
-
-                <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
-                    <!-- <div class="loginwrapIcon" @click="linkproduct"> -->
-                    <i class="el-icon-arrow-down"></i>
-                    <span></span>
-                    <span></span>
+                <div class="loginunitbtn">
+                    <button
+                        class="login-btn"
+                        v-if="!param.disabled"
+                        @click="submitForm()"
+                        disabled
+                    >登录</button>
+                    <button class="login-btn" v-else @click="submitForm()">登录</button>
                 </div>
+                <!-- <div class="feis" @click="feisFunc"> -->
+                <a :href="feishuhref" class="feis">
+                    <i></i>飞书登录
+                </a>
             </div>
-            <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
-                <div class="captchacontentBg" @click="captchaClass = false"></div>
-                <div class="captchacontent">
-                    <div id="captcha"></div>
-                </div>
-            </div>
-            <AlertBox :alertBox="alertBoxVisible" @close="alertBoxVisible=false">{{alertBoxContent}}</AlertBox>
         </div>
+        <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
+            <!-- <div class="loginwrapIcon" @click="linkproduct"> -->
+            <i class="el-icon-arrow-down"></i>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
+            <div class="captchacontentBg" @click="captchaClass = false"></div>
+            <div class="captchacontent">
+                <div id="captcha"></div>
+            </div>
+        </div>
+        <AlertBox :alertBox="alertBoxVisible" @close="alertBoxVisible=false">{{alertBoxContent}}</AlertBox>
     </div>
 </template>
 
@@ -114,14 +114,14 @@ export default {
     methods: {
         touchstartFunc(event) {
             let that = this;
-            // event.preventDefault();
+            event.preventDefault();
             var ctouch = event.changedTouches[0];
             console.log("start" + ctouch.pageY);
             that.startIndex = ctouch.pageY; //获取到刚开始的X
         },
         touchmoveFunc(event) {
             let that = this;
-            // event.preventDefault();
+            event.preventDefault();
             that.touchIndex = event.changedTouches[0].pageY; //获取到移动时不断改变的X轴上的值
             that.tranX = that.touchIndex - that.startIndex; //移动过程中X轴上的差值
             // console.log(that.tranX);
@@ -131,11 +131,11 @@ export default {
             event.preventDefault();
             //获取最终触摸的X轴（手指离开屏幕时获取的）
             that.endIndex = event.changedTouches[0].pageY;
-            that.tranBack = Math.abs(that.endIndex) - Math.abs(that.startIndex);
-            that.tranBack = Math.abs(that.tranBack);
+            that.tranBack = that.endIndex - that.startIndex;
+
             console.log("end" + that.endIndex);
             console.log(that.tranBack);
-            if (that.tranBack > 60) {
+            if (that.tranBack < 0 && Math.abs(that.tranBack) > 80) {
                 this.$router.push("/product");
             }
         },
@@ -315,6 +315,16 @@ export default {
 </script>
 
 <style scoped>
+.scrollFunc {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    /* background: #f00; */
+}
 @keyframes bounce-down {
     25% {
         transform: translateY(5px);
@@ -346,6 +356,7 @@ export default {
 .loginwrapIcon {
     -webkit-animation: bounce-down 1s linear infinite;
     animation: bounce-down 1s linear infinite;
+    z-index: 10000;
 }
 .feis i {
     background-image: url(../assets/img/logofeis.png);
@@ -457,6 +468,8 @@ div.captchaClass {
     bottom: 0.1rem;
     height: 38px;
     width: 1rem;
+    left: 50%;
+    margin-left: -0.5rem;
 }
 #captcha {
     margin: 0.43rem auto 0;
@@ -544,7 +557,7 @@ div.captchaClass {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 10000;
     width: 100%;
     height: 100%;
     background-size: 100%;
