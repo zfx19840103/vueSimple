@@ -355,7 +355,7 @@ export default {
                 is_invoice: 0, //默认不开发票
                 pathway: 2
             },
-            maxnum: 100,
+            maxnum: 50,
             onemore: !!this.$route.query.onemore
                 ? this.$route.query.onemore
                 : "",
