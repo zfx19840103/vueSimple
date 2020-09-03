@@ -317,10 +317,16 @@ export default {
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
     font-size: 12px;
-    position: absolute;
-    bottom: -0.38rem;
-    left: 0.8rem;
-    padding: 0.08rem 0.2rem;
+    position: relative;
+    border-radius: 19px;
+    box-sizing: border-box;
+    border: rgba(255, 255, 255, 0.3) solid 1px;
+    margin-top: 13px;
+    /* bottom: 0; */
+    left: 0;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
     text-decoration: none;
     display: block;
 }

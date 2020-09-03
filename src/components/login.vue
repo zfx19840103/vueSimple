@@ -370,15 +370,21 @@ export default {
     display: inline-block;
 }
 .feis {
+    position: relative;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
     display: block;
+    border-radius: 19px;
+    box-sizing: border-box;
+    border: rgba(255, 255, 255, 0.3) solid 1px;
+    margin-top: 13px;
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
     text-decoration: none;
     font-size: 12px;
-    position: relative;
     bottom: 0;
     left: 0;
-    padding: 0.08rem 0.2rem;
 }
 .orderCenter i {
     font-size: 13px;
