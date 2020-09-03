@@ -1,6 +1,6 @@
 <template>
     <div class="myorder">
-        <div class="nodata" v-if="nodata">暂无数据</div>
+        <div class="nodata" v-if="nodata"><span>暂无订单</span></div>
         <div class="wrapper" v-else ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
             <div class="bscroll-container">
                 <ul class="content">
@@ -175,6 +175,8 @@ export default {
                     if (this.total < this.myorderDatapagesize) {
                         this.pullupMsg = "已是最后一页";
                     }
+
+                    // this.nodata = true; //模拟无数据
                 } else {
                     this.nodata = true;
                 }
@@ -515,11 +517,24 @@ div.dodb button {
     left: 0;
     z-index: 1;
 }
-.nodata {
+.nodata span {
+    font-size: 13px;
+    font-weight: normal;
+    color: #B6B6B6;
+    padding: 1.87rem 0 0;
+    display: block;
     width: 100%;
-    font-size: 16px;
-    line-height: 100px;
     text-align: center;
+}
+.nodata {
+    position: absolute;
+    top: 1.48rem;
+    width: 1.83rem;
+    height: 1.62rem;
+    left: 50%;
+    margin-left: -0.915rem;
+    background: url(../assets/img/noordericon.png) no-repeat;
+    background-size: cover;
 }
 .wrapper {
     font-size: 14px;
