@@ -546,12 +546,14 @@ div.captchaClass {
     top: 0;
     left: 0;
     z-index: 0;
-    width: 3.75rem;
-    height: 6.04rem;
+    width: 100vw;
+    height: 100vh;
+    /* object-fit: cover; */
     background-image: url(../assets/img/loginBg.jpg);
     background-color: #3267c7;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-position: -15px 0; 
+    background-size: auto 100%;
 }
 .login-wrap {
     position: absolute;
