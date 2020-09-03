@@ -189,7 +189,7 @@
                 </p> -->
             </div>
             <div class="payType">
-                <h3>支付方式</h3>
+                <h3>支付方式<span class="payTypeTip">*请在五分钟之内支付</span></h3>
                 <label>
                     <span class="wxicon"></span>微信支付
                     <input
@@ -1172,6 +1172,14 @@ export default {
 .detailowner_bottom_bg {
     width: 110%;
 }
+.payTypeTip {
+    float: right;
+    font-size: 10px;
+    margin-right: 12px;
+    font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
+    font-weight: normal;
+    color: #FF502C;
+}
 .payTogotop {
     position: relative;
     height: 50px;
@@ -1477,6 +1485,7 @@ export default {
     color: #333333;
     font-weight: 400;
     text-align: left;
+    overflow: hidden;
 }
 .payType {
     height: 127px;
