@@ -28,14 +28,6 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-
-FastClick.prototype.onTouchEnd = function (event) {
-    // if (event.target.hasAttribute("type") && event.target.getAttribute("type") == "text") {
-    //     event.preventDefault();
-    //     return false;
-    // }
-}
-
 import 'element-ui/lib/theme-chalk/index.css';
 // import { Dialog } from 'element-ui';
 
