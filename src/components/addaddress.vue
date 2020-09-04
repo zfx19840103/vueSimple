@@ -454,7 +454,7 @@ export default {
     height: 30px;
     line-height: 30px;
     padding: 8px 0 0 12px;
-    width: 2.8rem;
+    width: 2.6rem;
 }
 .unit label {
     float: left;
