@@ -54,8 +54,8 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'https://test-maf-h5-static.tsingglobal.com/',
-    // assetsPublicPath: 'https://maf-h5-static.tsingglobal.com/',
+    // assetsPublicPath: 'https://test-maf-h5-static.tsingglobal.com/',
+    assetsPublicPath: 'https://maf-h5-static.tsingglobal.com/',
 
     /**
      * Source Maps
