@@ -558,7 +558,7 @@ div.captchaClass {
     background-image: url(../assets/img/loginBg.jpg);
     background-color: #3267c7;
     background-repeat: no-repeat;
-    background-position: -15px 0; 
+    background-position: 0 0; 
     background-size: auto 100%;
 }
 .login-wrap {

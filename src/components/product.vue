@@ -295,7 +295,7 @@ export default {
     left: 0;
     z-index: 0;
     width: 3.75rem;
-    height: 6.42rem;
+    height: 7.62rem;
     background-image: url("../assets/img/productBgbottom.png");
     background-color: #3267c7;
     background-repeat: no-repeat;
@@ -405,7 +405,7 @@ export default {
     width: 1.95rem;
     height: 1.21rem;
     position: absolute;
-    top: 12.31rem;
+    top: 13.51rem;
     left: 0.9rem;
     background-image: url(../assets/img/productBtn.png);
     background-repeat: no-repeat;
