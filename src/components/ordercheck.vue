@@ -1177,6 +1177,7 @@ export default {
     font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
     font-weight: normal;
     color: #FF502C;
+    font-style: normal;
 }
 .payTipsc {
     display: block;
