@@ -211,6 +211,7 @@
                     />
                 </label>
             </div>
+            <div class="payTipsc"><i>*</i>预计发货时间9月16日</div>
             <div class="payTogotop"></div>
             <div class="payTogo">
                 <span>
@@ -1168,6 +1169,21 @@ export default {
 .payloading .detailowner .el-icon-arrow-right,
 .payloading .ordercenter span {
     color: #9b9b9b !important;
+}
+.payTipsc i {
+    display: inline-block;
+    font-size: 10px;
+    margin-right: 5px;
+    font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
+    font-weight: normal;
+    color: #FF502C;
+}
+.payTipsc {
+    display: block;
+    padding: 10px 0 0 10px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 15px;
 }
 .detailowner_bottom_bg {
     width: 110%;
