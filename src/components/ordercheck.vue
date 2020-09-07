@@ -219,7 +219,7 @@
                     <em>¥{{priceallFunc(skuinfoparam.shop_price, ordercreate.sku_list[0].sku_count)}}</em>
                     共{{allnumFunc(ordercreate.sku_list[0].sku_count)}}件
                 </span>
-                <button @click="paysubmit">去支付</button>
+                <button @click="paysubmit" v-preventReClick>去支付</button>
             </div>
             <el-drawer
                 size="50%"
@@ -878,7 +878,6 @@ export default {
         //创建订单
         paysubmit() {
             let that = this;
-        
             if (!that.detailownerParam.provincial) {
                 that.alertBox = {
                     tip: "请添加收货地址",
