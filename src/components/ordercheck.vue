@@ -1063,12 +1063,14 @@ export default {
         //     });
         // },
         touchStart(e) {
+            // alert(e.touches[0].clientX)
+            e.preventDefault();
             this.startX = e.touches[0].clientX;
         },
         touchEnd(e) {
-            let parentElement = e.currentTarget.parentElement;
-
             this.endX = e.changedTouches[0].clientX;
+            // alert(this.startX+'...'+this.endX)
+            let parentElement = e.currentTarget.parentElement;
 
             if (
                 parentElement.dataset.type == 0 &&
