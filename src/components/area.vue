@@ -5461,39 +5461,6 @@ export default {
                         }
                     ]
                 },
-                {
-                    id: 3500,
-                    name: "台湾省",
-                    city: [
-                        {
-                            id: 3511,
-                            name: "台湾省",
-                            district: []
-                        }
-                    ]
-                },
-                {
-                    id: 3501,
-                    name: "香港特别行政区",
-                    city: [
-                        {
-                            id: 3513,
-                            name: "香港特别行政区",
-                            district: []
-                        }
-                    ]
-                },
-                {
-                    id: 3520,
-                    name: "澳门特别行政区",
-                    city: [
-                        {
-                            id: 3521,
-                            name: "澳门特别行政区",
-                            district: []
-                        }
-                    ]
-                }
             ]
         };
     },

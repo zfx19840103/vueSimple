@@ -232,12 +232,12 @@
                 <ul v-if="drawerAddress" class="drawerAddress">
                     <li v-for="(item, index) in addressData" data-type="0" :key="index">
                         <div @touchstart="touchStart" @touchend="touchEnd" class="list-box">
-                            <label>
+                            <label @click="addresslistclick(item)">
                                 <input
                                     type="radio"
                                     v-model="selectaddress"
                                     :value="item"
-                                    @click="addresslistclick(item)"
+                                    name="selectaddress"
                                 />
                                 <span>{{item.provincial}} {{item.city}} {{item.area}} {{item.address}}</span>
                                 <em>{{item.receiver}} {{item.phone}}</em>
@@ -629,6 +629,7 @@ export default {
                 city: item.city,
                 area: item.area
             };
+            this.selectaddress = item;
             localStorage.setItem(
                 "addressobj",
                 JSON.stringify(this.detailownerParam)
