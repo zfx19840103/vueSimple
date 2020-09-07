@@ -231,7 +231,7 @@
                 <h3>选择收货地址</h3>
                 <ul v-if="drawerAddress" class="drawerAddress">
                     <li v-for="(item, index) in addressData" data-type="0" :key="index">
-                        <div @touchstart="touchStart" @touchend="touchEnd" class="list-box">
+                        <div @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" class="list-box">
                             <label @click="addresslistclick(item)">
                                 <input
                                     type="radio"
@@ -1064,8 +1064,14 @@ export default {
         // },
         touchStart(e) {
             // alert(e.touches[0].clientX)
-            e.preventDefault();
             this.startX = e.touches[0].clientX;
+            // e.preventDefault();
+        },
+        touchMove(e) {
+            var _x = e.touches[0].pageX;
+            if((Math.abs(_x-this.startX)>7)){
+                e.preventDefault();
+            }
         },
         touchEnd(e) {
             this.endX = e.changedTouches[0].clientX;
