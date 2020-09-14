@@ -970,9 +970,9 @@ export default {
                             // localStorage.removeItem('onemoreobj');
                             if (that.ordercreate.pay_method == 1) {
                                 //1是支付宝 2是微信
-                                // that.alipay(res);
+                                that.alipay(res);
                             } else {
-                                // that.wxpay(res);
+                                that.wxpay(res);
                             }
                         } else if (!!res && res.code == 113005) {
                             that.alertBox = {
