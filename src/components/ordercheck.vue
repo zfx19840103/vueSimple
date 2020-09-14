@@ -399,7 +399,7 @@ export default {
         }
     },
     mounted() {
-        this.initinvoiceFunc();
+        // this.initinvoiceFunc();
     },
     methods: {
         orderlll() {
@@ -921,38 +921,38 @@ export default {
                         detailAddress: that.detailownerParam.address
                     },
                     orderdes: that.ordercreate.orderdes,
-                    invoice_info: {
-                        invoice_type: !!that.ordercreate.invoice_info
-                            .invoice_type
-                            ? that.ordercreate.invoice_info.invoice_type
-                            : "",
-                        register_phone: !!that.ordercreate.invoice_info
-                            .register_phone
-                            ? that.ordercreate.invoice_info.register_phone
-                            : "",
-                        register_address: !!that.ordercreate.invoice_info
-                            .register_address
-                            ? that.ordercreate.invoice_info.register_address
-                            : "",
-                        taxpayer_number: !!that.ordercreate.invoice_info
-                            .taxpayer_number
-                            ? that.ordercreate.invoice_info.taxpayer_number
-                            : "",
-                        invoice_name: !!that.ordercreate.invoice_info
-                            .invoice_name
-                            ? that.ordercreate.invoice_info.invoice_name
-                            : "",
-                        register_bank: !!that.ordercreate.invoice_info
-                            .register_bank
-                            ? that.ordercreate.invoice_info.register_bank
-                            : "",
-                        register_bank_account: !!that.ordercreate.invoice_info
-                            .register_bank_account
-                            ? that.ordercreate.invoice_info
-                                  .register_bank_account
-                            : ""
-                    },
-                    is_invoice: that.ordercreate.is_invoice, //是否开发票	0否 1是
+                    // invoice_info: {
+                    //     invoice_type: !!that.ordercreate.invoice_info
+                    //         .invoice_type
+                    //         ? that.ordercreate.invoice_info.invoice_type
+                    //         : "",
+                    //     register_phone: !!that.ordercreate.invoice_info
+                    //         .register_phone
+                    //         ? that.ordercreate.invoice_info.register_phone
+                    //         : "",
+                    //     register_address: !!that.ordercreate.invoice_info
+                    //         .register_address
+                    //         ? that.ordercreate.invoice_info.register_address
+                    //         : "",
+                    //     taxpayer_number: !!that.ordercreate.invoice_info
+                    //         .taxpayer_number
+                    //         ? that.ordercreate.invoice_info.taxpayer_number
+                    //         : "",
+                    //     invoice_name: !!that.ordercreate.invoice_info
+                    //         .invoice_name
+                    //         ? that.ordercreate.invoice_info.invoice_name
+                    //         : "",
+                    //     register_bank: !!that.ordercreate.invoice_info
+                    //         .register_bank
+                    //         ? that.ordercreate.invoice_info.register_bank
+                    //         : "",
+                    //     register_bank_account: !!that.ordercreate.invoice_info
+                    //         .register_bank_account
+                    //         ? that.ordercreate.invoice_info
+                    //               .register_bank_account
+                    //         : ""
+                    // },
+                    // is_invoice: that.ordercreate.is_invoice, //是否开发票	0否 1是
                     pathway: that.ordercreate.pathway, //环境配置	1,2
                     usage_scenario: "bytemoon_pay" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换
                 };
