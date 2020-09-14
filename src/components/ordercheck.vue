@@ -420,7 +420,7 @@ export default {
         },
         numordersmethod() {
             let _l_nom = JSON.parse(localStorage.getItem('numordersmethodobj'));
-            console.log(_l_nom)
+
             if(!!_l_nom) {
                 if(this.$route.query.isaddress == 1){
                 // if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
@@ -581,9 +581,9 @@ export default {
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
                         let _info = res.data.info;
-                        console.log(_info);
+
                         that.skuinfoparam.shop_price = _info.shop_price; //商品价格
-                        that.skuinfoparam.images = _info.images[0];
+                        that.skuinfoparam.images = !!_info.images ? _info.images[0] : '';
                         that.skuinfoparam.itemName = _info.itemName;
                         that.skuinfoparam.actstock = _info.actstock;
                         // that.maxnum = _info.actstock;
