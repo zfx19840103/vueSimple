@@ -69,11 +69,11 @@
                 </div>
                 <div class="dodb" v-if="dodb">
                     <h3>订单已发货，请联系客服。</h3>
-                    <span>客服电话：+86 17610095818</span>
+                    <span>客服电话：4006-196-136</span>
                     <p>
                         <button class="deleteorder" @click="closedodFunc">取消</button>
                         <button class="callphone">
-                            <a href="tel:+86 17610095818">拨打</a>
+                            <a href="tel:4006-196-136">拨打</a>
                         </button>
                     </p>
                 </div>
