@@ -952,8 +952,8 @@ export default {
                     //               .register_bank_account
                     //         : ""
                     // },
-                    // is_invoice: that.ordercreate.is_invoice, //是否开发票	0否 1是
-                    pathway: that.ordercreate.pathway, //环境配置	1,2
+                    is_invoice: 0, //是否开发票	0否 1是
+                    pathway: 2, //环境配置	1,2
                     usage_scenario: "bytemoon_pay" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换
                 };
 
@@ -970,9 +970,9 @@ export default {
                             // localStorage.removeItem('onemoreobj');
                             if (that.ordercreate.pay_method == 1) {
                                 //1是支付宝 2是微信
-                                that.alipay(res);
+                                // that.alipay(res);
                             } else {
-                                that.wxpay(res);
+                                // that.wxpay(res);
                             }
                         } else if (!!res && res.code == 113005) {
                             that.alertBox = {
