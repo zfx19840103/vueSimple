@@ -6,7 +6,7 @@
             :show-close = false
             :modal = false
             :before-close="handleClose"
-            :visible.sync="alertBox" width="40%">
+            :visible.sync="alertBox" width="2.71rem">
             <div class="content"><slot></slot></div>
         </el-dialog>
     </div>
@@ -38,10 +38,11 @@ export default {
 
 <style scoped>
     .content {
-        font-size:14px;
-        font-family:PingFangSC-Regular,PingFang SC;
-        font-weight:400;
-        color:rgba(255,255,255,1);
+        font-size: 14px;
+        font-family: PingFangSC-Light, PingFang SC;
+        font-weight: 300;
+        color: #FFE9CB;
+        line-height: 22px;
     }
 </style>
 

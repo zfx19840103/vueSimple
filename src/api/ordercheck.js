@@ -72,3 +72,18 @@ export function orderpollingpay() {
     });
 
 }
+
+
+export function codecheck(data) {
+    return new Promise((resolve, reject) => {
+        request
+            .post(`${API}/openapi/exchange/code/check`, qs.stringify(data))
+            .then(function(response) {
+                resolve(response);
+            })
+            .catch(function(error) {
+                reject(error);
+            });
+    });
+
+}

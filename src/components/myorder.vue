@@ -14,7 +14,7 @@
                             </div>
                             <div class="center">
                                 <img
-                                    :src="item.snapshoot_cnt.sku_list[0].images[0]? item.snapshoot_cnt.sku_list[0].images[0] : ''"
+                                    :src="item.snapshoot_cnt.sku_list[0].images ? item.snapshoot_cnt.sku_list[0].images[0] : ''"
                                     :onerror="defaultAvatar"
                                 />
                                 <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>
@@ -31,9 +31,9 @@
                                 v-bind:class="{ 'pay': item.pay_status == 0 }"
                                 v-if="item.pay_status == 0"
                                 @click="gotoPayFunc(item)"
-                            >去支付</button>
+                            >去兑换</button>
                             <button v-else @click="onemorePayFunc(item)">再来一单</button>
-
+<!-- 
                             <button
                                 v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
                                 @click="deleteorder(item, index)"
@@ -45,7 +45,7 @@
                             <button
                                 v-if="item.order_status == 5 && (item.invoice_status == 1 || item.invoice_status == 2 || item.invoice_status == 4)"
                                 @click="invoiceshow(item)"
-                            >查看发票</button>
+                            >查看发票</button> -->
                         </div>
                     </li>
                 </ul>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
-
+<!-- 
         <div class="deleteorderDialog" v-if="deleteorderDialog">
             <div class="deleteorderDialogBg" @click="closedodFunc"></div>
             <div class="dodcontent">
@@ -78,7 +78,7 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -235,8 +235,8 @@ export default {
                             tip: res.message
                         };
 
-                        localStorage.removeItem("moon_email");
-                        localStorage.removeItem("onemoreobj");
+                        localStorage.removeItem("moonxing_email");
+                        localStorage.removeItem("onemoreobj_xing");
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
@@ -320,7 +320,7 @@ export default {
         order_status_func(status) {
             var str = "";
             if (status == 0) {
-                str = "待付款";
+                str = "待兑换";
             } else if (status == 1) {
                 str = "已取消";
             } else if (status == 2) {
@@ -330,33 +330,33 @@ export default {
             } else if (status == 4) {
                 str = "已发货";
             } else if (status == 5) {
-                str = "交易完成";
+                str = "兑换完成";
             } else if (status == 6) {
-                str = "交易异常";
+                str = "兑换异常";
             }
 
             return str;
         },
-        pay_status_func(status) {
-            var str = "";
-            if (status == 0) {
-                str = "待支付";
-            } else if (status == 1) {
-                str = "支付超时";
-            } else if (status == 2) {
-                str = "支付成功";
-            } else if (status == 3) {
-                str = "发起退款";
-            } else if (status == 4) {
-                str = "退款失败";
-            } else if (status == 5) {
-                str = "退款成功";
-            } else if (status == 6) {
-                str = "支付异常";
-            }
+        // pay_status_func(status) {
+        //     var str = "";
+        //     if (status == 0) {
+        //         str = "待支付";
+        //     } else if (status == 1) {
+        //         str = "支付超时";
+        //     } else if (status == 2) {
+        //         str = "支付成功";
+        //     } else if (status == 3) {
+        //         str = "发起退款";
+        //     } else if (status == 4) {
+        //         str = "退款失败";
+        //     } else if (status == 5) {
+        //         str = "退款成功";
+        //     } else if (status == 6) {
+        //         str = "支付异常";
+        //     }
 
-            return str;
-        },
+        //     return str;
+        // },
         getData(callback, pages) {
             let that = this;
             let data = {
@@ -374,8 +374,8 @@ export default {
                             tip: res.message
                         };
 
-                        localStorage.removeItem("moon_email");
-                        localStorage.removeItem("onemoreobj");
+                        localStorage.removeItem("moonxing_email");
+                        localStorage.removeItem("onemoreobj_xing");
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
@@ -403,7 +403,7 @@ export default {
             localStorage.removeItem("numordersmethodobj");
             localStorage.removeItem("addressobj");
             localStorage.removeItem("invoiceobj");
-            localStorage.setItem("onemoreobj", JSON.stringify(item));
+            localStorage.setItem("onemoreobj_xing", JSON.stringify(item));
         },
         onemorePayFunc(item) {
             let that = this;
@@ -417,7 +417,7 @@ export default {
             localStorage.removeItem("numordersmethodobj");
             localStorage.removeItem("addressobj");
             localStorage.removeItem("invoiceobj");
-            localStorage.setItem("onemoreobj", JSON.stringify(item));
+            localStorage.setItem("onemoreobj_xing", JSON.stringify(item));
         }
     }
 };
@@ -637,6 +637,7 @@ ul li {
     font-size: 15px;
     height: 21px;
     line-height: 21px;
+    width: 2.9rem;
 }
 
 .myorder ul li .center p:nth-child(3) {

@@ -16,8 +16,8 @@
             <div class="login_wrap_content" v-if="loginShow">
                 <div class="loginunit">
                     <label>
-                        <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
-                        <input class="emailinput" v-model="param.email" />
+                        <span class="logintitle">手机号：</span>
+                        <input class="emailinput" v-model="param.email" maxlength="11" />
                     </label>
                 </div>
                 <div class="loginunit">
@@ -43,7 +43,7 @@
                 </div>
                 <!-- <div class="feis" @click="feisFunc"> -->
                 <a :href="feishuhref" class="feis">
-                    <i></i>飞书登录
+                    <i></i>微信登录
                 </a>
             </div>
         </div>
@@ -103,7 +103,7 @@ export default {
         this.urlparamFunc();
         // if(!!localStorage.getItem('moon_vcodetime')) {
         //     this.timecodeFunc();
-        //     this.param.email = Cookie.getItem('moon_email')
+        //     this.param.email = Cookie.getItem('moonxing_email')
         //     this.loginShow = true;
         // }
         // this.touchFunc();
@@ -209,13 +209,13 @@ export default {
         },
         vcCodepostfont() {
             let that = this;
-            // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-            let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+
+            let reg = /^1[3456789]\d{9}$/;
 
             if (this.param.email !== "") {
                 if (!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
-                    that.alertBoxContent = "请输入有效邮箱地址";
+                    that.alertBoxContent = "请输入有效手机号";
                 } else {
                     if (this.vcCodepostfontcontent !== "发送验证") {
                         return;
@@ -225,7 +225,7 @@ export default {
                 }
             } else {
                 this.alertBoxVisible = true;
-                this.alertBoxContent = "请输入邮箱地址";
+                this.alertBoxContent = "请输入手机号";
             }
         },
         timecodeFunc() {
@@ -233,7 +233,7 @@ export default {
                     ? localStorage.getItem("moon_vcodetime")
                     : 59,
                 that = this;
-            // Cookie.setItem('moon_email', that.param.email);
+            // Cookie.setItem('moonxing_email', that.param.email);
             let timecode = () => {
                 if (n >= 0) {
                     that.vcCodepostfontcontent = n + "秒";
@@ -259,28 +259,27 @@ export default {
             let that = this;
             if (this.param.email === "") {
                 that.alertBoxVisible = true;
-                that.alertBoxContent = "请输入邮箱地址";
+                that.alertBoxContent = "请输入手机号";
             } else if (this.param.vcCode === "") {
                 that.alertBoxVisible = true;
                 that.alertBoxContent = "请输入验证码";
             } else {
-                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                // let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
                 let regcode = /^\d+$/;
-                // if (!reg.test(this.param.email)) {
-                //     that.alertBoxVisible = true;
-                //     that.alertBoxContent = "邮箱地址输入错误";
-                // } else if (!regcode.test(this.param.vcCode)) {
+                let reg = /^1[3456789]\d{9}$/;
+                
                 if (!regcode.test(this.param.vcCode)) {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = "验证码为数字";
+                }else if(!reg.test(this.param.email)) {
+                    that.alertBoxVisible = true;
+                    that.alertBoxContent = "请输入有效手机号";
                 } else {
                     loginPost(data)
                         .then(function(res) {
                             that.alertBoxVisible = true;
                             if (!!res && res.code == 20000) {
                                 localStorage.setItem(
-                                    "moon_email",
+                                    "moonxing_email",
                                     that.param.email
                                 );
                                 _czc.push(["_trackEvent", "login", "loginh5"]);
@@ -303,7 +302,7 @@ export default {
             this.$router.push("/product");
         },
         orderCenter() {
-            if (!!localStorage.getItem("moon_email")) {
+            if (!!localStorage.getItem("moonxing_email")) {
                 this.$router.push("/myorder");
             } else {
                 this.loginShow = true;

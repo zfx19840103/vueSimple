@@ -1,264 +1,156 @@
 <template>
     <div class="ordercheckBg">
         <div v-bind:class="{ 'payloading': payloading }" class="ms_content">
-            <div v-if="!payloading">
-                <div class="detailowner" v-if="detailowner" @click="drawer = true">
-                    <i class="el-icon-location-outline"></i>
-                    <p>
-                        <span>{{detailownerParam.receiver}}</span>
-                        {{detailownerParam.phone}}
-                    </p>
-                    <p class="detailowner_address">
-                        <span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span>
-                    </p>
-                    <i class="el-icon-arrow-right"></i>
-                    <div class="detailowner_bottom">
-                        <div class="detailowner_bottom_bg">
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
+            <div class="ordercheckicon"></div>
+            <div class="duihuantip">
+                <h3>兑换须知</h3>
+                <ul>
+                    <li>
+                        <i>1.</i>
+                        <span>下滑页面填写收件信息，可兑换GODIVA歌帝梵典雅月饼礼盒。</span>
+                    </li>
+                    <li>
+                        <i>2.</i>
+                        <span>兑换成功后，全国免费配送，48小时之内发货。</span>
+                    </li>
+                    <li>
+                        <i>3.</i>
+                        <span>发货后，收件人将收到短信提示及货运单号。</span>
+                    </li>
+                    <li>
+                        <i>4.</i>
+                        <span>
+                            收件时请务必开箱验收，如遇到破损等情况，请拨打售后电话
+                            <a href="tel:4006-196-136">4006-196-136</a>。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div v-if="!!moonxing_phone">
+                <div class="addressinput">
+                    <h4>请填写详细信息</h4>
+                    <div class="addressinputcontent">
+                        <div class="unit">
+                            <label>*收货人</label>
+                            <input
+                                type="text"
+                                class="addressinputcontentinput"
+                                v-model="param.receiver"
+                                maxlength="50"
+                                :placeholder="placeholder.receiver"
+                                @blur="resetfixed"
+                            />
+                        </div>
+                        <div class="unit">
+                            <label>*手机号</label>
+                            <input
+                                class="addressinputcontentinput"
+                                type="text"
+                                v-model="param.phone"
+                                maxlength="11"
+                                :placeholder="placeholder.phone"
+                                @blur="resetfixed"
+                            />
+                        </div>
+                        <div class="unit" @click="areashow = true">
+                            <label>*所在地区</label>
+                            <input
+                                type="text"
+                                class="areaaddress addressinputcontentinput"
+                                readonly="readonly"
+                                v-model="param.area"
+                                :placeholder="placeholder.area"
+                            />
+                            <i class="el-icon-arrow-right"></i>
+                        </div>
+
+                        <div class="unit nounit">
+                            <label>*详细地址</label>
+                            <input
+                                type="text"
+                                class="addressaddress addressinputcontentinput"
+                                @click="addressclick"
+                                @input="addressbkFunc"
+                                v-model="param.addressbk"
+                                :placeholder="placeholder.address"
+                                @blur="resetfixed"
+                            />
                         </div>
                     </div>
                 </div>
-                <div class="detailowner" v-else @click="drawer = true">
-                    <span class="detailowneradd"></span>
-                    <span class="detailowneraddress">添加收货地址</span>
-                    <div class="detailowner_bottom">
-                        <div class="detailowner_bottom_bg">
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                        </div>
+                <div class="exchange">
+                    <span>输入兑换码</span>
+                    <div class="drawerexchangeinputbg">
+                        <input
+                            type="text"
+                            class="drawerexchangeinput"
+                            maxlength="8"
+                            v-model.trim="drawerexchangeinput"
+                            placeholder="请输入8位兑换码"
+                            @blur="resetfixed"
+                        />
                     </div>
+                </div>
+                <div class="payTogo" v-bind:class="bgicon">
+                    <button @click="paysubmit">确认兑换</button>
                 </div>
             </div>
             <div v-else>
-                <div class="detailowner" v-if="detailowner">
-                    <i class="el-icon-location-outline"></i>
-                    <p>
-                        <span>{{detailownerParam.receiver}}</span>
-                        {{detailownerParam.phone}}
-                    </p>
-                    <p class="detailowner_address">
-                        <span>{{detailownerParam.provincial}} {{detailownerParam.city}} {{detailownerParam.area}} {{detailownerParam.address}}</span>
-                    </p>
-                    <i class="el-icon-arrow-right"></i>
-                    <div class="detailowner_bottom">
-                        <div class="detailowner_bottom_bg">
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
+                <div class="login_wrap_content">
+                    <div class="loginunit">
+                        <label>
+                            <span class="logintitle">手机号：</span>
+                            <input v-model="param.email" maxlength="11" class="emailinput" />
+                        </label>
+                    </div>
+                    <div class="loginunit">
+                        <label>
+                            <span class="logintitle">验证码：</span>
+                            <input v-model="param.vcCode" maxlength="6" />
+                        </label>
+                        <div class="vcCodepost">
+                            <div class="vcCodepostfont" @click="vcCodepostfont">
+                                <em></em>
+                                {{vcCodepostfontcontent}}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="detailowner" v-else>
-                    <span class="detailowneradd"></span>
-                    <span class="detailowneraddress">添加收货地址</span>
-                    <div class="detailowner_bottom">
-                        <div class="detailowner_bottom_bg">
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                            <span class="bgicon1"></span>
-                            <span class="bgicon2"></span>
-                        </div>
+                    <div class="loginunitbtn">
+                        <button
+                            class="login-btn"
+                            v-if="!param.disabled"
+                            @click="submitForm()"
+                            disabled
+                        >登录</button>
+                        <button class="login-btn" v-else @click="submitForm()">登录</button>
                     </div>
+                    <a :href="feishuhref" class="feis">
+                        <i></i>微信登录
+                    </a>
                 </div>
             </div>
-            <div class="order">
-                <div class="orderh">
-                    <img
-                        :src="skuinfoparam.images? skuinfoparam.images : ''"
-                        :onerror="defaultAvatar"
-                    />
-                    <div class="ordercenter">
-                        <span>{{skuinfoparam.itemName}}</span>
-                        <!-- <span>运费：{{!!skuinfoparam.freight && skuinfoparam.freight !== 0 ? skuinfoparam.freight : '免费'}}</span> -->
-                        <span>库存：{{skuinfoparam.actstock}}</span>
-                        <span>¥{{skuinfoparam.shop_price}}/盒</span>
-                    </div>
-                </div>
-                <p class="paynumall">
-                    <span>购买数量</span>
-                    <span class="paynumallloading" v-if="!payloading">
-                        <i class="el-icon-circle-plus-outline" @click="paynumplus"></i>
-                        <input
-                            type="number"
-                            name="num"
-                            v-model="ordercreate.sku_list[0].sku_count"
-                            @input="paynuminput"
-                            @blur="paynumblur"
-                            value="paynum"
-                        />
-                        <i class="el-icon-remove-outline" @click="paynumremove"></i>
-                    </span>
-                    <span class="paynumallloading" v-else>
-                        <i class="el-icon-circle-plus-outline"></i>
-                        <input
-                            type="number"
-                            name="num"
-                            v-model="ordercreate.sku_list[0].sku_count"
-                            @input="paynuminput"
-                            @blur="paynumblur"
-                            disabled
-                            value="paynum"
-                        />
-                        <i class="el-icon-remove-outline"></i>
-                    </span>
-                </p>
-                <p>
-                    <span>运费</span>
-                    <em>{{skuinfoparam.freight != 0 ? '¥'+skuinfoparam.freight : '包邮'}}</em>
-                </p>
-                <!-- <p v-if="!payloading" @click="linkInvoice"> -->
-                <!-- <p v-if="!payloading" @click="linkInvoice">
-                    <span>发票</span>
-                    <i class="el-icon-arrow-right"></i>
-                    <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <span class="invoicecontent" v-else>
-                        <em>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
-                    </span>
-                </p>
-                <p v-else>
-                    <span>发票</span>
-                    <i
-                        v-bind:class="ordercreate.invoice_info.invoice_type == 2 ? 'el-icon-arrow-right company' : 'el-icon-arrow-right'"
-                    ></i>
-                    <em v-if="ordercreate.is_invoice == 0">不开发票</em>
-                    <span class="invoicecontent" v-else>
-                        <em>{{ordercreate.invoice_info.invoice_name}} {{ordercreate.invoice_info.taxpayer_number}}</em>
-                    </span>
-                </p> -->
-                
-                <p>
-                    <span>发票</span>
-                    <!-- <i class="el-icon-arrow-right"></i> -->
-                    <em>交易完成后可开具发票</em>
-                </p>
 
-                <!-- <p>
-                    <span>订单备注</span>
-                    <i class="el-icon-arrow-right"></i>
-                    <em>
-                        <input
-                            v-if="!payloading"
-                            type="text"
-                            class="orderdes"
-                            v-model="ordercreate.orderdes"
-                            @input="orderlll"
-                            placeholder="点击填写备注"
-                            maxlength="100"
-                        />
-                        <input
-                            v-else
-                            disabled
-                            type="text"
-                            class="orderdes"
-                            v-model="ordercreate.orderdes"
-                            @input="orderlll"
-                            placeholder="点击填写备注"
-                            maxlength="100"
-                        />
-                    </em>
-                </p> -->
+            <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
+                <div class="captchacontentBg" @click="captchaClass = false"></div>
+                <div class="captchacontent">
+                    <div id="captcha"></div>
+                </div>
             </div>
-            <div class="payType">
-                <h3>支付方式<span class="payTypeTip">*请在五分钟之内支付</span></h3>
-                <label>
-                    <span class="wxicon"></span>微信支付
-                    <input
-                        type="radio"
-                        name="payType"
-                        v-model="ordercreate.pay_method"
-                        value="2"
-                        @change="paymethodFunc"
-                    />
-                </label>
-                <label>
-                    <span class="alipayicon"></span>支付宝
-                    <input
-                        type="radio"
-                        name="payType"
-                        v-model="ordercreate.pay_method"
-                        value="1"
-                        @change="paymethodFunc"
-                    />
-                </label>
-            </div>
-            <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div>
-            <div class="payTogotop"></div>
-            <div class="payTogo">
-                <span>
-                    合计：
-                    <em>¥{{priceallFunc(skuinfoparam.shop_price, ordercreate.sku_list[0].sku_count)}}</em>
-                    共{{allnumFunc(ordercreate.sku_list[0].sku_count)}}件
-                </span>
-                <button @click="paysubmit" v-preventReClick>去支付</button>
-            </div>
-            <el-drawer
-                size="50%"
-                :visible.sync="drawer"
-                :direction="direction"
-                class="orderCheckaddress"
-                :show-close="false"
-            >
-                <h3>选择收货地址</h3>
-                <ul v-if="drawerAddress" class="drawerAddress">
-                    <li v-for="(item, index) in addressData" data-type="0" :key="index">
-                        <div @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" class="list-box">
-                            <label @click="addresslistclick(item)">
-                                <input
-                                    type="radio"
-                                    v-model="selectaddress"
-                                    :value="item"
-                                    name="selectaddress"
-                                />
-                                <span>{{item.provincial}} {{item.city}} {{item.area}} {{item.address}}</span>
-                                <em>{{item.receiver}} {{item.phone}}</em>
-                            </label>
-                            <i @click="editaddress" :data="JSON.stringify(item)"></i>
-                        </div>
-                        <div
-                            class="delete"
-                            @click="deleteItem"
-                            :data-index="index"
-                            :data-item="JSON.stringify(item)"
-                        >删除</div>
-                    </li>
-                </ul>
-                <p v-else>请选择收货地址</p>
-                <button @click="addaddress">
-                    <i></i>添加收货地址
-                </button>
-            </el-drawer>
         </div>
+        <Areacomponent :showChose="areashow" v-on:listenareaFunc="areaemit"></Areacomponent>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
+        <div class="duihuansuc" v-if="duihuansuc">
+            <div class="duihuansucmark" @click="duihuansucfalse"></div>
+            <div class="duihuansuccontent">
+                <span class="duihuansucicon"></span>
+                <p>兑换成功</p>
+                <i @click="duihuansucfalsebtn">继续兑换>></i>
+            </div>
+        </div>
+        <!-- <div class="iconsrcollTip" @click="iconsrcollTipshowFunc" v-if="iconsrcollTipshow">
+            <div class="iconsrcollTipbg"></div>
+            <span></span>
+        </div> -->
     </div>
 </template>
 
@@ -270,20 +162,51 @@ import {
     skuinfo,
     deleteaddress,
     ordercreateapi,
-    orderpollingpay
+    orderpollingpay,
+    exchangeData,
+    codecheck
 } from "@/api/ordercheck";
-
+import { loginPost, pushCode, verify } from "@/api/login";
+import Areacomponent from "./area";
 export default {
     data() {
         return {
-            h5html: "",
-            detailowner: true,
+            _scrollTopsce: 0,
+            moonxing_phone: localStorage.getItem("moonxing_phone"),
+            iconsrcollTipshow: true,
+            bgicon: `bgicon${this.$route.name}`,
+            duihuansuc: false,
+            smartCaptcha: "",
+            captchaClass: false,
+            verifydata: {},
+            duihuancode: "",
+            exchange_code: "",
+            drawerexchangeinput: "",
+            drawerexchange: false,
+            detailowner: false,
             drawer: false,
             direction: "btt",
             selectaddress: {},
             param: {
-                pay: ""
+                receiver: "",
+                phone: "",
+                area: "",
+                address: "",
+                addressbk: "",
+                areaobj: {
+                    p: "",
+                    c: "",
+                    d: ""
+                }
             },
+            areashow: false,
+            placeholder: {
+                receiver: "输入收货人姓名",
+                phone: "输入收货人手机号",
+                area: "选择所在地区",
+                address: "输入详细收货地址"
+            },
+            ac: {},
             startX: 0,
             endX: 0,
             alertBox: {
@@ -325,7 +248,6 @@ export default {
                 images: "",
                 barCode: "",
                 warehouseCode: "",
-                actstock: '',
                 status: "",
                 created_at: "",
                 updated_at: "",
@@ -344,7 +266,6 @@ export default {
                 pay_method: 2, //1，支付宝 2，微信
                 orderdes: "",
                 invoice_info: {
-                    id: "",
                     invoice_type: 1,
                     register_phone: "",
                     register_address: "",
@@ -356,7 +277,7 @@ export default {
                 is_invoice: 0, //默认不开发票
                 pathway: 2
             },
-            maxnum: 5,
+            maxnum: 100,
             onemore: !!this.$route.query.onemore
                 ? this.$route.query.onemore
                 : "",
@@ -365,199 +286,338 @@ export default {
                 this.$route.query.payloading == 1
                     ? this.$route.query.payloading
                     : false,
-            numordersmethodobj: {
-                sku_count: 1,
-                orderdes: '',
-                pay_method: 2,//1，支付宝 2，微信
-            },
-            
+            skuinfodata: [],
+
+            vcCodepostfontcontent: "发送验证",
+            feishuhref: 'https://tsingapi.tsingglobal.com/openapi/auth/login/feishu',
         };
     },
     components: {
+        Areacomponent,
         AlertBox
     },
     created() {
-        this.addaddressList();
-
-        // if (this.onemore != 1) {
+        // this.addaddressList();
+        let query = this.$route.query;
+        let that = this;
+        if (!!query.addressedit && query.addressedit == 1) {
+            that.detailowner = true;
+            that.detailownerParam = {
+                id: 1,
+                receiver: query.receiver,
+                phone: query.phone,
+                address: query.address,
+                user_id: query.user_id,
+                provincial: query.provincial,
+                city: query.city,
+                area: query.area
+            };
+        }
+        if (this.onemore != 1) {
             this.skuinfoFunc();
-        // }
+        } else {
+            this.skuinfodata = JSON.parse(
+                localStorage.getItem("onemoreobj")
+            ).snapshoot_cnt.sku_list;
+        }
+        this.drawerexchangeinput = this.$route.query.duihuancode;
+        this.initinvoiceFunc();
         this.initonemoreFunc();
-
-        this.numordersmethod();
-
-        // if(!!localStorage.getItem('onemoreobj')) {
-        //     this.$router.push({ name: "ordercheck", query: {
-        //         onemore:1,
-        //         payloading:this.$route.query.payloading,
-        //     } });
-        // }
+        this.equipment();
     },
     computed: {
-        defaultAvatar() {
-            return 'this.src="' + require("../assets/img/default.png") + '"';
-        }
+        // defaultAvatar() {
+        //     return 'this.src="' + require("../assets/img/default.png") + '"';
+        // },
     },
     mounted() {
-        // this.initinvoiceFunc();
+        let that = this;
+        this.pushCodeFunc();
+        this.addressFunc();
+
+        setTimeout(() => {
+            document.documentElement.scrollTop = 0;
+            that.srcollTipfunc();
+        }, 500);
     },
     methods: {
-        orderlll() {
-            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;
-            this.numordersmethodobj.orderdes = this.ordercreate.orderdes;
-            localStorage.setItem(
-                "numordersmethodobj",
-                JSON.stringify(this.numordersmethodobj)
-            );
+        resetfixed() {
+            document.documentElement.scrollTop = this._scrollTopsce;
         },
-        paymethodFunc() {
-            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;            
-            this.numordersmethodobj.pay_method = this.ordercreate.pay_method;
-            localStorage.setItem(
-                "numordersmethodobj",
-                JSON.stringify(this.numordersmethodobj)
-            );
-        },
-        numordersmethod() {
-            let _l_nom = JSON.parse(localStorage.getItem('numordersmethodobj'));
-
-            if(!!_l_nom) {
-                if(this.$route.query.isaddress == 1){
-                // if(this.$route.query.isaddress == 1 || JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1){
-                    this.ordercreate.sku_list[0].sku_count = _l_nom.sku_count;
-                    this.ordercreate.orderdes = _l_nom.orderdes;
-                    this.ordercreate.pay_method = _l_nom.pay_method;
-                }
+        equipment() {
+            let action = "";
+            var ua = navigator.userAgent.toLowerCase();
+            var os,
+                iswx = "no_wx";
+            if (
+                navigator.userAgent.indexOf("Android") > -1 ||
+                navigator.userAgent.indexOf("Linux") > -1
+            ) {
+                os = "Android";
+            } else if (
+                navigator.userAgent.indexOf("iPhone") > -1 ||
+                navigator.userAgent.indexOf("iPad") > -1
+            ) {
+                os = "iOS";
+            } else if (navigator.userAgent.indexOf("Windows Phone") > -1) {
+                os = "WP";
+            } else {
+                os = "Others";
             }
+            if (/MicroMessenger/i.test(navigator.userAgent)) {
+                iswx = "wx";
+            }
+            var _browers = "";
+            if (ua.indexOf("trident") > -1) {
+                _browers = "IE内核";
+            } else if (ua.indexOf("presto") > -1) {
+                _browers = "opera内核";
+            } else if (ua.indexOf("applewebkit") > -1) {
+                _browers = "苹果、谷歌内核";
+            } else {
+                _browers = "other";
+            }
+
+            _czc.push(["_trackEvent", "equipment", os, iswx]);
+            _czc.push(["_trackEvent", "browers", _browers, ua]);
+        },
+        srcollTipfunc() {
+            let that = this;
+            window.onscroll = function(e) {
+                var _scrollTop = 0;
+                if (
+                    document.documentElement &&
+                    document.documentElement.scrollTop
+                ) {
+                    _scrollTop = document.documentElement.scrollTop;
+                } else if (document.body) {
+                    _scrollTop = document.body.scrollTop;
+                }
+                if (_scrollTop > 50) {
+                    that.iconsrcollTipshow = false;
+                } else {
+                    // that.iconsrcollTipshow = true;
+                }
+                that._scrollTopsce = _scrollTop;
+            };
+        },
+        iconsrcollTipshowFunc() {
+            var nt = 0,
+                _height = window.innerHeight,
+                _scrollheight = document.documentElement.scrollHeight,
+                _duihuantipheight = document.querySelectorAll(".duihuantip")[0]
+                    .offsetTop;
+
+            var timeFuncccccc = function() {
+                nt += 10;
+                setTimeout(() => {
+                    if (nt < Number(_duihuantipheight)) {
+                        document.documentElement.scrollTop = Number(nt);
+                        timeFuncccccc();
+                    }
+                }, 1);
+            };
+            timeFuncccccc();
+        },
+        duihuansucfalse() {
+            this.duihuansuc = false;
+            this.drawerexchangeinput = "";
+        },
+        duihuansucfalsebtn() {
+            let that = this;
+            this.duihuansuc = false;
+            this.drawerexchangeinput = "";
+            _czc.push(["_trackEvent", "goonexchange", that.$route.name]);
+        },
+        areashowclose() {
+            this.areashow = false;
+        },
+        areaemit(areaparam) {
+            this.param.areaobj = {
+                p: areaparam.p,
+                c: areaparam.c,
+                d: areaparam.d
+            };
+            this.param.area =
+                areaparam.p +
+                " " +
+                areaparam.c +
+                " " +
+                (!!areaparam.d ? areaparam.d : "");
+        },
+        addressFunc() {
+            // let that = this;
+            // function G(id) {
+            //     return document.querySelectorAll(id);
+            // }
+            //
+            // var map = new BMap.Map("l-map");
+            // map.centerAndZoom("北京", 12); // 初始化地图,设置城市和地图级别。
+            //
+            // that.ac = new BMap.Autocomplete({
+            //     input: "suggestId",
+            //     location: map
+            // }); //建立一个自动完成的对象
+            //
+            // that.ac.setLocation(that.param.areaobj.c);
+            //
+            // that.ac.addEventListener("onhighlight", function(e) {
+            //     //鼠标放在下拉列表上的事件
+            //     var str = "";
+            //     var _value = e.fromitem.value;
+            //     var value = "";
+            //     if (e.fromitem.index > -1) {
+            //         value =
+            //             // _value.province +
+            //             // _value.city +
+            //             // _value.district +
+            //             _value.street + _value.business;
+            //     }
+            //     str =
+            //         "FromItem<br />index = " +
+            //         e.fromitem.index +
+            //         "<br />value = " +
+            //         value;
+            //
+            //     value = "";
+            //     if (e.toitem.index > -1) {
+            //         _value = e.toitem.value;
+            //         value =
+            //             // _value.province +
+            //             // _value.city +
+            //             // _value.district +
+            //             _value.street + _value.business;
+            //     }
+            //     str +=
+            //         "<br />ToItem<br />index = " +
+            //         e.toitem.index +
+            //         "<br />value = " +
+            //         value;
+            //     G("searchResultPanel").innerHTML = str;
+            // });
+            //
+            // var myValue;
+            // that.ac.addEventListener("onconfirm", function(e) {
+            //     //鼠标点击下拉列表后的事件
+            //
+            //     var _value = e.item.value;
+            //     myValue =
+            //         // _value.province +
+            //         // _value.city +
+            //         // _value.district +
+            //         _value.street + _value.business;
+            //     G("searchResultPanel").innerHTML =
+            //         "onconfirm<br />index = " +
+            //         e.item.index +
+            //         "<br />myValue = " +
+            //         myValue;
+            //
+            //     setPlace();
+            // });
+            //
+            // function setPlace() {
+            //     map.clearOverlays(); //清除地图上所有覆盖物
+            //     function myFun() {
+            //         var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+            //         map.centerAndZoom(pp, 18);
+            //         map.addOverlay(new BMap.Marker(pp)); //添加标注
+            //     }
+            //     var local = new BMap.LocalSearch(map, {
+            //         //智能搜索
+            //         onSearchComplete: myFun
+            //     });
+            //     that.param.addressbk = myValue;
+            //     // that.param.address = myValue;
+            //     local.search(myValue);
+            // }
+        },
+        addressclick() {
+            // this.ac.setLocation(this.param.areaobj.c);
+        },
+        addressbkFunc() {
+            this.param.address = this.param.addressbk;
+            // this.addressFunc();
+        },
+        drawerexchangeFunc() {
+            this.drawerexchange = true;
+            this.drawerexchangeinput = "";
+        },
+        exchangeFunc() {
+            let that = this;
+
+            let data = {
+                exchange_code: this.drawerexchangeinput
+            };
+
+            codecheck(data)
+                .then(function(res) {
+                    if (!!res && res.code == 20000) {
+                        that.exchange_code = that.drawerexchangeinput;
+                        that.drawerexchange = false;
+                        that.duihuancode = res.data.info.exchange_code;
+                    } else if (!!res && res.code == 113005) {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true
+                        };
+                        setTimeout(function() {
+                            that.$router.push("/login");
+                        }, 1000);
+                        localStorage.removeItem("moon_xbk_email");
+                        localStorage.removeItem("onemoreobj");
+                    } else {
+                        that.alertBox = {
+                            tip: res.message,
+                            visible: true
+                        };
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        handleCloseexchange(done) {
+            done();
         },
         initonemoreFunc() {
-            let that = this;
+            // let that = this;
             let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
-            let _isaddress = this.$route.query.isaddress;
-
-            // this.skuinfoparam.actstock = 1000;
-
             if (this.onemore == 1) {
-                this.skuinfoparam.images =
-                    onemoreobj.snapshoot_cnt.sku_list[0].images[0];
-                this.skuinfoparam.itemName =
-                    onemoreobj.snapshoot_cnt.sku_list[0].itemName;
-                this.skuinfoparam.freight =
-                    onemoreobj.snapshoot_cnt.sku_list[0].freight;
+                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes
+                    ? onemoreobj.snapshoot_cnt.orderdes
+                    : "";
+                this.skuinfodata = onemoreobj.snapshoot_cnt.sku_list;
 
-                // this.skuinfoparam.actstock =
-                    // onemoreobj.snapshoot_cnt.sku_list[0].actstock;
+                //地址
+                this.detailowner = true;
 
-                this.skuinfoparam.shop_price =
-                    onemoreobj.snapshoot_cnt.sku_list[0].shop_price;
-
-                this.skuinfoparam.itemCode =
-                    onemoreobj.snapshoot_cnt.sku_list[0].itemCode;
-                this.ordercreate.sku_list[0].sku_count =
-                    onemoreobj.snapshoot_cnt.sku_list[0].sku_count;
-
-                this.ordercreate.is_invoice =
-                    onemoreobj.snapshoot_cnt.is_invoice;
-                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes ? onemoreobj.snapshoot_cnt.orderdes : '';
-                this.ordercreate.pay_method =
-                    onemoreobj.snapshoot_cnt.pay_method;
-
-                this.ordercreate.pathway = onemoreobj.snapshoot_cnt.pathway;
-
-                //发票
-                if(!!JSON.parse(localStorage.getItem('invoiceobj'))) {
-                // if(!!JSON.parse(localStorage.getItem('invoiceobj')) && JSON.parse(localStorage.getItem('invoiceobj')).isqueryinvoice == 1) {
-                    this.ordercreate.invoice_info = {
-                        invoice_type: JSON.parse(localStorage.getItem('invoiceobj')).invoice_type,
-                        register_phone: JSON.parse(localStorage.getItem('invoiceobj')).register_phone,
-                        register_address: JSON.parse(localStorage.getItem('invoiceobj')).register_address,
-                        taxpayer_number: JSON.parse(localStorage.getItem('invoiceobj')).taxpayer_number,
-                        invoice_name: JSON.parse(localStorage.getItem('invoiceobj')).invoice_name,
-                        register_bank: JSON.parse(localStorage.getItem('invoiceobj')).register_bank,
-                        register_bank_account: JSON.parse(localStorage.getItem('invoiceobj')).register_bank_account,
-                    }
-                }else {
-
-                    this.ordercreate.invoice_info = {
-                        invoice_type: !!onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.invoice_type
-                        : "",
-                    register_phone: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.register_phone
-                        : "",
-                    register_address: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.register_address
-                        : "",
-                    taxpayer_number: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.taxpayer_number
-                        : "",
-                    invoice_name: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.invoice_name
-                        : "",
-                    register_bank: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info.register_bank
-                        : "",
-                    register_bank_account: onemoreobj.snapshoot_cnt.invoice_info
-                        ? onemoreobj.snapshoot_cnt.invoice_info
-                              .register_bank_account
-                        : ""
-                }
-                };
-            }
-
-            //地址
-            this.detailowner = true;
-            if (_isaddress == 1) {
-                that.detailownerParam = !!JSON.parse(localStorage.getItem("addressobj")) ? {
-                    id: JSON.parse(localStorage.getItem("addressobj")).id,
-                    receiver: JSON.parse(localStorage.getItem("addressobj"))
-                        .receiver,
-                    phone: JSON.parse(localStorage.getItem("addressobj")).phone,
-                    address: JSON.parse(localStorage.getItem("addressobj"))
-                        .address,
-                    user_id: JSON.parse(localStorage.getItem("addressobj"))
-                        .user_id,
-                    provincial: JSON.parse(localStorage.getItem("addressobj"))
-                        .provincial,
-                    created_at: JSON.parse(localStorage.getItem("addressobj"))
-                        .created_at,
-                    updated_at: JSON.parse(localStorage.getItem("addressobj"))
-                        .updated_at,
-                    city: JSON.parse(localStorage.getItem("addressobj")).city,
-                    area: JSON.parse(localStorage.getItem("addressobj")).area
-                } : {};
-            } else {
-                if(!!onemoreobj) {
-                    this.detailownerParam.receiver =
+                this.detailownerParam.receiver =
                     onemoreobj.snapshoot_cnt.receive_info.name;
-                    this.detailownerParam.phone =
-                        onemoreobj.snapshoot_cnt.receive_info.mobile;
-                    this.detailownerParam.address =
-                        onemoreobj.snapshoot_cnt.receive_info.detailAddress;
-                    this.detailownerParam.provincial =
-                        onemoreobj.snapshoot_cnt.receive_info.province;
-                    this.detailownerParam.city =
-                        onemoreobj.snapshoot_cnt.receive_info.city;
-                    this.detailownerParam.area =
-                        onemoreobj.snapshoot_cnt.receive_info.area;
-                }
+                this.detailownerParam.phone =
+                    onemoreobj.snapshoot_cnt.receive_info.mobile;
+                this.detailownerParam.address =
+                    onemoreobj.snapshoot_cnt.receive_info.detailAddress;
+                this.detailownerParam.provincial =
+                    onemoreobj.snapshoot_cnt.receive_info.province;
+                this.detailownerParam.city =
+                    onemoreobj.snapshoot_cnt.receive_info.city;
+                this.detailownerParam.area =
+                    onemoreobj.snapshoot_cnt.receive_info.area;
             }
         },
         initinvoiceFunc() {
-            let _invoiceobj = JSON.parse(localStorage.getItem("invoiceobj"));
-
-            if (!!_invoiceobj && this.onemore != 1) {
+            let query = this.$route.query;
+            if (query.invoice == 1) {
+                this.ordercreate.is_invoice = query.is_invoice;
                 this.ordercreate.invoice_info = {
-                    id: _invoiceobj.id,
-                    invoice_type: _invoiceobj.invoice_type,
-                    invoice_name: _invoiceobj.invoice_name,
-                    register_phone: _invoiceobj.register_phone,
-                    register_address: _invoiceobj.register_address,
-                    taxpayer_number: _invoiceobj.taxpayer_number,
-                    register_bank: _invoiceobj.register_bank,
-                    register_bank_account: _invoiceobj.register_bank_account
+                    invoice_type: query.invoice_type,
+                    invoice_name: query.invoice_name,
+                    register_phone: query.register_phone,
+                    register_address: query.register_address,
+                    taxpayer_number: query.taxpayer_number,
+                    register_bank: query.register_bank,
+                    register_bank_account: query.register_bank_account
                 };
-                this.ordercreate.is_invoice = _invoiceobj.is_invoice;
             }
         },
         allnumFunc(num) {
@@ -577,24 +637,13 @@ export default {
         //获取月饼商品详情
         skuinfoFunc() {
             let that = this;
-            skuinfo()
+            let data = {
+                code: this.$route.name
+            };
+            skuinfo(data)
                 .then(function(res) {
                     if (!!res && res.code == 20000) {
-                        let _info = res.data.info;
-
-                        that.skuinfoparam.shop_price = _info.shop_price; //商品价格
-                        that.skuinfoparam.images = !!_info.images ? _info.images[0] : '';
-                        that.skuinfoparam.itemName = _info.itemName;
-                        that.skuinfoparam.actstock = _info.actstock;
-                        // that.maxnum = _info.actstock;
-                        that.skuinfoparam.itemCode = _info.itemCode;
-                        that.skuinfoparam.shop_price = _info.shop_price;
-                        that.skuinfoparam.barCode = _info.barCode;
-                        that.skuinfoparam.warehouseCode = _info.warehouseCode;
-                        that.skuinfoparam.status = _info.status;
-                        that.skuinfoparam.created_at = _info.created_at;
-                        that.skuinfoparam.updated_at = _info.updated_at;
-                        that.skuinfoparam.freight = _info.freight;
+                        that.skuinfodata = res.data;
                     } else if (!!res && res.code == 113005) {
                         that.alertBox = {
                             tip: res.message,
@@ -604,7 +653,8 @@ export default {
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
-                        localStorage.removeItem("moon_email");
+                        localStorage.removeItem("moon_xbk_email");
+                        localStorage.removeItem("onemoreobj");
                     } else {
                         that.alertBox = {
                             tip: res.message,
@@ -622,18 +672,11 @@ export default {
                 receiver: item.receiver,
                 phone: item.phone,
                 address: item.address,
-                user_id: item.user_id,
-                provincial: item.provincial,
-                created_at: item.created_at,
-                updated_at: item.updated_at,
+                province: item.provincial,
                 city: item.city,
                 area: item.area
             };
-            this.selectaddress = item;
-            localStorage.setItem(
-                "addressobj",
-                JSON.stringify(this.detailownerParam)
-            );
+
             this.detailowner = true;
             this.drawer = false;
         },
@@ -649,145 +692,37 @@ export default {
                             that.addressData = res.data.reverse();
 
                             //非再来一单的时候
+                            that.selectaddress = that.addressData[0];
+
                             if (that.$route.query.onemore != 1) {
+                                that.detailownerParam = {
+                                    id: res.data[0].id,
+                                    receiver: res.data[0].receiver,
+                                    phone: res.data[0].phone,
+                                    address: res.data[0].address,
+                                    user_id: res.data[0].user_id,
+                                    provincial: res.data[0].provincial,
+                                    city: res.data[0].city,
+                                    area: res.data[0].area
+                                };
                                 that.detailowner = true;
-
-                                if (!!localStorage.getItem("addressobj")) {
-                                    var _addressobj = JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    );
-
-                                    that.addressData.map(itm => {
-                                        if (itm.id == _addressobj.id) {
-                                            localStorage.setItem(
-                                                "addressobj",
-                                                JSON.stringify(itm)
-                                            );
-                                            that.selectaddress = itm;
-                                        }
-                                    });
-                                    that.detailownerParam = {
-                                        id: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).id,
-                                        receiver: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).receiver,
-                                        phone: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).phone,
-                                        address: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).address,
-                                        user_id: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).user_id,
-                                        provincial: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).provincial,
-                                        created_at: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).created_at,
-                                        updated_at: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).updated_at,
-                                        city: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).city,
-                                        area: JSON.parse(
-                                            localStorage.getItem("addressobj")
-                                        ).area
-                                    };
-                                } else {
-                                    that.selectaddress = that.addressData[0];
-                                    localStorage.setItem(
-                                        "addressobj",
-                                        JSON.stringify(that.selectaddress)
-                                    );
-                                    that.detailownerParam = {
-                                        id: res.data[0].id,
-                                        receiver: res.data[0].receiver,
-                                        phone: res.data[0].phone,
-                                        address: res.data[0].address,
-                                        user_id: res.data[0].user_id,
-                                        created_at: res.data[0].created_at,
-                                        updated_at: res.data[0].updated_at,
-                                        provincial: res.data[0].provincial,
-                                        city: res.data[0].city,
-                                        area: res.data[0].area
-                                    };
-                                }
                             }
-
-                            if (that.$route.query.onemore == 1) {
-
-                                if (that.$route.query.isaddress == 1) {
-                                    var _addressobj = JSON.parse(
-                                        localStorage.getItem("addressobj")
-                                    );
-                                    if (!!_addressobj) { 
-                                    
-                                        that.addressData.map(itm => {
-                                            if (itm.id == _addressobj.id) {
-                                                localStorage.setItem(
-                                                    "addressobj",
-                                                    JSON.stringify(itm)
-                                                );
-                                                that.selectaddress = itm;
-                                            }
-                                        });
-                                    }else {
-                                        that.selectaddress = that.addressData[0];
-                                        localStorage.setItem(
-                                            "addressobj",
-                                            JSON.stringify(that.selectaddress)
-                                        );
-                                        that.detailownerParam = {
-                                            id: res.data[0].id,
-                                            receiver: res.data[0].receiver,
-                                            phone: res.data[0].phone,
-                                            address: res.data[0].address,
-                                            user_id: res.data[0].user_id,
-                                            created_at: res.data[0].created_at,
-                                            updated_at: res.data[0].updated_at,
-                                            provincial: res.data[0].provincial,
-                                            city: res.data[0].city,
-                                            area: res.data[0].area
-                                        };
-                                    }
-                                } else {
-                                    var _onemoreobj = JSON.parse(
-                                        localStorage.getItem("onemoreobj")
-                                    );
-                                    var _receive_info = _onemoreobj.snapshoot_cnt.receive_info;
-                                    that.addressData.map(itm => {
-                                        if (itm.provincial == _receive_info.province && itm.address == _receive_info.detailAddress && itm.receiver == _receive_info.name && itm.phone == _receive_info.mobile && itm.city == _receive_info.city && itm.area == _receive_info.area) {
-
-                                            that.selectaddress = itm;
-                                        }
-                                    });
-                                }
-                            }
-
                             that.drawerAddress = true;
                         } else {
-                            if (that.$route.query.onemore == 1) {
-                                that.detailowner = true;
-                            }else {
-                                that.detailowner = false;
-                            }
+                            that.detailowner = false;
                             that.drawerAddress = false;
                         }
-                    } else if (!!res && res.code == 113005) {
-                        that.alertBox = {
-                            tip: res.message,
-                            visible: true
-                        };
+                        // } else if (!!res && res.code == 113005) {
+                        //     that.alertBox = {
+                        //         tip: res.message,
+                        //         visible: true
+                        //     };
 
-                        setTimeout(function() {
-                            that.$router.push("/login");
-                        }, 1000);
-                        localStorage.removeItem("moon_email");
+                        //     setTimeout(function() {
+                        //         that.$router.push("/login");
+                        //     }, 1000);
+                        //     localStorage.removeItem("moon_xbk_email");
+                        //     localStorage.removeItem("onemoreobj");
                     } else {
                         that.alertBox = {
                             tip: res.message,
@@ -804,7 +739,6 @@ export default {
             if (this.ordercreate.sku_list[0].sku_count == "") {
                 this.ordercreate.sku_list[0].sku_count = 1;
             }
-            this.storagecount();
         },
 
         paynumplus() {
@@ -816,7 +750,6 @@ export default {
                     this.ordercreate.sku_list[0].sku_count
                 );
             }
-            this.storagecount();
         },
         paynumremove() {
             if (this.ordercreate.sku_list[0].sku_count > 1) {
@@ -829,7 +762,6 @@ export default {
                 this.skuinfoparam.shop_price,
                 this.ordercreate.sku_list[0].sku_count
             );
-            this.storagecount();
         },
         paynuminput() {
             if (Number(this.ordercreate.sku_list[0].sku_count) > this.maxnum) {
@@ -843,239 +775,241 @@ export default {
                     this.ordercreate.sku_list[0].sku_count
                 );
             }
-            this.storagecount();
-        },
-        storagecount() {
-            this.numordersmethodobj = !!JSON.parse(localStorage.getItem('numordersmethodobj')) ? JSON.parse(localStorage.getItem('numordersmethodobj')) : this.numordersmethodobj;
-            this.numordersmethodobj.sku_count = this.ordercreate.sku_list[0].sku_count;
-            console.log(this.numordersmethodobj)
-            localStorage.setItem(
-                "numordersmethodobj",
-                JSON.stringify(this.numordersmethodobj)
-            );
         },
         addaddress() {
-            let _onemore = this.$route.query.onemore;
-            this.$router.push({
-                name: "addaddress",
-                query: {
-                    onemore: _onemore
-                }
-            });
+            let that = this;
+            let _query = that.$route.query;
+            let data = {};
+
+            data.duihuancode = that.drawerexchangeinput;
+            data.code = that.$route.query.code;
+            data.title = that.$route.query.title;
+            that.$router.push({ name: "addaddress", query: data });
         },
         handleClose() {},
         //编辑地址
         editaddress(e) {
-            console.log(e.target);
-            let data = e.target.getAttribute("data");
-            localStorage.setItem("addressobj", data);
-            data = eval("(" + data + ")");
-            let _onemore = this.$route.query.onemore;
+            let that = this;
+            let data = {
+                provincial: this.detailownerParam.provincial,
+                city: this.detailownerParam.city,
+                area: this.detailownerParam.area,
+                receiver: this.detailownerParam.receiver,
+                phone: this.detailownerParam.phone,
+                address: this.detailownerParam.address
+            };
             data.edit = 1;
-            data.onemore = _onemore;
+
+            data.code = that.$route.query.code;
+            data.duihuancode = this.drawerexchangeinput;
+            data.title = that.$route.query.title;
             this.$router.push({ name: "addaddress", query: data });
+        },
+        pushCodeFunc() {
+            let that = this;
+
+            this.smartCaptcha = new smartCaptcha({
+                renderTo: "#captcha",
+                width: 300,
+                height: 42,
+                default_txt: "点击按钮开始智能验证",
+                success_txt: "验证成功",
+                fail_txt: "验证失败，请在此点击按钮刷新",
+                scaning_txt: "智能检测中",
+                success: function(data) {
+                    console.log(NVC_Opt.token);
+                    console.log(data.sessionId);
+                    console.log(data.sig);
+                    console.log(data);
+                    that.captchaClass = false;
+                    let obj = {
+                        token: NVC_Opt.token,
+                        sessionid: data.sessionId,
+                        sig: data.sig,
+                        scene: "ic_other"
+                    };
+                    let datas = {
+                        out_biz_code:
+                            new Date().getTime() +
+                            "" +
+                            Math.floor(Math.random() * 4000 + 1000),
+                        receive_info: {
+                            province: that.param.areaobj.p,
+                            city: that.param.areaobj.c,
+                            area: that.param.areaobj.d,
+                            name: that.param.receiver,
+                            phone: that.param.phone,
+                            detailAddress: that.param.addressbk
+                        },
+                        orderdes: that.ordercreate.orderdes,
+                        usage_scenario: "bytemoon_exchange",
+                        exchange_code: that.drawerexchangeinput,
+                        verify: obj,
+                        code: that.$route.name
+                    };
+
+                    ordercreateapi(datas)
+                        .then(function(res) {
+                            if (!!res && res.code == 20000) {
+                                that.duihuansuc = true;
+                                _czc.push([
+                                    "_trackEvent",
+                                    "exchangesuccess",
+                                    that.$route.name,
+                                    res.code
+                                ]);
+                                // setTimeout(()=>{
+                                //     that.duihuansuc = false;
+                                // }, 1500)
+                            } else {
+                                that.alertBox = {
+                                    tip: res.message,
+                                    visible: true
+                                };
+                                if (res.code == 200001) {
+                                    _czc.push([
+                                        "_trackEvent",
+                                        "exchanged",
+                                        that.$route.name,
+                                        res.code
+                                    ]);
+                                } else {
+                                    _czc.push([
+                                        "_trackEvent",
+                                        "exchangeerror",
+                                        that.$route.name,
+                                        res.code
+                                    ]);
+                                }
+                                that.drawerexchangeinput = "";
+                            }
+                            that.smartCaptcha.reset();
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                },
+                fail: function(data) {
+                    console.log("ic error");
+                }
+            });
+            this.smartCaptcha.init();
+        },
+        vcCodepostfont() {
+            if (this.param.email !== "") {
+                if (this.vcCodepostfontcontent !== "发送验证") {
+                    return;
+                } else {
+                    this.captchaClass = true;
+                }
+            } else {
+                this.alertBoxVisible = true;
+                this.alertBoxContent = "请输入邮箱地址";
+            }
+        },
+        timecodeFunc() {
+            let n = !!localStorage.getItem("moon_vcodetime")
+                    ? localStorage.getItem("moon_vcodetime")
+                    : 59,
+                that = this;
+            // Cookie.setItem('moon_email', that.param.email);
+            let timecode = () => {
+                if (n >= 0) {
+                    that.vcCodepostfontcontent = n + "秒";
+                    localStorage.setItem("moon_vcodetime", n);
+                    n -= 1;
+                    setTimeout(function() {
+                        timecode();
+                    }, 1000);
+                } else {
+                    localStorage.removeItem("moon_vcodetime");
+                    that.vcCodepostfontcontent = "发送验证";
+                    that.smartCaptcha.reset();
+                }
+            };
+            timecode();
         },
         //创建订单
         paysubmit() {
             let that = this;
-            if (!that.detailownerParam.provincial) {
-                that.alertBox = {
-                    tip: "请添加收货地址",
-                    visible: true
+
+            _czc.push(["_trackEvent", "exchangebtn", this.$route.name]);
+            let data = {
+                out_biz_code:
+                    new Date().getTime() +
+                    "" +
+                    Math.floor(Math.random() * 4000 + 1000),
+
+                receive_info: {
+                    province: !!that.detailownerParam.provincial
+                        ? that.detailownerParam.provincial
+                        : that.detailownerParam.province,
+                    city: that.detailownerParam.city,
+                    area: that.detailownerParam.area,
+                    name: that.detailownerParam.receiver,
+                    phone: !!that.detailownerParam.phone
+                        ? that.detailownerParam.phone
+                        : that.detailownerParam.mobile,
+                    detailAddress: that.detailownerParam.address
+                },
+                orderdes: that.ordercreate.orderdes,
+                usage_scenario: "bytemoon_exchange",
+                exchange_code: that.drawerexchangeinput
+            };
+            console.log(data);
+            if (this.param.receiver == "") {
+                this.alertBox = {
+                    visible: true,
+                    tip: "请" + this.placeholder.receiver
                 };
-                // }else if(that.ordercreate.invoice_info.invoice_name == '') {
-                //     that.alertBox = {
-                //         tip: '请选择发票信息',
-                //         visible:true,
-                //     };
+            } else if (this.param.phone == "") {
+                this.alertBox = {
+                    visible: true,
+                    tip: "请" + this.placeholder.phone
+                };
+            } else if (!/^1[3456789]\d{9}$/.test(this.param.phone)) {
+                this.alertBox = {
+                    visible: true,
+                    tip: this.placeholder.phone + "格式不对"
+                };
+            } else if (this.param.area == "") {
+                this.alertBox = {
+                    visible: true,
+                    tip: "请" + this.placeholder.area
+                };
+            } else if (this.param.address == "") {
+                this.alertBox = {
+                    visible: true,
+                    tip: "请" + this.placeholder.address
+                };
+            } else if (!that.drawerexchangeinput) {
+                this.alertBox = {
+                    visible: true,
+                    tip: "请输入兑换码"
+                };
+            } else if (
+                !/^[A-Za-z0-9]+$/.test(that.drawerexchangeinput) ||
+                that.drawerexchangeinput.length != 8
+            ) {
+                this.alertBox = {
+                    visible: true,
+                    tip: "兑换码格式不正确"
+                };
             } else {
-                let _out_biz_code =
-                    this.$route.query.payloading == 1
-                        ? JSON.parse(
-                              localStorage.getItem("onemoreobj")
-                          ).out_biz_code.substring(
-                              JSON.parse(
-                                  localStorage.getItem("onemoreobj")
-                              ).out_biz_code.indexOf("_") + 1,
-                              JSON.parse(localStorage.getItem("onemoreobj"))
-                                  .out_biz_code.length
-                          )
-                        : new Date().getTime() +
-                          "" +
-                          Math.floor(Math.random() * 4000 + 1000);
-                let data = {
-                    out_biz_code: _out_biz_code,
-                    sku_list: [
-                        {
-                            sku_code: that.skuinfoparam.itemCode,
-                            sku_count: that.ordercreate.sku_list[0].sku_count
-                        }
-                    ],
-                    pay_method: that.ordercreate.pay_method,
-                    receive_info: {
-                        province: that.detailownerParam.provincial,
-                        city: that.detailownerParam.city,
-                        area: that.detailownerParam.area,
-                        name: that.detailownerParam.receiver,
-                        phone: that.detailownerParam.phone,
-                        detailAddress: that.detailownerParam.address
-                    },
-                    orderdes: that.ordercreate.orderdes,
-                    // invoice_info: {
-                    //     invoice_type: !!that.ordercreate.invoice_info
-                    //         .invoice_type
-                    //         ? that.ordercreate.invoice_info.invoice_type
-                    //         : "",
-                    //     register_phone: !!that.ordercreate.invoice_info
-                    //         .register_phone
-                    //         ? that.ordercreate.invoice_info.register_phone
-                    //         : "",
-                    //     register_address: !!that.ordercreate.invoice_info
-                    //         .register_address
-                    //         ? that.ordercreate.invoice_info.register_address
-                    //         : "",
-                    //     taxpayer_number: !!that.ordercreate.invoice_info
-                    //         .taxpayer_number
-                    //         ? that.ordercreate.invoice_info.taxpayer_number
-                    //         : "",
-                    //     invoice_name: !!that.ordercreate.invoice_info
-                    //         .invoice_name
-                    //         ? that.ordercreate.invoice_info.invoice_name
-                    //         : "",
-                    //     register_bank: !!that.ordercreate.invoice_info
-                    //         .register_bank
-                    //         ? that.ordercreate.invoice_info.register_bank
-                    //         : "",
-                    //     register_bank_account: !!that.ordercreate.invoice_info
-                    //         .register_bank_account
-                    //         ? that.ordercreate.invoice_info
-                    //               .register_bank_account
-                    //         : ""
-                    // },
-                    is_invoice: 0, //是否开发票	0否 1是
-                    pathway: 2, //环境配置	1,2
-                    usage_scenario: "bytemoon_pay" //bytemoon_pay 月饼支付 bytemoon_exchange 月饼兑换
-                };
-
-                ordercreateapi(data)
-                    .then(function(res) {
-                        if (!!res && res.code == 20000) {
-                            //将商品code存在localstorge里
-                            localStorage.setItem(
-                                "order_code",
-                                res.data.order_code
-                            );
-                            localStorage.setItem("order_isload", 1);
-                            localStorage.setItem("orderloadingtime", 0);
-                            // localStorage.removeItem('onemoreobj');
-                            if (that.ordercreate.pay_method == 1) {
-                                //1是支付宝 2是微信
-                                that.alipay(res);
-                            } else {
-                                that.wxpay(res);
-                            }
-                        } else if (!!res && res.code == 113005) {
-                            that.alertBox = {
-                                tip: res.message,
-                                visible: true
-                            };
-
-                            setTimeout(function() {
-                                that.$router.push("/login");
-                            }, 1000);
-                            localStorage.removeItem("moon_email");
-                        } else {
-                            that.alertBox = {
-                                tip: res.message,
-                                visible: true
-                            };
-                        }
-                        _czc.push(["_trackEvent", "topay", "topayh5"]);
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                that.captchaClass = true;
             }
         },
 
-        wxpay(res) {
-            const _html = res.data.html;
-            const div = document.createElement("div");
-            div.innerHTML = _html;
-            document.body.appendChild(div);
+        linkInvoice() {
+            this.$router.push("/addinvoice");
         },
-        alipay(res) {
-            const form = res.data.html;
-            const div = document.createElement("div");
-            div.id = "alipay";
-            div.innerHTML = form;
-            document.body.appendChild(div);
-            document.querySelector("#alipay").children[0].submit();
-        },
-        // linkInvoice() {
-        //     let _invoiceobjsss = localStorage.getItem("invoiceobj")
-        //     //     ? JSON.parse(localStorage.getItem("invoiceobj")).id
-        //     //     : 0;
-
-        //     let obj = {};
-        //     if(!_invoiceobjsss && !!JSON.parse(localStorage.getItem("onemoreobj"))){
-        //         let _invoiceinfo = JSON.parse(localStorage.getItem("onemoreobj")).snapshoot_cnt.invoice_info;
-        //         if(_invoiceinfo.invoice_type == 2) {
-        //             obj = {
-        //                 invoice: 1,
-        //                 invoice_name: _invoiceinfo.invoice_name,
-        //                 invoice_type: "2",
-        //                 isqueryinvoice: 1,
-        //                 is_invoice: 1,
-        //                 register_address: _invoiceinfo.register_address,
-        //                 register_bank: _invoiceinfo.register_bank,
-        //                 register_bank_account: _invoiceinfo.register_bank_account,
-        //                 register_phone: _invoiceinfo.register_phone,
-        //                 taxpayer_number: _invoiceinfo.taxpayer_number,
-        //             }
-        //         }else if(_invoiceinfo.invoice_type == 1) {
-        //             obj = {
-        //                 invoice: 1,
-        //                 invoice_name: _invoiceinfo.invoice_name,
-        //                 invoice_type: "1",
-        //                 is_invoice: 1,
-        //                 isqueryinvoice: 1,
-        //             }
-        //         }else {
-        //             obj = {
-        //                 id: 0,
-        //                 invoice: 1,
-        //                 is_invoice: 0,
-        //                 isqueryinvoice: 1,
-        //             }
-        //         }
-        //         localStorage.setItem('invoiceobj', JSON.stringify(obj));
-        //     }
-
-        //     this.$router.push({
-        //         name: "addinvoice",
-        //         query: { 
-        //             // invoiceId: _invoiceId,
-        //             onemore: this.$route.query.onemore,
-        //             isaddress: this.$route.query.isaddress,
-        //         }
-        //     });
-        // },
         touchStart(e) {
-            // alert(e.touches[0].clientX)
             this.startX = e.touches[0].clientX;
-            // e.preventDefault();
-        },
-        touchMove(e) {
-            var _x = e.touches[0].pageX;
-            if((Math.abs(_x-this.startX)>7)){
-                e.preventDefault();
-            }
         },
         touchEnd(e) {
-            this.endX = e.changedTouches[0].clientX;
-            // alert(this.startX+'...'+this.endX)
             let parentElement = e.currentTarget.parentElement;
+
+            this.endX = e.changedTouches[0].clientX;
 
             if (
                 parentElement.dataset.type == 0 &&
@@ -1106,31 +1040,22 @@ export default {
                 item = JSON.parse(e.currentTarget.dataset.item);
             let that = this;
             let data = {
-                id: item.id
+                id: item.id,
+                token: Cookie.get("moon_token")
             };
 
             deleteaddress(data)
                 .then(function(res) {
+                    that.alertBox.visible = true;
                     if (!!res && res.code == 20000) {
-                        that.alertBox = {
-                            tip: "删除成功",
-                            visible: true
-                        };
-
+                        that.alertBox.tip = "删除成功";
                         that.restSlide();
+
                         that.addressData.splice(index, 1);
-                        if (that.selectaddress.id == item.id) {
-                            that.selectaddress = that.addressData[0];
-                            localStorage.setItem(
-                                "addressobj",
-                                JSON.stringify(that.addressData[0])
-                            );
-                            that.detailownerParam = that.selectaddress;
-                        }
+                        that.selectaddress = that.addressData[0];
 
                         if (that.addressData.length == 0) {
                             that.detailowner = false;
-                            that.drawerAddress = false;
                         } else {
                             that.detailownerParam.receiver =
                                 that.addressData[0].receiver;
@@ -1148,7 +1073,8 @@ export default {
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
-                        localStorage.removeItem("moon_email");
+                        localStorage.removeItem("moon_xbk_email");
+                        localStorage.removeItem("onemoreobj");
                     } else {
                         that.alertBox = {
                             tip: res.message,
@@ -1165,51 +1091,406 @@ export default {
 </script>
 
 <style scoped>
-.payloading .detailowner p,
-.payloading .payTogo span,
-.payloading .payTogo span em,
-.payloading .el-icon-location-outline,
-.payloading .order p span,
-.payloading .order p em,
-.payloading .order p em input,
-.payloading .paynumall span,
-.payloading .paynumall span input,
-.payloading .detailowner .el-icon-arrow-right,
-.payloading .ordercenter span {
-    color: #9b9b9b !important;
+@keyframes bounce-down {
+    25% {
+        transform: translateY(5px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
-.payTipsc i {
+@-webkit-keyframes bounce-down {
+    25% {
+        transform: translateY(5px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.login_wrap_content {
+    width: 2.6rem;
+    margin: 0 auto;
+}
+.loginunit {
+    width: 100%;
+    height: 38px;
+    border-radius: 19px;
+    background: rgba(255, 255, 255, 0.4);
+    position: relative;
+    margin-top: 13px;
+    top: 0;
+    left: 0;
+}
+.emailinput {
+    width: 65%;
+}
+.loginunit label input {
+    border: 0;
+    outline: 0;
+    background: rgba(255, 255, 255, 0);
+    font-size: 12px;
+    height: 22px;
+    line-height: 22px;
+    margin: 8px 0;
+}
+.logintitle {
+    width: 0.7rem;
+    float: left;
+    text-align: right;
+    top: 0;
+    left: 0;
+    height: 100%;
+    line-height: 38px;
+    padding-left: 12px;
+}
+.loginunitbtn {
+    position: relative;
+    top: 0;
+    margin-top: 13px;
+    height: 39px;
+    left: 0;
+}
+.login-btn {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 39px;
+    line-height: 39px;
+    border-radius: 19px;
+    background: #ee7571;
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    letter-spacing: 3px;
+}
+.feis i {
+    background-image: url(../assets/img/logofeis.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    top: 3px;
+    left: -7px;
+    width: 17px;
+    height: 17px;
+    position: relative;
     display: inline-block;
-    font-size: 10px;
-    margin-right: 5px;
-    font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
-    font-weight: normal;
-    color: #FF502C;
-    font-style: normal;
 }
-.payTipsc {
+.feis {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    font-size: 12px;
+    position: relative;
+    border-radius: 19px;
+    box-sizing: border-box;
+    border: rgba(255, 255, 255, 0.3) solid 1px;
+    margin-top: 13px;
+    /* bottom: 0; */
+    left: 0;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    text-decoration: none;
     display: block;
-    padding: 10px 0 0 10px;
+}
+.vcCodepostfont em {
+    height: 22px;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    border-left: rgba(229, 229, 229, 1) solid 1px;
+}
+.vcCodepostfont {
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-sizing: border-box;
+    width: 100%;
+    font-style: normal;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+
+    font-size: 12px;
+}
+.vcCodepost {
+    width: 0.65rem;
+    height: 38px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+}
+.loginunit label {
+    width: 100%;
     text-align: left;
+    box-sizing: border-box;
     font-size: 14px;
-    line-height: 15px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 38px;
+    line-height: 38px;
+}
+
+
+
+
+
+.iconsrcollTip {
+    position: fixed;
+    z-index: 99999;
+    bottom: 0;
+    width: 100%;
+    height: 0.59rem;
+    left: 0;
+}
+.iconsrcollTipbg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(159, 117, 52, 0) 0%, #a07632 100%);
+    z-index: 0;
+}
+.iconsrcollTip span {
+    background-image: url(../assets/img/iconTipscroll.png);
+    background-size: 100% 100%;
+    width: 15px;
+    height: 16px;
+    display: block;
+    -webkit-animation: bounce-down 1s linear infinite;
+    animation: bounce-down 1s linear infinite;
+    position: absolute;
+    bottom: 0.2rem;
+    left: 50%;
+    margin: 0 0 0 -0.08rem;
+    z-index: 1;
+}
+.duihuansucicon {
+    background-image: url(../assets/img/iconTip.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 1.14rem;
+    height: 0.83rem;
+    display: block;
+    margin: 0.1rem auto 0;
+}
+.duihuansuccontent i {
+    display: block;
+    font-style: normal;
+    margin: 0.05rem 0 0;
+    font-size: 16px;
+    font-family: PingFangSC-Light, PingFang SC;
+    font-weight: 300;
+    color: #fab724;
+}
+.duihuansuccontent p {
+    margin: 0.15rem 0 0;
+    font-size: 24px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+}
+.duihuansuccontent {
+    text-align: center;
+    width: 2.71rem;
+    height: 1.94rem;
+    background: #ffffff;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -0.97rem 0 0 -1.36rem;
+    z-index: 1;
+}
+.duihuansucmark {
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+.duihuansuc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+}
+#suggestId {
+    opacity: 0;
+    position: relative;
+    z-index: -1;
+    float: left;
+    height: 30px;
+    width: 2.6rem;
+    margin: -30px 7px 0 0;
+    border: 0;
+    outline: 0;
+}
+.addressinputcontent .unit.nounit input.addressinputcontentinput {
+    width: 2.6rem;
+}
+input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #7f6e53;
+}
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #7f6e53;
+}
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #7f6e53;
+}
+input:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #7f6e53;
+}
+.addressinputcontent .unit input.addressinputcontentinput.areaaddress {
+    width: 2.35rem;
+}
+.addressinputcontent .unit input.addressinputcontentinput {
+    float: left;
+    position: relative;
+    height: 33px;
+    line-height: 33px;
+    width: 2.75rem;
+    outline: 0;
+    border: 0;
+    background-color: #d1ae78;
+    padding: 0 0 0 0.1rem;
+    margin: 14px 0 0;
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #3e3e3e;
+}
+.addressinputcontent .unit label {
+    float: left;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+}
+.addressinputcontent .unit.nounit {
+    border-bottom: none;
+}
+.addressinputcontent .unit {
+    position: relative;
+    height: 54px;
+    line-height: 60px;
+    overflow: hidden;
+    margin: 0 0.07rem;
+    border-bottom: #0f0f0f solid 1px;
+}
+.addressinputcontent {
+    width: 3.61rem;
+    background-color: #d1ae78;
+    height: 220px;
+}
+.addressinput {
+    background-color: #ac8547;
+    padding: 0 0.07rem;
+}
+.addressinput h4 {
+    padding: 0 0 0 0.07rem;
+    height: 42px;
+    text-align: left;
+    line-height: 42px;
+    font-size: 16px;
+    font-style: normal;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #1e1e1e;
+}
+
+.duihuantip li span {
+    display: block;
+    float: left;
+    width: 3.35rem;
+    text-align: left;
+    margin: 0 0 0 0.07rem;
+    font-size: 11px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #0f172e;
+    line-height: 18px;
+}
+.duihuantip li i {
+    float: left;
+    width: 0.1rem;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 11px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #0f172e;
+}
+.duihuantip li a {
+    color: #fcd18e;
+    text-decoration: underline;
+    font-size: 11px;
+    font-weight: 400;
+    display: inline-block;
+}
+.duihuantip li {
+    overflow: hidden;
+    list-style: none;
+    font-size: 12px;
+    text-align: left;
+    width: 100%;
+}
+.duihuantip h3 {
+    font-size: 11px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #0f172e;
+    margin: 13px 0 0;
+    font-weight: normal;
+    font-style: normal;
+    text-align: left;
+}
+.duihuantip ul {
+    margin: 7px 0 0;
+}
+.duihuantip {
+    background-color: #ac8547;
+    height: 133px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 0 0 0.17rem;
+}
+.ordercheckicon {
+    width: 3.75rem;
+    height: 4.77rem;
+    background-color: #ac8547;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url(../assets/img/ordercheckbg3.png);
 }
 .detailowner_bottom_bg {
     width: 110%;
-}
-.payTypeTip {
-    float: right;
-    font-size: 10px;
-    margin-right: 12px;
-    font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
-    font-weight: normal;
-    color: #FF502C;
-}
-.payTogotop {
-    position: relative;
-    height: 50px;
-    top: 10px;
-    overflow: hidden;
 }
 .detailowner_bottom {
     height: 0.04rem;
@@ -1220,10 +1501,10 @@ export default {
     left: 0;
 }
 .detailowner_bottom .bgicon1 {
-    background: #325AB4;
+    background: #325ab4;
 }
-.detailowner_bottom .bgicon2{
-    background: #00C8D2;
+.detailowner_bottom .bgicon2 {
+    background: #00c8d2;
 }
 .detailowner_bottom span {
     margin: 0 0.13rem 0 0;
@@ -1237,34 +1518,171 @@ export default {
     float: left;
 }
 
-.el-icon-arrow-right.company {
-    margin: 20px 12px 0 0;
+#captcha {
+    margin: 0.43rem auto 0;
+    padding: 0;
+    font-size: 12px;
+    width: 300px;
+    height: 42px;
 }
-.order p span.invoicecontent {
-    float: right;
-    width: 2.7rem;
-    padding: 14px 0 5px 12px;
+
+.captchacontent {
+    position: absolute;
+    z-index: 10;
+    overflow: hidden;
+    width: 3.36rem;
+    height: 1.3rem;
+    background: #ffffff;
+    border-radius: 8px;
+    top: 50%;
+    left: 50%;
+    margin: -0.65rem 0 0 -1.68rem;
+    text-align: center;
 }
-.order p .invoicecontent em {
-    line-height: 18px;
-    display: block;
+.captchaBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left;
+    background-image: linear-gradient(0deg, #ededed, #fff);
+    z-index: 1;
     width: 100%;
-    text-align: right;
-    word-break: break-all;
-}
-.ordercheckBg {
-    background: #f4f4f4;
     height: 100%;
+    font-size: 14px;
+    line-height: 44px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 0 0 0 115px;
 }
-.payloading .orderh img {
+div.captchaClass {
+    visibility: inherit;
+}
+.captchacontentBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+.captchacontentDialog {
+    z-index: 10000;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+}
+.ordercentersku_count i {
+    float: left;
+    font-size: 12px;
+    font-style: normal;
+    color: #9b9b9b;
+}
+.ordercentersku_count em {
+    float: right;
+    font-size: 14px;
+    font-style: normal;
+}
+div.ordercenter span.ordercentersku_count {
+    padding: 0.03rem 0 0;
+    overflow: hidden;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    width: 2.4rem;
+    text-align: right;
+}
+.payloading .detailowner p,
+.payloading .payTogo span,
+.payloading .payTogo span em,
+.payloading .el-icon-location-outline,
+.payloading .payType h3,
+.payloading .payType label,
+.payloading .order p span,
+.payloading .order p em,
+.payloading .order p em input,
+.payloading .paynumall span,
+.payloading .paynumall span input,
+.payloading .detailowner .el-icon-arrow-right,
+.payloading .ordercenter span {
+    color: #9b9b9b !important;
+}
+.payloading .orderh img,
+.payloading .wxicon,
+.payloading .alipayicon {
     opacity: 0.5;
 }
 .order p span.paynumallloading {
     float: right;
 }
+.drawerexchangeinputbg {
+    height: 61px;
+    /* line-height: 36px; */
+    background-color: #d1ae78;
+    width: 3.61rem;
+    margin: 0 auto;
+    display: block;
+}
+.drawerexchangeinput {
+    box-sizing: border-box;
+    background-color: #d1ae78;
+    margin: 13px 0 0;
+    padding: 0 0 0 13px;
+    width: 100%;
+    border: 0;
+    outline: 0;
+    height: 34px;
+    line-height: 34px;
+    color: #0f0f0f;
+    font-size: 16px;
+    box-shadow: 0;
+}
+
+.drawerexchangebtn {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 195, 20, 1) 0%,
+        rgba(247, 175, 45, 1) 100%
+    );
+    border-radius: 18px;
+    outline: 0;
+    border: 0;
+    font-size: 18px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    width: 3.06rem;
+    height: 40px;
+    line-height: 42px;
+    color: #fff;
+}
+.exchange span {
+    display: block;
+    font-size: 16px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    height: 49px;
+    text-align: left;
+    line-height: 55px;
+    color: #0f0f0f;
+    margin: 0 0 0 0.07rem;
+}
+.exchange {
+    margin: 0 0.07rem;
+    background: #ac8547;
+    position: relative;
+    overflow: hidden;
+}
+.ordercheckBg {
+    background: #ac8547;
+    min-height: 100%;
+}
 .ms_content {
     font-size: 14px;
-    background: #f4f4f4;
+    background: #ac8547;
 }
 .wxicon {
     float: left;
@@ -1289,7 +1707,8 @@ export default {
     outline: 0;
     width: 2.4rem;
     float: right;
-    margin: 15px 2px 0 0;
+    font-size: 14px;
+    margin: 15px 12px 0 0;
     text-align: right;
 }
 .orderCheckaddress p {
@@ -1318,20 +1737,18 @@ export default {
     padding: 0;
 }
 .paynumall .el-icon-circle-plus-outline {
-    margin-right: 12px;
+    margin-right: 16px;
 }
 .orderCheckaddress .delete {
     width: 0.48rem;
+    line-height: 75px;
     height: 100%;
-    line-height: 58px;
-    background: #3C8CFF;
+    background: #ff502c;
     font-size: 12px;
     color: #fff;
     text-align: center;
     position: absolute;
     top: 0;
-    display: table;
-    vertical-align: middle;
     right: -0.48rem;
 }
 .orderCheckaddress h3 {
@@ -1344,15 +1761,11 @@ export default {
     line-height: 40px;
     height: 40px;
 }
-.drawerAddress li label:focus {
-    outline: 0;
-}
-
 .drawerAddress li {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    min-height: 60px;
+    min-height: 75px;
     border-bottom: #f4f4f4 solid 1px;
     position: relative;
     -webkit-transition: all 0.2s;
@@ -1367,12 +1780,13 @@ export default {
     /* background: #f4f4f4; */
 }
 .drawerAddress li .list-box {
-    padding: 5px 0;
+    padding: 10px 0;
     display: flex;
     align-items: center;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     justify-content: flex-end;
+    /* min-height: 75px; */
 }
 .drawerAddress li[data-type="0"] {
     transform: translate3d(0, 0, 0);
@@ -1387,19 +1801,19 @@ export default {
     top: 5px;
     left: 47px;
     float: left;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: rgba(51, 51, 51, 1);
-    line-height: 20px;
-    /* display: -webkit-box;
+    line-height: 25px;
+    display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     text-overflow: ellipsis;
-    overflow: hidden; */
+    overflow: hidden;
 }
 .drawerAddress li em {
     position: relative;
-    top: 7px;
+    top: 5px;
     float: left;
     text-align: left;
     width: 100%;
@@ -1418,7 +1832,7 @@ export default {
     width: 18px;
     height: 18px;
     position: absolute;
-    top: 22px;
+    top: 31px;
     right: 17px;
 }
 .drawerAddress li input {
@@ -1461,43 +1875,35 @@ export default {
     line-height: 25px;
 }
 
+.payTogo.bgiconea562b button {
+    background: linear-gradient(180deg, #4a3321 0%, #5a3f2b 57%, #64452b 100%);
+}
+
+.payTogo.bgicon6cc8cc button {
+    background-color: #300b0a;
+}
+
+.payTogo.bgicon7fbb54 button {
+    background-color: #0f172e;
+}
 .payTogo button {
-    float: right;
-    margin: 7px 12px 0 0;
-    width: 90px;
-    height: 36px;
-    background: linear-gradient(
-        90deg,
-        rgba(27, 123, 255, 1) 0%,
-        rgba(12, 97, 216, 1) 100%
-    );
-    border-radius: 18px;
+    margin: 0 auto;
+    width: 2.89rem;
+    height: 49px;
+    border-radius: 6px;
     outline: 0;
     border: 0;
-    font-size: 14px;
+    font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: rgba(255, 255, 255, 1);
+    color: #dcb474;
 }
-.payTogo span em {
-    font-size: 14px;
-    color: rgba(255, 80, 44, 1);
-    font-style: normal;
-    display: inline-block;
-    margin-right: 6px;
-}
-.payTogo span {
-    float: left;
-    font-size: 12px;
-    margin-left: 12px;
-}
-.payTogo {
-    height: 50px;
-    line-height: 50px;
-    background: #ffffff;
-    position: fixed;
 
-    bottom: 0;
+.payTogo {
+    height: 49px;
+
+    position: relative;
+    padding: 37px 0 31px;
     width: 100%;
 }
 
@@ -1510,7 +1916,6 @@ export default {
     color: #333333;
     font-weight: 400;
     text-align: left;
-    overflow: hidden;
 }
 .payType {
     height: 127px;
@@ -1603,6 +2008,7 @@ export default {
     left: 10px;
 }
 .orderh {
+    position: relative;
     height: 110px;
     border-bottom: #f4f4f4 solid 1px;
 }
@@ -1614,7 +2020,7 @@ export default {
 }
 .ordercenter span:nth-child(1) {
     font-weight: 400;
-    top: 15px;
+    top: 40px;
 }
 .ordercenter span:nth-child(2) {
     font-size: 12px;
@@ -1622,7 +2028,7 @@ export default {
     top: 15px;
 }
 .ordercenter span:nth-child(3) {
-    top: 40px;
+    top: 30px;
 }
 .order p i {
     float: right;
@@ -1639,7 +2045,7 @@ export default {
     padding-left: 12px;
 }
 .order p {
-    overflow: hidden;
+    height: 46px;
     margin: 0;
     line-height: 46px;
     border-bottom: #f4f4f4 solid 1px;

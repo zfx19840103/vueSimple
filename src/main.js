@@ -77,29 +77,16 @@ router.beforeEach((to, from, next) => {
 
     if (!!realname) {
         realname = decodeURIComponent(realname);
-        localStorage.setItem('moon_email', realname);
+        localStorage.setItem('moonxing_phone', realname);
     }
 
-    const role = localStorage.getItem('moon_email');
+    const role = localStorage.getItem('moonxing_phone');
 
-    if (!role && to.path !== '/login') {
-
-        if (to.path !== '/product') {
-            next('/login')
-        } else {
-            next();
-        }
-    } else {
-
-        // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
-        if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
-            Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {
-                confirmButtonText: '确定'
-            });
-        } else {
-            next();
-        }
-    }
+    // if (!role && to.path !== '/ordercheck') {
+    //     next('/ordercheck')
+    // } else {
+        next();
+    // }
 });
 
 /* eslint-disable no-new */

@@ -62,7 +62,7 @@
                     <i>实付款：</i>
                 </p>
             </div>
-            <div v-bind:class="info.snapshoot_cnt.invoice_info.invoice_type == 2 ? 'invoice' : 'invoice gren'" v-if="info.snapshoot_cnt.is_invoice == 1">
+            <!-- <div v-bind:class="info.snapshoot_cnt.invoice_info.invoice_type == 2 ? 'invoice' : 'invoice gren'" v-if="info.snapshoot_cnt.is_invoice == 1">
                 <h3>发票</h3>
                 <p>
                     <span>发票抬头</span>
@@ -72,7 +72,7 @@
                     <span>纳税人识别号：</span>
                     <em>{{info.snapshoot_cnt.invoice_info.taxpayer_number}}</em>
                 </p>
-            </div>
+            </div> -->
             <!-- <div class="no_invoice invoice" v-else>
                 <h3>发票</h3>
                 <p>
@@ -92,12 +92,12 @@
                     >{{info.created_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
                     <em v-else></em>
                 </p>
-                <p>
+                <!-- <p>
                     <span>支付方式：</span>
                     <em>{{info.snapshoot_cnt.pay_method == 1 ? '支付宝' : '微信支付'}}</em>
-                </p>
+                </p> -->
                 <p>
-                    <span>支付时间：</span>
+                    <span>兑换时间：</span>
                     <em
                         v-if="!!info.updated_at"
                     >{{info.updated_at|dateformat('YYYY-MM-DD HH:mm:ss')}}</em>
@@ -116,7 +116,7 @@
                 </p>
             </div>
             <div class="orderdetailbtnbg"></div>
-            <button class="orderdetailbtn" v-if="pay_statusbk == 0" @click="gotoPayFunc">立即支付</button>
+            <button class="orderdetailbtn" v-if="pay_statusbk == 0" @click="gotoPayFunc">立即兑换</button>
             <!-- <button class="orderdetailbtn" v-else @click="paycreateFunc">再来一单</button> -->
             <button class="orderdetailbtn" v-else @click="gotoindex">返回主页</button>
 
@@ -282,7 +282,7 @@ export default {
         } else {
             this.orderloading = localStorage.getItem("order_loading");
         }
-        if (this.orderloading == "支付成功") {
+        if (this.orderloading == "兑换成功") {
             // this.logisticsinfoif = true;
         }
         this.getData();
@@ -301,7 +301,7 @@ export default {
         order_status_func(status) {
             let str = "";
                 if (status == 0) {
-                    str = "待付款";
+                    str = "待兑换";
                 } else if (status == 1) {
                     str = "已取消";
                 } else if (status == 2) {
@@ -311,9 +311,9 @@ export default {
                 } else if (status == 4) {
                     str = "已发货";
                 } else if (status == 5) {
-                    str = "交易完成";
+                    str = "兑换完成";
                 } else if (status == 6) {
-                    str = "交易异常";
+                    str = "兑换异常";
                 }
             return str;
         },
@@ -366,7 +366,7 @@ export default {
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
-                        localStorage.removeItem("moon_email");
+                        localStorage.removeItem("moonxing_email");
                     } else {
                         that.alertBox = {
                             visible: true,
@@ -392,7 +392,7 @@ export default {
             localStorage.removeItem('numordersmethodobj');
             localStorage.removeItem('addressobj');
             localStorage.removeItem('invoiceobj');
-            localStorage.setItem("onemoreobj", JSON.stringify(that.info));
+            localStorage.setItem("onemoreobj_xing", JSON.stringify(that.info));
         },
         gotoPayFunc() {
             let that = this;
@@ -407,7 +407,7 @@ export default {
             localStorage.removeItem('numordersmethodobj');
             localStorage.removeItem('addressobj');
             localStorage.removeItem('invoiceobj');
-            localStorage.setItem("onemoreobj", JSON.stringify(that.info));
+            localStorage.setItem("onemoreobj_xing", JSON.stringify(that.info));
         },
         payovertimeFunc() {
             let data = {
@@ -779,7 +779,7 @@ div.ordernews p em {
 .ordercenter span {
     position: relative;
     font-size: 14px;
-    width: 1.5rem;
+    width: 2.5rem;
     display: block;
 }
 

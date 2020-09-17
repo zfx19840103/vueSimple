@@ -12,7 +12,7 @@
             <div class="login_wrap_content" v-if="loginShow">
                 <div class="loginunit">
                     <label>
-                        <span class="logintitle">邮&nbsp;&nbsp;&nbsp;箱：</span>
+                        <span class="logintitle">手机号：</span>
                         <input v-model="param.email" class="emailinput" />
                     </label>
                 </div>
@@ -38,7 +38,7 @@
                     <button class="login-btn" v-else @click="submitForm()">登录</button>
                 </div>
                 <a :href= feishuhref class="feis">
-                    <i></i>飞书登录
+                    <i></i>微信登录
                 </a>
             </div>
         </div>
@@ -67,7 +67,7 @@ export default {
             alertBoxContent: "",
             captchaClass: false,
             vcCodepostfontcontent: "发送验证",
-            captchaBg: "请先输入邮箱发送验证码",
+            captchaBg: "请先输入手机号发送验证码",
             payNow: "136",
             loginShow: false,
             nowPayShow: true,
@@ -85,7 +85,6 @@ export default {
     },
     mounted() {
         this.pushCodeFunc();
-        // this.touchFunc();
     },
     methods: {
         pushCodeFunc() {
@@ -135,13 +134,13 @@ export default {
         },
         vcCodepostfont() {
             let that = this;
-            // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-            let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((tsingglobal)|(bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
+
+            let reg = /^1[3456789]\d{9}$/;
             
             if (this.param.email !== "") {
                 if(!reg.test(this.param.email)) {
                     that.alertBoxVisible = true;
-                    that.alertBoxContent = "请输入有效邮箱地址";
+                    that.alertBoxContent = "请输入有效手机号";
                 }else {
                     if (this.vcCodepostfontcontent !== "发送验证") {
                         return;
@@ -151,7 +150,7 @@ export default {
                 }
             } else {
                 this.alertBoxVisible = true;
-                this.alertBoxContent = "请输入邮箱地址";
+                this.alertBoxContent = "请输入手机号";
             }
         },
         timecodeFunc() {
@@ -180,17 +179,20 @@ export default {
             let that = this;
             if (this.param.email === "") {
                 that.alertBoxVisible = true;
-                that.alertBoxContent = "请输入邮箱地址";
+                that.alertBoxContent = "请输入手机号";
             } else if (this.param.vcCode === "") {
                 that.alertBoxVisible = true;
                 that.alertBoxContent = "请输入验证码";
             } else {
-                // let reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-                // let reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@((bytedance)|(ad\.bytedance)|(jiyunhudong)).com$/;
                 let regcode = /^\d+$/;
-                if(!regcode.test(this.param.vcCode)) {
+                let reg = /^1[3456789]\d{9}$/;
+                
+                if (!regcode.test(this.param.vcCode)) {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = "验证码为数字";
+                }else if(!reg.test(this.param.email)) {
+                    that.alertBoxVisible = true;
+                    that.alertBoxContent = "请输入有效手机号";
                 } else {
                     loginPost(data)
                         .then(function(res) {
@@ -198,7 +200,7 @@ export default {
 
                             if (!!res && res.code == 20000) {
                                 localStorage.setItem(
-                                    "moon_email",
+                                    "moonxing_email",
                                     that.param.email
                                 );
                                 _czc.push(["_trackEvent", "login", "loginh5"]);
@@ -225,8 +227,8 @@ export default {
             // this.$router.push('/product')
         },
         nowPayFunc() {
-            if (localStorage.getItem("moon_email")) {
-                localStorage.removeItem('onemoreobj');
+            if (localStorage.getItem("moonxing_email")) {
+                localStorage.removeItem('onemoreobj_xing');
                 this.$router.push("/ordercheck");
             } else {
                 this.loginShow = true;
@@ -236,7 +238,7 @@ export default {
             _czc.push(["_trackEvent", "tobuy", "tobuyh5"]);
         },
         orderCenter() {
-            if (!!localStorage.getItem("moon_email")) {
+            if (!!localStorage.getItem("moonxing_email")) {
                 this.$router.push("/myorder");
             } else {
                 this.loginShow = true;
@@ -244,25 +246,6 @@ export default {
                 this.routerurl = 'myorder';
             }
         },
-        touchFunc() {
-
-            let that = this;
-            this.$nextTick(() => {
-                this.scroll = new BScroll(this.$refs.wrapper, {
-                    //初始化better-scroll
-                    probeType: 1, //1 滚动的时候会派发scroll事件，会截流。2滚动的时候实时派发scroll事件，不会截流。 3除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
-                    click: true //是否派发click事件
-                });
-                //滑动结束松开事件
-                this.scroll.on("touchEnd", pos => {
-                    if (pos.y > 65) {
-                        this.$router.push('/login');
-                    }
-                        this.text = pos.y
-                });
-            });
-        },
-        
     }
 };
 </script>
