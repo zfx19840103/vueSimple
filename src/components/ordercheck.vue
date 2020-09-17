@@ -211,7 +211,7 @@
                     />
                 </label>
             </div>
-            <div class="payTipsc"><i>*</i>预计发货时间9月16日</div>
+            <div class="payTipsc"><i>*</i>9月16日-9月19日持续发货，预计19日全部发货完成</div>
             <div class="payTogotop"></div>
             <div class="payTogo">
                 <span>
