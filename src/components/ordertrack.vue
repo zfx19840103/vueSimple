@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="content">
         <div class="ms_content">
             <div class="titNews">
-                {{data.Logistics_company}}{{data.mail_no}}
+                {{data.Logistics_company}} {{data.mail_no}}
                 <span
                     class="iconCopy"
                     title="复制单号"
@@ -10,8 +10,19 @@
                     @click="copy"
                 ></span>
             </div>
+            <div class="address">
+              <div class="dizhiImg"></div>
+              <div class="siteRight">
+                <div class="namePhone">
+                  <span class="name">{{data.name}}</span>
+                  <span class="phone">{{data.phone}}</span>
+                </div>
+                <div class="site">{{data.address}}</div>
+                <div class="siteDetail">{{data.siteDetail}}</div>
+              </div>
+            </div>
             <div class="orderTrackContent">
-                <el-timeline>
+                <el-timeline v-if="data.list.length > 0">
                     <el-timeline-item
                         v-for="(activity, index) in data.list"
                         :key="index"
@@ -30,6 +41,10 @@
                         </div>
                     </el-timeline-item>
                 </el-timeline>
+                <div v-else>
+                  <div class="noneWL"></div>
+                  <div class="noneHead">暂无物流信息</div>
+                </div>
             </div>
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
@@ -49,45 +64,49 @@ export default {
                 tip: ""
             },
             orderCode: this.$route.query.orderCode,
-            
+
             data: {
                 list: [
-                    // {
-                    //     "time": "2020-05-09 19:12:08",
-                    //     "desc": "【宁波市】浙江鄞州KH公司小港服务部 已揽收"
-                    // },
-                    // {
-                    //     "time": "2020-05-09 20:51:53",
-                    //     "desc": "【宁波市】已到达 浙江宁波分拨中心"
-                    // },
-                    // {
-                    //     "time": "2020-05-09 21:01:41",
-                    //     "desc": "【宁波市】已离开 浙江宁波分拨中心；发往 京西地区包"
-                    // },
-                    // {
-                    //     "time": "2020-05-09 21:29:13",
-                    //     "desc": "【宁波市】已离开 浙江宁波分拨中心；发往 北京分拨中心"
-                    // },
-                    // {
-                    //     "time": "2020-05-10 21:17:40",
-                    //     "desc": "【北京市】已到达 北京分拨中心"
-                    // },
-                    // {
-                    //     "time": "2020-05-10 21:57:21",
-                    //     "desc": "【北京市】已离开 北京分拨中心；发往 北京海淀区中关村西北区公司"
-                    // },
-                    // {
-                    //     "time": "2020-05-11 07:54:23",
-                    //     "desc": "【北京市】北京海淀区中关村西北区公司派件员：贾荣跃 电话：17610655872 当前正在为您派件"
-                    // },
-                    // {
-                    //     "time": "2020-05-11 12:34:06",
-                    //     "desc": "【北京市】您的快件已签收，签收人：二华联，如有问题请电联快递员：贾荣跃【17610655872】，投诉电话：010-58545550。起早摸黑不停忙，如有不妥您见谅，好评激励我向上，求个五星暖心房感谢使用韵达快递，期待再次为您服务"
-                    // }
+                    {
+                        "time": "2020-05-09 19:12:08",
+                        "desc": "【宁波市】浙江鄞州KH公司小港服务部 已揽收"
+                    },
+                    {
+                        "time": "2020-05-09 20:51:53",
+                        "desc": "【宁波市】已到达 浙江宁波分拨中心"
+                    },
+                    {
+                        "time": "2020-05-09 21:01:41",
+                        "desc": "【宁波市】已离开 浙江宁波分拨中心；发往 京西地区包"
+                    },
+                    {
+                        "time": "2020-05-09 21:29:13",
+                        "desc": "【宁波市】已离开 浙江宁波分拨中心；发往 北京分拨中心"
+                    },
+                    {
+                        "time": "2020-05-10 21:17:40",
+                        "desc": "【北京市】已到达 北京分拨中心"
+                    },
+                    {
+                        "time": "2020-05-10 21:57:21",
+                        "desc": "【北京市】已离开 北京分拨中心；发往 北京海淀区中关村西北区公司"
+                    },
+                    {
+                        "time": "2020-05-11 07:54:23",
+                        "desc": "【北京市】北京海淀区中关村西北区公司派件员：贾荣跃 电话：17610655872 当前正在为您派件"
+                    },
+                    {
+                        "time": "2020-05-11 12:34:06",
+                        "desc": "【北京市】您的快件已签收，签收人：二华联，如有问题请电联快递员：贾荣跃【17610655872】，投诉电话：010-58545550。起早摸黑不停忙，如有不妥您见谅，好评激励我向上，求个五星暖心房感谢使用韵达快递，期待再次为您服务"
+                    }
                 ],
                 logistics_status: "",
-                mail_no: "",
-                Logistics_company: ""
+                mail_no: "SF352646547585",
+                Logistics_company: "顺丰快递",
+                name: '钟静',
+                phone: ' 185XXXX4907',
+                address: '北京市 朝阳区 广顺南大街10号 ',
+                siteDetail: '东皇大厦17层00156'
             },
         };
     },
@@ -178,9 +197,56 @@ export default {
 </script>
 
 <style scoped>
+.content{
+  background: #F6F6F6;
+}
+.address{
+  text-align: left;
+  font-size: 12px;
+  background: #ffffff;
+  margin-bottom: 10px;
+}
+.dizhiImg{
+  background-image: url(../assets/img/dizhi.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 22px;
+  width: 20px;
+  display: inline-block;
+  margin: 0 14px;
+  vertical-align: middle;
+}
+.siteRight{
+  display: inline-block;
+  vertical-align: middle;
+  padding: 14px 0;
+  width: 300px;
+  line-height: 20px;
+}
+.namePhone{
+  margin-bottom: 5px;
+}
+.namePhone .name{
+  font-size: 14px;
+  font-weight: 600;
+}
+.noneWL{
+  width: 170px;
+  height: 96px;
+  background-image: url(../assets/img/noneWL.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  margin-top: 90px;
+}
+.noneHead{
+  color: #B6B6B6;
+  margin-top: 16px;
+}
 .ms_content {
     font-size: 14px;
     overflow: hidden;
+    color: #333333;
 }
 .titNews {
     height: 54px;
@@ -205,6 +271,7 @@ export default {
 .orderTrackContent {
     padding: 29px 0 0;
     overflow: hidden;
+    background: #FFFFFF;
 }
 .el-timeline {
     text-align: left;
@@ -228,10 +295,10 @@ export default {
     color: #9b9b9b;
 }
 .el-timeline-item:nth-child(1) .el-timeline-item__content span {
-    color: #3C8CFF;
+    color: #B6804B;
 }
 .el-timeline-item:nth-child(1) .el-timeline-item__content p {
-    color: #3C8CFF;
+    color: #B6804B;
 }
 .el-timeline-item__content .time {
     position: absolute;
@@ -260,7 +327,7 @@ export default {
     font-size: 12px;
 }
 .icontimeline {
-    background-image: url(../assets/img/timeline.png);
+    background-image: url(../assets/img/timeline2.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin: 0 0 0 -0.35rem;
@@ -270,4 +337,3 @@ export default {
     float: left;
 }
 </style>
-

@@ -1,8 +1,16 @@
 <template>
     <div class="myorder">
-        <div class="nodata" v-if="nodata"><span>暂无订单</span></div>
-        <div class="wrapper" v-else ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
-            <div class="bscroll-container">
+        <div class="wrapper" ref="wrapper" v-bind:style="{ height: windowHeight+'px'}">
+            <div class="pageHead">
+              <div class="headImg"></div>
+              <div class="phone">{{phone}}</div>
+              <div class="logOut">退出</div>
+            </div>
+            <div v-if="myorderData.list.length == 0" class="nodata">
+              <div class="noneWL"></div>
+              <div class="noneHead">暂无订单</div>
+            </div>
+            <div v-else class="bscroll-container">
                 <ul class="content">
                     <li v-for="(item, index) in myorderData.list" :key="index">
                         <div @click="orderdetail(item)">
@@ -18,35 +26,8 @@
                                     :onerror="defaultAvatar"
                                 />
                                 <p>{{item.snapshoot_cnt.sku_list[0].itemName}}</p>
-                                <p class="shopPricesku_count">
-                                    ¥{{item.snapshoot_cnt.sku_list[0].shop_price}}
-                                    <br />
-                                    X{{item.snapshoot_cnt.sku_list[0].sku_count}}
-                                </p>
-                                <p>共{{item.snapshoot_cnt.sku_list[0].sku_count}}盒 实付：¥{{item.snapshoot_cnt.total_price}}</p>
+                                <button @click="onemorePayFunc(item)">查看物流</button>
                             </div>
-                        </div>
-                        <div class="bottom">
-                            <!-- <button
-                                v-bind:class="{ 'pay': item.pay_status == 0 }"
-                                v-if="item.pay_status == 0"
-                                @click="gotoPayFunc(item)"
-                            >去兑换</button>
-                            <button v-else @click="onemorePayFunc(item)">再来一单</button> -->
-                            <button @click="onemorePayFunc(item)">查看物流信息</button>
-<!-- 
-                            <button
-                                v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
-                                @click="deleteorder(item, index)"
-                            >取消订单</button>
-                            <button
-                                v-if="item.order_status == 5 && item.invoice_status == 0"
-                                @click="invoiceopen(item)"
-                            >申请开票</button>
-                            <button
-                                v-if="item.order_status == 5 && (item.invoice_status == 1 || item.invoice_status == 2 || item.invoice_status == 4)"
-                                @click="invoiceshow(item)"
-                            >查看发票</button> -->
                         </div>
                     </li>
                 </ul>
@@ -57,7 +38,7 @@
             </div>
         </div>
         <AlertBox :alertBox="alertBox.visible" @close="alertBox.visible=false">{{alertBox.tip}}</AlertBox>
-<!-- 
+<!--
         <div class="deleteorderDialog" v-if="deleteorderDialog">
             <div class="deleteorderDialogBg" @click="closedodFunc"></div>
             <div class="dodcontent">
@@ -106,7 +87,178 @@ export default {
             },
             nodata: false,
             myorderData: {
-                list: []
+                // list: [],
+                list: [
+              {
+                "invoice_status": 0,
+                "invoice_info": null,
+                "invoice_res": null,
+                "usage_scenario": "bytemoon_pay",
+                "user_id": 15,
+                "out_biz_code": "15_16004048640993637",
+                "order_code": "1004048644405Bkbw",
+                "pay_req_code": "05f762ea-f96b-11ea-9dea-00163e0bb9a2",
+                "snapshoot_cnt": {
+                  "out_biz_code": "15_16004048640993637",
+                  "sku_list": [
+                    {
+                      "itemCode": "MA0000001",
+                      "shopPrice": 1,
+                      "itemName": "2020中秋月饼礼盒",
+                      "images": [
+                        "https://static.tsingglobal.com/activity/bytemoon/images/items001.png"
+                      ],
+                      "barCode": "MA0000001",
+                      "warehouseCode": "25670",
+                      "customerid": "",
+                      "ownercode": "",
+                      "status": 0,
+                      "created_at": "2020-09-17T09:56:01.000000Z",
+                      "updated_at": "2020-09-17T09:56:01.000000Z",
+                      "actstock": 1000,
+                      "shop_price": "0.01",
+                      "freight": "0.00",
+                      "sku_count": "1"
+                    }
+                  ],
+                  "pay_method": 2,
+                  "receive_info": {
+                    "province": "北京市",
+                    "city": "北京市",
+                    "area": "朝阳区",
+                    "name": "王",
+                    "detailAddress": "哈哈哈",
+                    "mobile": "15910793391"
+                  },
+                  "is_invoice": "0",
+                  "pathway": "1",
+                  "orderdes": "",
+                  "usage_scenario": "bytemoon_pay",
+                  "user_id": 15,
+                  "session_id": "cgdqRBbV0aOZRuvZYjHy1zqHLIP6QXlw8rwBd1Ik",
+                  "pay_expired_at": 1600405164,
+                  "order_code": "1004048644405Bkbw",
+                  "total_sku_price": "0.01",
+                  "freight": "0.00",
+                  "total_price": "0.01",
+                  "split_orders": {
+                    "25670": [
+                      {
+                        "itemCode": "MA0000001",
+                        "shopPrice": 1,
+                        "itemName": "2020中秋月饼礼盒",
+                        "images": [
+                          "https://static.tsingglobal.com/activity/bytemoon/images/items001.png"
+                        ],
+                        "barCode": "MA0000001",
+                        "warehouseCode": "25670",
+                        "customerid": "",
+                        "ownercode": "",
+                        "status": 0,
+                        "created_at": "2020-09-17T09:56:01.000000Z",
+                        "updated_at": "2020-09-17T09:56:01.000000Z",
+                        "actstock": 1000,
+                        "shop_price": "0.01",
+                        "freight": "0.00",
+                        "sku_count": "1"
+                      }
+                    ]
+                  },
+                  "warehouse_code": 25670
+                },
+                "pay_status": 2,
+                "order_status": 2,
+                "created_at": "2020-09-18T04:54:24.000000Z",
+                "updated_at": "2020-09-18T04:54:42.000000Z",
+                "deleted_at": null,
+                "logistics_name": "顺丰",
+                "user_email": "jianzhuo.wang@tsingglobal.com",
+                "mail_no": ""
+              },
+
+              {
+                "invoice_status": 0,
+                "invoice_info": null,
+                "invoice_res": null,
+                "usage_scenario": "bytemoon_pay",
+                "user_id": 9364,
+                "out_biz_code": "9364_16000699918453438",
+                "order_code": "1000699849965b766",
+                "pay_req_code": "51dcc6fa-f65f-11ea-bf7d-00163e02a168",
+                "snapshoot_cnt": {
+                  "freight": "0.00",
+                  "pathway": "1",
+                  "user_id": 9364,
+                  "orderdes": "",
+                  "sku_list": [
+                    {
+                      "images": [
+                        "https://static.tsingglobal.com/activity/bytemoon/images/items001.png?11"
+                      ],
+                      "status": 0,
+                      "barCode": "MA0000001-pt",
+                      "freight": "0.00",
+                      "actstock": 1,
+                      "itemCode": "MA0000001",
+                      "itemName": "2020中秋月饼礼盒",
+                      "shopPrice": 13600,
+                      "sku_count": "1",
+                      "created_at": "2020-09-06T12:03:16.000000Z",
+                      "shop_price": "136.00",
+                      "updated_at": "2020-09-06T12:03:16.000000Z",
+                      "warehouseCode": "CAN216"
+                    }
+                  ],
+                  "is_invoice": "0",
+                  "order_code": "1000699849965b766",
+                  "pay_method": 1,
+                  "session_id": "ufSmPXbwdgBisZK5V4t5U37GtewAyVrvZ8Cf74l3",
+                  "total_price": "136.00",
+                  "invoice_info": "",
+                  "out_biz_code": "9364_16000699918453438",
+                  "receive_info": {
+                    "area": "拱墅区",
+                    "city": "杭州市",
+                    "name": "钱磊",
+                    "mobile": "13750811558",
+                    "province": "浙江省",
+                    "detailAddress": "白马大厦"
+                  },
+                  "split_orders": {
+                    "CAN216": [
+                      {
+                        "images": [
+                          "https://static.tsingglobal.com/activity/bytemoon/images/items001.png?11"
+                        ],
+                        "status": 0,
+                        "barCode": "MA0000001-pt",
+                        "freight": "0.00",
+                        "actstock": 1,
+                        "itemCode": "MA0000001",
+                        "itemName": "2020中秋月饼礼盒",
+                        "shopPrice": 13600,
+                        "sku_count": "1",
+                        "created_at": "2020-09-06T12:03:16.000000Z",
+                        "shop_price": "136.00",
+                        "updated_at": "2020-09-06T12:03:16.000000Z",
+                        "warehouseCode": "CAN216"
+                      }
+                    ]
+                  },
+                  "pay_expired_at": 1600070284,
+                  "usage_scenario": "bytemoon_pay",
+                  "warehouse_code": "CAN216",
+                  "total_sku_price": "136.00"
+                },
+                "pay_status": 2,
+                "order_status": 2,
+                "created_at": "2020-09-14T07:53:04.000000Z",
+                "updated_at": "2020-09-14T12:10:50.000000Z",
+                "deleted_at": null,
+                "logistics_name": "顺丰",
+                "user_email": "",
+                "mail_no": ""
+              }]
             },
             windowHeight: document.documentElement.clientHeight,
             myorderDatapagesize: 10,
@@ -115,12 +267,12 @@ export default {
             pulldownMsg: "下拉刷新",
             pullupMsg: "加载更多",
             tipppp: "",
-            _scroll: {},
             total: 1,
             pagesthis: 1,
             _order_code: "",
             imgaddress: "",
-            deleteorderindex: 1
+            deleteorderindex: 1,
+            phone: '133556788756'
         };
     },
     components: {
@@ -133,8 +285,8 @@ export default {
     },
     created() {
         let that = this;
-        this.initData();
-        this.pulldownFunc();
+        // this.initData();
+        // this.pulldownFunc();
     },
     mounted() {},
     watch: {},
@@ -425,6 +577,40 @@ export default {
 </script>
 
 <style scoped>
+  .pageHead{
+    padding: 10px 0;
+    text-align: left;
+    overflow: hidden;
+  }
+  .headImg{
+    width: 28px;
+    height: 28px;
+    background-image: url(../assets/img/head.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    margin-left: 17px;
+    margin-right: 13px;
+    vertical-align: middle;
+  }
+  .phone{
+    color: #7D472B;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .logOut{
+    width: 37px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 11px;
+    background: #D7A666;
+    float: right;
+    color: #ffffff;
+    font-size: 12px;
+    margin-right: 12px;
+    margin-top: 3px;
+  }
 .doda {
 }
 .dodb span {
@@ -518,29 +704,28 @@ div.dodb button {
     left: 0;
     z-index: 1;
 }
-.nodata span {
-    font-size: 13px;
-    font-weight: normal;
-    color: #B6B6B6;
-    padding: 1.87rem 0 0;
-    display: block;
-    width: 100%;
-    text-align: center;
-}
 .nodata {
-    position: absolute;
-    top: 1.48rem;
-    width: 1.83rem;
-    height: 1.62rem;
-    left: 50%;
-    margin-left: -0.915rem;
-    background: url(../assets/img/noordericon.png) no-repeat;
-    background-size: cover;
+    background: #FFFFFF;
+    height: 100%;
+    overflow: hidden;
+}
+.noneWL{
+  width: 183px;
+  height: 162px;
+  background-image: url(../assets/img/noneOrder.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  margin-top: 90px;
+}
+.noneHead{
+  color: #B6B6B6;
+  margin-top: 16px;
 }
 .wrapper {
     font-size: 14px;
     width: 100%;
-    background: #ccc;
+    background: #F4F4F4;
     overflow: hidden;
     position: relative;
     -webkit-overflow-scrolling: touch;
@@ -584,7 +769,6 @@ div.myorder ul li .center p.shopPricesku_count {
 ul li {
     list-style: none;
     background: #ffffff;
-    height: 170px;
     margin-bottom: 10px;
     position: relative;
 }
@@ -603,7 +787,7 @@ ul li {
 }
 
 .myorder ul li .top em {
-    color: #333333;
+    color: #7D472B;
     float: right;
     font-style: normal;
 }
@@ -655,6 +839,17 @@ ul li {
     height: 20px;
     line-height: 20px;
     text-align: right;
+}
+.myorder ul li .center button{
+    width: 76px;
+    height: 30px;
+    border-radius: 18px;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    background: #D7A666;
+    float: right;
+    margin-top: 16px;
 }
 
 .myorder ul li .bottom button {
