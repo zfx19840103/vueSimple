@@ -7,13 +7,13 @@
             @touchend="touchendFunc"
         ></div>
         <span class="orderCenter" @click="orderCenter">
-            <i>订单中心</i>
+            <i>我的</i>
         </span>
         <div class="loginParent">
             <div class="loginBg"></div>
         </div>
         <div class="login-wrap" v-if="loginShow">
-            <div class="login_wrap_content" v-if="loginShow">
+            <div class="login_wrap_content">
                 <div class="loginunit">
                     <label>
                         <span class="logintitle">手机号：</span>
@@ -38,21 +38,24 @@
                         v-if="!param.disabled"
                         @click="submitForm()"
                         disabled
-                    >登录</button>
-                    <button class="login-btn" v-else @click="submitForm()">登录</button>
+                    >手机登录</button>
+                    <button class="login-btn" v-else @click="submitForm()">手机登录</button>
                 </div>
-                <!-- <div class="feis" @click="feisFunc"> -->
                 <a :href="feishuhref" class="feis">
                     <i></i>微信登录
                 </a>
             </div>
         </div>
-        <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
-            <!-- <div class="loginwrapIcon" @click="linkproduct"> -->
+        <div v-else class="login-wrap-login">
+            <div class="loginunitbtn">
+                <button class="login-btn">手机</button>
+            </div>
+        </div>
+        <!-- <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
             <i class="el-icon-arrow-down"></i>
             <span></span>
             <span></span>
-        </div>
+        </div> -->
         <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
             <div class="captchacontentBg" @click="captchaClass = false"></div>
             <div class="captchacontent">
@@ -76,7 +79,7 @@ export default {
             alertBoxVisible: false,
             alertBoxContent: "",
             captchaClass: false,
-            loginShow: false,
+            loginShow: true,
             arrow: true,
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
@@ -140,23 +143,6 @@ export default {
             }
         },
 
-        touchFunc() {
-            let that = this;
-            this.$nextTick(() => {
-                this.scroll = new BScroll(this.$refs.wrapper, {
-                    //初始化better-scroll
-                    probeType: 1, //1 滚动的时候会派发scroll事件，会截流。2滚动的时候实时派发scroll事件，不会截流。 3除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
-                    click: true //是否派发click事件
-                });
-                //滑动结束松开事件
-                this.scroll.on("touchEnd", pos => {
-                    if (pos.y < -65) {
-                        this.$router.push("/product");
-                    }
-                    // this.text = pos.y
-                });
-            });
-        },
         urlparamFunc() {
             if (!!this.$route.query.loginShow) {
                 this.loginShow = true;
@@ -314,6 +300,15 @@ export default {
 </script>
 
 <style scoped>
+.login-wrap-login {
+    width: 2.6rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    margin: 0 0 0 -1.3rem;
+    z-index: 1;
+}
+
 .scrollFunc {
     overflow: hidden;
     position: absolute;
@@ -358,13 +353,13 @@ export default {
     z-index: 10000;
 }
 .feis i {
-    background-image: url(../assets/img/logofeis.png);
+    background-image: url(../assets/img/weixin.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    top: 3px;
+    top: 5px;
     left: -7px;
-    width: 17px;
-    height: 17px;
+    width: 25px;
+    height: 25px;
     position: relative;
     display: inline-block;
 }
@@ -373,39 +368,43 @@ export default {
     width: 100%;
     height: 38px;
     line-height: 38px;
+    padding: 0 0 5px;
+    box-sizing: border-box;
     display: block;
     border-radius: 19px;
     box-sizing: border-box;
-    border: rgba(255, 255, 255, 0.3) solid 1px;
+    border: #7D472B solid 1px;
+    background-color: rgba(125, 71, 43, 0.24);
     margin-top: 13px;
     font-weight: 400;
-    color: rgba(255, 255, 255, 1);
+    color: #ffffff;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
     bottom: 0;
     left: 0;
 }
 .orderCenter i {
-    font-size: 13px;
-    font-weight: 800;
-    color: #ffffff;
-    width: 40px;
-    height: 40px;
-    background: #ff6671;
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #986136;
+    text-align: center;
+    width: 44px;
+    height: 44px;
+    background:#FAE2BF;
     display: block;
     border-radius: 20px;
     font-style: normal;
-    line-height: 15px;
+    line-height: 44px;
     box-sizing: border-box;
-    padding: 6px 3px 0;
     position: absolute;
     top: 7px;
     left: 10px;
 }
 .orderCenter {
     width: 63px;
-    height: 54px;
-    background: rgba(255, 255, 255, 0.6);
+    height: 56px;
+    background: rgba(153, 98, 55, 0.79);
     border-radius: 27px 0 0 27px;
     position: absolute;
     top: 27px;
@@ -518,6 +517,7 @@ div.captchaClass {
     text-align: right;
     top: 0;
     left: 0;
+    color: #7D472B;
     height: 100%;
     line-height: 38px;
     padding-left: 12px;
@@ -536,12 +536,12 @@ div.captchaClass {
     height: 39px;
     line-height: 39px;
     border-radius: 19px;
-    background: #ee7571;
+    background:#7D472B;
     border: 0;
     outline: 0;
     font-size: 16px;
     font-weight: 400;
-    color: rgba(255, 255, 255, 1);
+    color:#F7E3BE;
     letter-spacing: 3px;
 }
 
@@ -553,9 +553,8 @@ div.captchaClass {
     z-index: 0;
     width: 100vw;
     height: 100vh;
-    /* object-fit: cover; */
-    background-image: url(../assets/img/loginBg.jpg);
-    background-color: #3267c7;
+    background-image: url(../assets/img/loginBg.png);
+    background-color: #DDB275;
     background-repeat: no-repeat;
     background-position: 0 0; 
     background-size: auto 100%;
@@ -577,7 +576,7 @@ div.captchaClass {
     position: absolute;
     top: 8px;
     left: 0;
-    border-left: rgba(229, 229, 229, 1) solid 1px;
+    border-left: #7D472B solid 1px;
 }
 .vcCodepostfont {
     position: absolute;
@@ -589,7 +588,7 @@ div.captchaClass {
     height: 38px;
     line-height: 38px;
     text-align: center;
-
+    color: #7D472B;
     font-size: 12px;
 }
 .vcCodepost {
@@ -643,7 +642,7 @@ div.captchaClass {
 .login_wrap_content {
     width: 2.6rem;
     position: absolute;
-    bottom: 0.6rem;
+    bottom: 0.21rem;
     z-index: 1;
 }
 

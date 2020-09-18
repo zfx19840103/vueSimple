@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </div>
-            <div v-if="!!moonxing_phone">
+
                 <div class="addressinput">
                     <h4>请填写详细信息</h4>
                     <div class="addressinputcontent">
@@ -94,41 +94,6 @@
                 <div class="payTogo" v-bind:class="bgicon">
                     <button @click="paysubmit">确认兑换</button>
                 </div>
-            </div>
-            <div v-else>
-                <div class="login_wrap_content">
-                    <div class="loginunit">
-                        <label>
-                            <span class="logintitle">手机号：</span>
-                            <input v-model="param.email" maxlength="11" class="emailinput" />
-                        </label>
-                    </div>
-                    <div class="loginunit">
-                        <label>
-                            <span class="logintitle">验证码：</span>
-                            <input v-model="param.vcCode" maxlength="6" />
-                        </label>
-                        <div class="vcCodepost">
-                            <div class="vcCodepostfont" @click="vcCodepostfont">
-                                <em></em>
-                                {{vcCodepostfontcontent}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="loginunitbtn">
-                        <button
-                            class="login-btn"
-                            v-if="!param.disabled"
-                            @click="submitForm()"
-                            disabled
-                        >登录</button>
-                        <button class="login-btn" v-else @click="submitForm()">登录</button>
-                    </div>
-                    <a :href="feishuhref" class="feis">
-                        <i></i>微信登录
-                    </a>
-                </div>
-            </div>
 
             <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
                 <div class="captchacontentBg" @click="captchaClass = false"></div>
@@ -858,9 +823,6 @@ export default {
                                     that.$route.name,
                                     res.code
                                 ]);
-                                // setTimeout(()=>{
-                                //     that.duihuansuc = false;
-                                // }, 1500)
                             } else {
                                 that.alertBox = {
                                     tip: res.message,

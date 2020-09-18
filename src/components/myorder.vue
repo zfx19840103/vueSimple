@@ -27,12 +27,13 @@
                             </div>
                         </div>
                         <div class="bottom">
-                            <button
+                            <!-- <button
                                 v-bind:class="{ 'pay': item.pay_status == 0 }"
                                 v-if="item.pay_status == 0"
                                 @click="gotoPayFunc(item)"
                             >去兑换</button>
-                            <button v-else @click="onemorePayFunc(item)">再来一单</button>
+                            <button v-else @click="onemorePayFunc(item)">再来一单</button> -->
+                            <button @click="onemorePayFunc(item)">查看物流信息</button>
 <!-- 
                             <button
                                 v-if="item.order_status == 2 || item.order_status == 3 || item.order_status == 4"
