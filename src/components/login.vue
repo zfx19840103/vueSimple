@@ -28,17 +28,8 @@
                     </div>
                 </div>
                 <div class="loginunitbtn">
-                    <button
-                        class="login-btn"
-                        v-if="!param.disabled"
-                        @click="submitForm()"
-                        disabled
-                    >手机登录</button>
-                    <button class="login-btn" v-else @click="submitForm()">手机登录</button>
+                    <button class="login-btn" @click="submitForm()">手机登录</button>
                 </div>
-                <a :href="feishuhref" class="feis">
-                    <i></i>微信登录
-                </a>
             </div>
         </div>
         <div v-else class="login-wrap-login">
@@ -47,11 +38,6 @@
                 <span class="loginout" @click="logoutsss">退出登录</span>
             </div>
         </div>
-        <!-- <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
-            <i class="el-icon-arrow-down"></i>
-            <span></span>
-            <span></span>
-        </div> -->
         <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
             <div class="captchacontentBg" @click="captchaClassFuncsc"></div>
             <div class="captchacontent">
@@ -100,12 +86,6 @@ export default {
     },
     created() {
         this.urlparamFunc();
-        // if(!!localStorage.getItem('moon_vcodetime')) {
-        //     this.timecodeFunc();
-        //     this.param.email = Cookie.getItem('moonxing_email')
-        //     this.loginShow = true;
-        // }
-        // this.touchFunc();
         this.initloginShow();
     },
     mounted() {
@@ -123,8 +103,10 @@ export default {
                 if(!!res && res.code == 20000){
                     that.alertBoxVisible = true;
                     that.alertBoxContent = '退出成功';
-                    localStorage.removeItem("xingbake");
-                    that.loginShow = true;
+                    setTimeout(function() {
+                        localStorage.removeItem("xingbake");
+                        that.loginShow = true;
+                    }, 1000)
                 }else {
                     that.alertBoxVisible = true;
                     that.alertBoxContent = res.message;
@@ -228,21 +210,16 @@ export default {
             }
         },
         timecodeFunc() {
-            let n = !!localStorage.getItem("moon_vcodetime")
-                    ? localStorage.getItem("moon_vcodetime")
-                    : 59,
+            let n = 59,
                 that = this;
-            // Cookie.setItem('moonxing_email', that.param.email);
             let timecode = () => {
                 if (n >= 0) {
                     that.vcCodepostfontcontent = n + "秒";
-                    localStorage.setItem("moon_vcodetime", n);
                     n -= 1;
                     setTimeout(function() {
                         timecode();
                     }, 1000);
                 } else {
-                    localStorage.removeItem("moon_vcodetime");
                     that.vcCodepostfontcontent = "发送验证";
                     that.smartCaptcha.reset();
                 }
@@ -277,13 +254,13 @@ export default {
                             that.alertBoxVisible = true;
                             if (!!res && res.code == 20000) {
                                 localStorage.setItem(
-                                    "moonxing_email",
+                                    "xingbake",
                                     that.param.email
                                 );
 
                                 that.alertBoxContent = "登录成功";
                                 setTimeout(function() {
-                                    that.$router.push("/myorder");
+                                    that.$router.push("/ordercheck");
                                 }, 1000);
                             } else {
                                 that.alertBoxContent = res.message;
@@ -294,9 +271,6 @@ export default {
                         });
                 }
             }
-        },
-        linkproduct() {
-            this.$router.push("/product");
         },
         orderCenter() {
             if (!!localStorage.getItem("xingbake")) {
@@ -433,7 +407,7 @@ export default {
     position: absolute;
     top: 27px;
     right: 0;
-    z-index: 999999;
+    z-index: 9999;
 }
 div.captchaClass {
     visibility: inherit;
@@ -471,7 +445,6 @@ div.captchaClass {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #3469c9;
 }
 .loginwrapIcon i {
     transform: rotate(180deg);

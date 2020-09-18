@@ -67,7 +67,7 @@
                             v-model="param.area"
                             :placeholder="placeholder.area"
                         />
-                        <i class="el-icon-arrow-right"></i>
+                        <i class="el-icon-arrow-right arrowarea"></i>
                     </div>
 
                     <div class="unit nounit">
@@ -270,37 +270,12 @@ export default {
         AlertBox
     },
     created() {
-        // this.addaddressList();
         let query = this.$route.query;
         let that = this;
-        if (!!query.addressedit && query.addressedit == 1) {
-            that.detailowner = true;
-            that.detailownerParam = {
-                id: 1,
-                receiver: query.receiver,
-                phone: query.phone,
-                address: query.address,
-                user_id: query.user_id,
-                provincial: query.provincial,
-                city: query.city,
-                area: query.area
-            };
-        }
-        if (this.onemore != 1) {
-            this.skuinfoFunc();
-        } else {
-            this.skuinfodata = JSON.parse(
-                localStorage.getItem("onemoreobj")
-            ).snapshoot_cnt.sku_list;
-        }
+
+        this.skuinfoFunc();
+
         this.drawerexchangeinput = this.$route.query.duihuancode;
-        this.initinvoiceFunc();
-        this.initonemoreFunc();
-    },
-    computed: {
-        // defaultAvatar() {
-        //     return 'this.src="' + require("../assets/img/default.png") + '"';
-        // },
     },
     mounted() {
         let that = this;
@@ -313,8 +288,8 @@ export default {
         }, 500);
     },
     methods: {
-         orderCenter() {
-                this.$router.push("/myorder");
+        orderCenter() {
+            this.$router.push("/myorder");
         },
         resetfixed() {
             document.documentElement.scrollTop = this._scrollTopsce;
@@ -365,7 +340,6 @@ export default {
             let that = this;
             this.duihuansuc = false;
             this.drawerexchangeinput = "";
-            _czc.push(["_trackEvent", "goonexchange", that.$route.name]);
         },
         areashowclose() {
             this.areashow = false;
@@ -480,97 +454,8 @@ export default {
             this.drawerexchange = true;
             this.drawerexchangeinput = "";
         },
-        exchangeFunc() {
-            let that = this;
-
-            let data = {
-                exchange_code: this.drawerexchangeinput
-            };
-
-            codecheck(data)
-                .then(function(res) {
-                    if (!!res && res.code == 20000) {
-                        that.exchange_code = that.drawerexchangeinput;
-                        that.drawerexchange = false;
-                        that.duihuancode = res.data.info.exchange_code;
-                    } else if (!!res && res.code == 113005) {
-                        that.alertBox = {
-                            tip: res.message,
-                            visible: true
-                        };
-                        setTimeout(function() {
-                            that.$router.push("/login");
-                        }, 1000);
-                        localStorage.removeItem("moon_xbk_email");
-                        localStorage.removeItem("onemoreobj");
-                    } else {
-                        that.alertBox = {
-                            tip: res.message,
-                            visible: true
-                        };
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
         handleCloseexchange(done) {
             done();
-        },
-        initonemoreFunc() {
-            // let that = this;
-            let onemoreobj = JSON.parse(localStorage.getItem("onemoreobj"));
-            if (this.onemore == 1) {
-                this.ordercreate.orderdes = !!onemoreobj.snapshoot_cnt.orderdes
-                    ? onemoreobj.snapshoot_cnt.orderdes
-                    : "";
-                this.skuinfodata = onemoreobj.snapshoot_cnt.sku_list;
-
-                //地址
-                this.detailowner = true;
-
-                this.detailownerParam.receiver =
-                    onemoreobj.snapshoot_cnt.receive_info.name;
-                this.detailownerParam.phone =
-                    onemoreobj.snapshoot_cnt.receive_info.mobile;
-                this.detailownerParam.address =
-                    onemoreobj.snapshoot_cnt.receive_info.detailAddress;
-                this.detailownerParam.provincial =
-                    onemoreobj.snapshoot_cnt.receive_info.province;
-                this.detailownerParam.city =
-                    onemoreobj.snapshoot_cnt.receive_info.city;
-                this.detailownerParam.area =
-                    onemoreobj.snapshoot_cnt.receive_info.area;
-            }
-        },
-        initinvoiceFunc() {
-            let query = this.$route.query;
-            if (query.invoice == 1) {
-                this.ordercreate.is_invoice = query.is_invoice;
-                this.ordercreate.invoice_info = {
-                    invoice_type: query.invoice_type,
-                    invoice_name: query.invoice_name,
-                    register_phone: query.register_phone,
-                    register_address: query.register_address,
-                    taxpayer_number: query.taxpayer_number,
-                    register_bank: query.register_bank,
-                    register_bank_account: query.register_bank_account
-                };
-            }
-        },
-        allnumFunc(num) {
-            return num == "" || num < 1 ? 1 : num;
-        },
-        priceallFunc(price, num) {
-            if (Number(num) < 1 && Number(num) !== "") {
-                num = 1;
-            }
-            return (
-                ((Number(num) * Number(price) +
-                    Number(this.skuinfoparam.freight)) *
-                    100) /
-                100
-            ).toFixed(2);
         },
         //获取月饼商品详情
         skuinfoFunc() {
@@ -591,76 +476,8 @@ export default {
                         setTimeout(function() {
                             that.$router.push("/login");
                         }, 1000);
-                        localStorage.removeItem("moon_xbk_email");
-                        localStorage.removeItem("onemoreobj");
-                    } else {
-                        that.alertBox = {
-                            tip: res.message,
-                            visible: true
-                        };
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
-        addresslistclick(item) {
-            this.detailownerParam = {
-                id: item.id,
-                receiver: item.receiver,
-                phone: item.phone,
-                address: item.address,
-                province: item.provincial,
-                city: item.city,
-                area: item.area
-            };
+                        localStorage.removeItem("xingbake");
 
-            this.detailowner = true;
-            this.drawer = false;
-        },
-        addaddressList() {
-            let data = {
-                token: Cookie.get("moon_token")
-            };
-            let that = this;
-            getaddresslistdata()
-                .then(function(res) {
-                    if (!!res && res.code == 20000) {
-                        if (res.data.length > 0) {
-                            that.addressData = res.data.reverse();
-
-                            //非再来一单的时候
-                            that.selectaddress = that.addressData[0];
-
-                            if (that.$route.query.onemore != 1) {
-                                that.detailownerParam = {
-                                    id: res.data[0].id,
-                                    receiver: res.data[0].receiver,
-                                    phone: res.data[0].phone,
-                                    address: res.data[0].address,
-                                    user_id: res.data[0].user_id,
-                                    provincial: res.data[0].provincial,
-                                    city: res.data[0].city,
-                                    area: res.data[0].area
-                                };
-                                that.detailowner = true;
-                            }
-                            that.drawerAddress = true;
-                        } else {
-                            that.detailowner = false;
-                            that.drawerAddress = false;
-                        }
-                        // } else if (!!res && res.code == 113005) {
-                        //     that.alertBox = {
-                        //         tip: res.message,
-                        //         visible: true
-                        //     };
-
-                        //     setTimeout(function() {
-                        //         that.$router.push("/login");
-                        //     }, 1000);
-                        //     localStorage.removeItem("moon_xbk_email");
-                        //     localStorage.removeItem("onemoreobj");
                     } else {
                         that.alertBox = {
                             tip: res.message,
@@ -673,47 +490,7 @@ export default {
                 });
         },
 
-        paynumblur() {
-            if (this.ordercreate.sku_list[0].sku_count == "") {
-                this.ordercreate.sku_list[0].sku_count = 1;
-            }
-        },
 
-        paynumplus() {
-            if (Number(this.ordercreate.sku_list[0].sku_count) < this.maxnum) {
-                this.ordercreate.sku_list[0].sku_count =
-                    Number(this.ordercreate.sku_list[0].sku_count) + 1;
-                this.priceall = this.priceallFunc(
-                    this.skuinfoparam.shop_price,
-                    this.ordercreate.sku_list[0].sku_count
-                );
-            }
-        },
-        paynumremove() {
-            if (this.ordercreate.sku_list[0].sku_count > 1) {
-                this.ordercreate.sku_list[0].sku_count =
-                    Number(this.ordercreate.sku_list[0].sku_count) - 1;
-            } else {
-                this.ordercreate.sku_list[0].sku_count = 1;
-            }
-            this.priceall = this.priceallFunc(
-                this.skuinfoparam.shop_price,
-                this.ordercreate.sku_list[0].sku_count
-            );
-        },
-        paynuminput() {
-            if (Number(this.ordercreate.sku_list[0].sku_count) > this.maxnum) {
-                this.ordercreate.sku_list[0].sku_count = this.maxnum;
-            } else if (this.ordercreate.sku_list[0].sku_count == 0) {
-                if (this.ordercreate.sku_list[0].sku_count.length > 0) {
-                    this.ordercreate.sku_list[0].sku_count = 1;
-                }
-            } else {
-                this.ordercreate.sku_list[0].sku_count = Number(
-                    this.ordercreate.sku_list[0].sku_count
-                );
-            }
-        },
         addaddress() {
             let that = this;
             let _query = that.$route.query;
@@ -725,24 +502,7 @@ export default {
             that.$router.push({ name: "addaddress", query: data });
         },
         handleClose() {},
-        //编辑地址
-        editaddress(e) {
-            let that = this;
-            let data = {
-                provincial: this.detailownerParam.provincial,
-                city: this.detailownerParam.city,
-                area: this.detailownerParam.area,
-                receiver: this.detailownerParam.receiver,
-                phone: this.detailownerParam.phone,
-                address: this.detailownerParam.address
-            };
-            data.edit = 1;
 
-            data.code = that.$route.query.code;
-            data.duihuancode = this.drawerexchangeinput;
-            data.title = that.$route.query.title;
-            this.$router.push({ name: "addaddress", query: data });
-        },
         pushCodeFunc() {
             let that = this;
 
@@ -783,7 +543,7 @@ export default {
                         usage_scenario: "bytemoon_exchange",
                         exchange_code: that.drawerexchangeinput,
                         verify: obj,
-                        code: that.$route.name
+                        code: 'ea56dd',
                     };
 
                     ordercreateapi(datas)
@@ -791,6 +551,12 @@ export default {
                             if (!!res && res.code == 20000) {
                                 that.duihuansuc = true;
 
+                            } else if(res.code == 113005) {
+                                that.alertBox = {
+                                    tip: res.message,
+                                    visible: true
+                                };
+                                that.$router.push('/login');
                             } else {
                                 that.alertBox = {
                                     tip: res.message,
@@ -824,21 +590,17 @@ export default {
             }
         },
         timecodeFunc() {
-            let n = !!localStorage.getItem("moon_vcodetime")
-                    ? localStorage.getItem("moon_vcodetime")
-                    : 59,
+            let n = 59,
                 that = this;
-            // Cookie.setItem('moon_email', that.param.email);
+
             let timecode = () => {
                 if (n >= 0) {
                     that.vcCodepostfontcontent = n + "秒";
-                    localStorage.setItem("moon_vcodetime", n);
                     n -= 1;
                     setTimeout(function() {
                         timecode();
                     }, 1000);
                 } else {
-                    localStorage.removeItem("moon_vcodetime");
                     that.vcCodepostfontcontent = "发送验证";
                     that.smartCaptcha.reset();
                 }
@@ -1006,6 +768,10 @@ export default {
 </script>
 
 <style scoped>
+.arrowarea {
+    float: right;
+    margin: 0.24rem 0 0;
+}
 .pricescsc span {
     font-size: 20px;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -1321,7 +1087,7 @@ export default {
     outline: 0;
 }
 .addressinputcontent .unit.nounit input.addressinputcontentinput {
-    width: 2.6rem;
+    width: 2.5rem;
 }
 input::-webkit-input-placeholder {
     /* WebKit browsers */
@@ -1365,7 +1131,7 @@ input:-ms-input-placeholder {
     position: relative;
     height: 33px;
     line-height: 33px;
-    width: 2.75rem;
+    width: 2.65rem;
     outline: 0;
     border: 0;
     background-color:#F2C58A;
@@ -1392,19 +1158,19 @@ input:-ms-input-placeholder {
     line-height: 60px;
     overflow: hidden;
     margin: 0 0.07rem;
-    border-bottom: #0f0f0f solid 1px;
+    border-bottom: #986136 solid 1px;
 }
 .addressinputcontent {
-    width: 3.61rem;
+    width: 100%;
     background-color: #F2C58A;
     height: 220px;
 }
 .addressinput {
-    /* background-color: #F2C58A; */
-    padding: 0 0.07rem;
+    width: 3.47rem;
+    margin: 0 auto;
 }
 .addressinput h4 {
-    padding: 0 0 0 0.07rem;
+    padding: 0.26rem 0 0 0.09rem;
     height: 42px;
     text-align: left;
     line-height: 42px;
@@ -1412,7 +1178,7 @@ input:-ms-input-placeholder {
     font-style: normal;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
-    color: #1e1e1e;
+    color: #522C13;
 }
 
 .duihuantip li span {
@@ -1468,11 +1234,11 @@ input:-ms-input-placeholder {
 }
 .duihuantip {
     background-color:#F2C58A;
-    height: 133px;
+    min-height: 133px;
     width: 3.47rem;
     margin: 613px auto 0;
     box-sizing: border-box;
-    padding: 0 0 0 0.1rem;
+    padding: 0 0 18px 0.1rem;
 }
 .ordercheckicon {
     position: absolute;
@@ -1630,7 +1396,6 @@ div.ordercenter span.ordercentersku_count {
 }
 .drawerexchangeinputbg {
     height: 61px;
-    /* line-height: 36px; */
     background-color: #F2C58A;
     width: 3.61rem;
     margin: 0 auto;
@@ -1676,24 +1441,29 @@ div.ordercenter span.ordercentersku_count {
     height: 49px;
     text-align: left;
     line-height: 55px;
-    color: #0f0f0f;
-    margin: 0 0 0 0.07rem;
+    color:#522C13;
+    margin: 0 0 0 0.09rem;
 }
 .exchange {
-    margin: 0 0.07rem;
+    margin: 0 auto;
     /* background: #ac8547; */
     position: relative;
+    width: 3.47rem;
     overflow: hidden;
 }
 .ordercheckBg {
     position: absolute;
     top: 0;
     min-height: 100%;
+    width: 100%;
 }
 .ms_content {
     position: absolute;
+    width: 100%;
     top: 0;
     font-size: 14px;
+    background-color: #CE9654;
+    z-index: 0;
 }
 .wxicon {
     float: left;
