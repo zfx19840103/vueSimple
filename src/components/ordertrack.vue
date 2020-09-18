@@ -126,8 +126,8 @@
         let query = this.$route.query;
 
         let data = {
-          // orderCode: query.orderCode
-          orderCode: '2003435705581wqEw'
+          orderCode: query.orderCode
+          // orderCode: '2003435705581wqEw'
         };
         that.data.list = that.dataeidt(that.data.list);
         logisticsinfo(data)
