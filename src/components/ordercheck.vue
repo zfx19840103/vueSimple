@@ -97,8 +97,8 @@
                     />
                 </div>
             </div>
-            <div class="payTogo" v-bind:class="bgicon">
-                <button @click="paysubmit">立即兑换</button>
+            <div class="payTogo">
+                <button @click="paysubmit" v-preventReClick>立即兑换</button>
             </div>
             <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
                 <div class="captchacontentBg" @click="captchaClass = false"></div>
@@ -1686,7 +1686,7 @@ div.ordercenter span.ordercentersku_count {
     height: 49px;
 
     position: relative;
-    padding: 37px 0 31px;
+    padding: 40px 0 44px;
     width: 100%;
 }
 

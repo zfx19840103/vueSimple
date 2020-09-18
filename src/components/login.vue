@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="loginunitbtn">
-                    <button class="login-btn" @click="submitForm()">手机登录</button>
+                    <button class="login-btn" v-preventReClick @click="submitForm()">手机登录</button>
                 </div>
             </div>
         </div>
