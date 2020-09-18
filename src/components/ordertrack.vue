@@ -2,7 +2,7 @@
   <div class="content">
     <div class="ms_content">
       <div class="titNews">
-        {{data.Logistics_company}} {{data.mail_no}}
+        {{data.Logistics_company}}快递 {{data.mail_no}}
         <span class="iconCopy" title="复制单号" :data-clipboard-text="orderCode" @click="copy"></span>
       </div>
       <div class="address">
@@ -93,7 +93,7 @@
           ],
           logistics_status: "",
           mail_no: "SF352646547585",
-          Logistics_company: "顺丰快递",
+          Logistics_company: "顺丰",
           alertBoxVisible: false,
           userInfo: {}
         },
@@ -135,6 +135,8 @@
             if (!!res && res.code == 20000) {
               if (res.data && res.data.length > 0) {
                 that.data = res.data;
+                that.data.Logistics_company = res.data.Logistics_company
+                that.data.mail_no = res.data.mail_no
                 that.data.list = that.dataeidt(that.data.list);
               } else {
                 that.data.list = []

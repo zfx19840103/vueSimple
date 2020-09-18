@@ -67,8 +67,8 @@
         },
         nodata: false,
         myorderData: {
-          // list: [],
-          list: [{
+          list: [],
+          list1: [{
               "invoice_status": 0,
               "invoice_info": null,
               "invoice_res": null,
@@ -241,10 +241,9 @@
         tipppp: "",
         total: 1,
         pagesthis: 1,
-        _order_code: "",
         imgaddress: "",
         deleteorderindex: 1,
-        phone: '133556788756'
+        phone: localStorage.getItem('xingbake')
       };
     },
     components: {
@@ -346,7 +345,7 @@
           }
           logisticsinfo(data).then(function(res) {
             if (!!res && res.code == 20000) {
-              console.log(res)
+              str = res.data.logistics_status
             } else if (!!res && res.code == 113005) {
               that.alertBox = {
                 visible: true,
@@ -377,7 +376,7 @@
         let data = {
           page: pages,
           pagesize: this.myorderDatapagesize,
-          usage_scenario: "bytemoon_pay"
+          usage_scenario: "bytemoon_exchange"
         };
         orderlist(data).then(function(res) {
           if (res.code == 20000) {
