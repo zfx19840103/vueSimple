@@ -67,8 +67,8 @@
         },
         nodata: false,
         myorderData: {
-          // list: [],
-          list: [{
+          list: [],
+          list1: [{
               "invoice_status": 0,
               "invoice_info": null,
               "invoice_res": null,
