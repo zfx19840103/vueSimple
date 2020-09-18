@@ -2,12 +2,19 @@
     <div class="ordercheckBg">
         <div v-bind:class="{ 'payloading': payloading }" class="ms_content">
             <div class="ordercheckicon"></div>
+            <div class="ordercheckicon1"></div>
+            <span class="orderCenter" @click="orderCenter">
+                <i>我的</i>
+            </span>
+            <div class="pricescsc">
+                <span>市场价：¥598</span>
+            </div>
             <div class="duihuantip">
                 <h3>兑换须知</h3>
                 <ul>
                     <li>
                         <i>1.</i>
-                        <span>下滑页面填写收件信息，可兑换GODIVA歌帝梵典雅月饼礼盒。</span>
+                        <span>下滑页面填写收件信息，可兑换星巴克【星奕】月饼礼盒。</span>
                     </li>
                     <li>
                         <i>2.</i>
@@ -21,80 +28,78 @@
                         <i>4.</i>
                         <span>
                             收件时请务必开箱验收，如遇到破损等情况，请拨打售后电话
-                            <a href="tel:4006-196-136">4006-196-136</a>。
+                            <strong>4006-196-136</strong>。
                         </span>
                     </li>
                 </ul>
             </div>
-
-                <div class="addressinput">
-                    <h4>请填写详细信息</h4>
-                    <div class="addressinputcontent">
-                        <div class="unit">
-                            <label>*收货人</label>
-                            <input
-                                type="text"
-                                class="addressinputcontentinput"
-                                v-model="param.receiver"
-                                maxlength="50"
-                                :placeholder="placeholder.receiver"
-                                @blur="resetfixed"
-                            />
-                        </div>
-                        <div class="unit">
-                            <label>*手机号</label>
-                            <input
-                                class="addressinputcontentinput"
-                                type="text"
-                                v-model="param.phone"
-                                maxlength="11"
-                                :placeholder="placeholder.phone"
-                                @blur="resetfixed"
-                            />
-                        </div>
-                        <div class="unit" @click="areashow = true">
-                            <label>*所在地区</label>
-                            <input
-                                type="text"
-                                class="areaaddress addressinputcontentinput"
-                                readonly="readonly"
-                                v-model="param.area"
-                                :placeholder="placeholder.area"
-                            />
-                            <i class="el-icon-arrow-right"></i>
-                        </div>
-
-                        <div class="unit nounit">
-                            <label>*详细地址</label>
-                            <input
-                                type="text"
-                                class="addressaddress addressinputcontentinput"
-                                @click="addressclick"
-                                @input="addressbkFunc"
-                                v-model="param.addressbk"
-                                :placeholder="placeholder.address"
-                                @blur="resetfixed"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="exchange">
-                    <span>输入兑换码</span>
-                    <div class="drawerexchangeinputbg">
+            <div class="addressinput">
+                <h4>请填写详细信息</h4>
+                <div class="addressinputcontent">
+                    <div class="unit">
+                        <label>*收货人</label>
                         <input
                             type="text"
-                            class="drawerexchangeinput"
-                            maxlength="8"
-                            v-model.trim="drawerexchangeinput"
-                            placeholder="请输入8位兑换码"
+                            class="addressinputcontentinput"
+                            v-model="param.receiver"
+                            maxlength="50"
+                            :placeholder="placeholder.receiver"
+                            @blur="resetfixed"
+                        />
+                    </div>
+                    <div class="unit">
+                        <label>*手机号</label>
+                        <input
+                            class="addressinputcontentinput"
+                            type="text"
+                            v-model="param.phone"
+                            maxlength="11"
+                            :placeholder="placeholder.phone"
+                            @blur="resetfixed"
+                        />
+                    </div>
+                    <div class="unit" @click="areashow = true">
+                        <label>*所在地区</label>
+                        <input
+                            type="text"
+                            class="areaaddress addressinputcontentinput"
+                            readonly="readonly"
+                            v-model="param.area"
+                            :placeholder="placeholder.area"
+                        />
+                        <i class="el-icon-arrow-right"></i>
+                    </div>
+
+                    <div class="unit nounit">
+                        <label>*详细地址</label>
+                        <input
+                            type="text"
+                            class="addressaddress addressinputcontentinput"
+                            @click="addressclick"
+                            @input="addressbkFunc"
+                            v-model="param.addressbk"
+                            :placeholder="placeholder.address"
                             @blur="resetfixed"
                         />
                     </div>
                 </div>
-                <div class="payTogo" v-bind:class="bgicon">
-                    <button @click="paysubmit">确认兑换</button>
+            </div>
+            <div class="exchange">
+                <span>输入兑换码</span>
+                <div class="drawerexchangeinputbg">
+                    <input
+                        type="text"
+                        class="drawerexchangeinput"
+                        maxlength="8"
+                        v-model.trim="drawerexchangeinput"
+                        placeholder="请输入兑换码"
+                        @blur="resetfixed"
+                    />
                 </div>
-
+            </div>
+            <div class="payTogo" v-bind:class="bgicon">
+                <button @click="paysubmit">立即兑换</button>
+            </div>
             <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
                 <div class="captchacontentBg" @click="captchaClass = false"></div>
                 <div class="captchacontent">
@@ -109,7 +114,10 @@
             <div class="duihuansuccontent">
                 <span class="duihuansucicon"></span>
                 <p>兑换成功</p>
-                <i @click="duihuansucfalsebtn">继续兑换>></i>
+                <div class="duihuansuciconscce">
+                    <i @click="duihuansucfalsebtn" class="fl">继续兑换</i>
+                    <i @click="orderCenter" class="fr">我的订单</i>
+                </div>
             </div>
         </div>
         <!-- <div class="iconsrcollTip" @click="iconsrcollTipshowFunc" v-if="iconsrcollTipshow">
@@ -288,7 +296,6 @@ export default {
         this.drawerexchangeinput = this.$route.query.duihuancode;
         this.initinvoiceFunc();
         this.initonemoreFunc();
-        this.equipment();
     },
     computed: {
         // defaultAvatar() {
@@ -306,45 +313,11 @@ export default {
         }, 500);
     },
     methods: {
+         orderCenter() {
+                this.$router.push("/myorder");
+        },
         resetfixed() {
             document.documentElement.scrollTop = this._scrollTopsce;
-        },
-        equipment() {
-            let action = "";
-            var ua = navigator.userAgent.toLowerCase();
-            var os,
-                iswx = "no_wx";
-            if (
-                navigator.userAgent.indexOf("Android") > -1 ||
-                navigator.userAgent.indexOf("Linux") > -1
-            ) {
-                os = "Android";
-            } else if (
-                navigator.userAgent.indexOf("iPhone") > -1 ||
-                navigator.userAgent.indexOf("iPad") > -1
-            ) {
-                os = "iOS";
-            } else if (navigator.userAgent.indexOf("Windows Phone") > -1) {
-                os = "WP";
-            } else {
-                os = "Others";
-            }
-            if (/MicroMessenger/i.test(navigator.userAgent)) {
-                iswx = "wx";
-            }
-            var _browers = "";
-            if (ua.indexOf("trident") > -1) {
-                _browers = "IE内核";
-            } else if (ua.indexOf("presto") > -1) {
-                _browers = "opera内核";
-            } else if (ua.indexOf("applewebkit") > -1) {
-                _browers = "苹果、谷歌内核";
-            } else {
-                _browers = "other";
-            }
-
-            _czc.push(["_trackEvent", "equipment", os, iswx]);
-            _czc.push(["_trackEvent", "browers", _browers, ua]);
         },
         srcollTipfunc() {
             let that = this;
@@ -817,32 +790,13 @@ export default {
                         .then(function(res) {
                             if (!!res && res.code == 20000) {
                                 that.duihuansuc = true;
-                                _czc.push([
-                                    "_trackEvent",
-                                    "exchangesuccess",
-                                    that.$route.name,
-                                    res.code
-                                ]);
+
                             } else {
                                 that.alertBox = {
                                     tip: res.message,
                                     visible: true
                                 };
-                                if (res.code == 200001) {
-                                    _czc.push([
-                                        "_trackEvent",
-                                        "exchanged",
-                                        that.$route.name,
-                                        res.code
-                                    ]);
-                                } else {
-                                    _czc.push([
-                                        "_trackEvent",
-                                        "exchangeerror",
-                                        that.$route.name,
-                                        res.code
-                                    ]);
-                                }
+
                                 that.drawerexchangeinput = "";
                             }
                             that.smartCaptcha.reset();
@@ -895,7 +849,6 @@ export default {
         paysubmit() {
             let that = this;
 
-            _czc.push(["_trackEvent", "exchangebtn", this.$route.name]);
             let data = {
                 out_biz_code:
                     new Date().getTime() +
@@ -1053,6 +1006,46 @@ export default {
 </script>
 
 <style scoped>
+.pricescsc span {
+    font-size: 20px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #9F6324;
+    display: block;
+}
+.pricescsc {
+    position: absolute;
+    top: 1.14rem;
+    left: 0.24rem;
+}
+.orderCenter i {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #986136;
+    text-align: center;
+    width: 44px;
+    height: 44px;
+    background:#FAE2BF;
+    display: block;
+    border-radius: 20px;
+    font-style: normal;
+    line-height: 44px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 7px;
+    left: 10px;
+}
+.orderCenter {
+    width: 63px;
+    height: 56px;
+    background: rgba(153, 98, 55, 0.79);
+    border-radius: 27px 0 0 27px;
+    position: absolute;
+    top: 27px;
+    right: 0;
+    z-index: 9999;
+}
 @keyframes bounce-down {
     25% {
         transform: translateY(5px);
@@ -1254,14 +1247,25 @@ export default {
     display: block;
     margin: 0.1rem auto 0;
 }
+.fl {
+    float: left;
+    text-align: right;
+}
+.fr {
+    float: right;
+    text-align: left;
+}
 .duihuansuccontent i {
+    position: relative;
     display: block;
+    width: 42%;
     font-style: normal;
-    margin: 0.05rem 0 0;
     font-size: 16px;
     font-family: PingFangSC-Light, PingFang SC;
     font-weight: 300;
-    color: #fab724;
+    color: #7D472B;
+    line-height: 22px;
+
 }
 .duihuansuccontent p {
     margin: 0.15rem 0 0;
@@ -1291,6 +1295,12 @@ export default {
     left: 0;
     z-index: 0;
 }
+.duihuansuciconscce {
+    position: absolute;
+    top: 1.55rem;
+    left: 0;
+    width: 100%;
+}
 .duihuansuc {
     position: fixed;
     top: 0;
@@ -1315,20 +1325,38 @@ export default {
 }
 input::-webkit-input-placeholder {
     /* WebKit browsers */
-    color: #7f6e53;
+    color: #BF9F6C;
 }
 input:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
-    color: #7f6e53;
+    color: #BF9F6C;
 }
 input::-moz-placeholder {
     /* Mozilla Firefox 19+ */
-    color: #7f6e53;
+    color: #BF9F6C;
 }
 input:-ms-input-placeholder {
     /* Internet Explorer 10+ */
-    color: #7f6e53;
+    color: #BF9F6C;
 }
+
+.drawerexchangeinputbg input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #895638;
+}
+.drawerexchangeinputbg input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #895638;
+}
+.drawerexchangeinputbg input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #895638;
+}
+.drawerexchangeinputbg input:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #895638;
+}
+
 .addressinputcontent .unit input.addressinputcontentinput.areaaddress {
     width: 2.35rem;
 }
@@ -1340,7 +1368,7 @@ input:-ms-input-placeholder {
     width: 2.75rem;
     outline: 0;
     border: 0;
-    background-color: #d1ae78;
+    background-color:#F2C58A;
     padding: 0 0 0 0.1rem;
     margin: 14px 0 0;
     font-size: 12px;
@@ -1353,7 +1381,7 @@ input:-ms-input-placeholder {
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #333333;
+    color: #7D472B;
 }
 .addressinputcontent .unit.nounit {
     border-bottom: none;
@@ -1368,11 +1396,11 @@ input:-ms-input-placeholder {
 }
 .addressinputcontent {
     width: 3.61rem;
-    background-color: #d1ae78;
+    background-color: #F2C58A;
     height: 220px;
 }
 .addressinput {
-    background-color: #ac8547;
+    /* background-color: #F2C58A; */
     padding: 0 0.07rem;
 }
 .addressinput h4 {
@@ -1390,14 +1418,15 @@ input:-ms-input-placeholder {
 .duihuantip li span {
     display: block;
     float: left;
-    width: 3.35rem;
     text-align: left;
-    margin: 0 0 0 0.07rem;
+    margin: 0 0 0 0.03rem;
+    width: 3.2rem;
     font-size: 11px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #0f172e;
+    color: #733A1E;
     line-height: 18px;
+
 }
 .duihuantip li i {
     float: left;
@@ -1407,11 +1436,12 @@ input:-ms-input-placeholder {
     font-size: 11px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #0f172e;
+    color: #733A1E;
 }
-.duihuantip li a {
-    color: #fcd18e;
-    text-decoration: underline;
+.duihuantip li strong {
+    color: #733A1E;
+    font-style: normal;
+    text-decoration: none;
     font-size: 11px;
     font-weight: 400;
     display: inline-block;
@@ -1427,8 +1457,8 @@ input:-ms-input-placeholder {
     font-size: 11px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #0f172e;
-    margin: 13px 0 0;
+    color: #733A1E;
+    padding: 19px 0 0;
     font-weight: normal;
     font-style: normal;
     text-align: left;
@@ -1437,19 +1467,36 @@ input:-ms-input-placeholder {
     margin: 7px 0 0;
 }
 .duihuantip {
-    background-color: #ac8547;
+    background-color:#F2C58A;
     height: 133px;
-    width: 100%;
+    width: 3.47rem;
+    margin: 613px auto 0;
     box-sizing: border-box;
-    padding: 0 0 0 0.17rem;
+    padding: 0 0 0 0.1rem;
 }
 .ordercheckicon {
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: -1;
     width: 3.75rem;
-    height: 4.77rem;
-    background-color: #ac8547;
+    height: 5.98rem;
+    background-color: #CE9654;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-image: url(../assets/img/ordercheckbg3.png);
+    background-image: url(../assets/img/ordercheckbg1.png);
+}
+.ordercheckicon1 {
+    position: absolute;
+    top:5.98rem;
+    left: 0;
+    z-index: -1;
+    width: 3.75rem;
+    height: 6.7rem;
+    background-color: #CE9654;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url(../assets/img/ordercheckbg2.png);
 }
 .detailowner_bottom_bg {
     width: 110%;
@@ -1584,14 +1631,14 @@ div.ordercenter span.ordercentersku_count {
 .drawerexchangeinputbg {
     height: 61px;
     /* line-height: 36px; */
-    background-color: #d1ae78;
+    background-color: #F2C58A;
     width: 3.61rem;
     margin: 0 auto;
     display: block;
 }
 .drawerexchangeinput {
     box-sizing: border-box;
-    background-color: #d1ae78;
+    background-color: #F2C58A;
     margin: 13px 0 0;
     padding: 0 0 0 13px;
     width: 100%;
@@ -1634,17 +1681,19 @@ div.ordercenter span.ordercentersku_count {
 }
 .exchange {
     margin: 0 0.07rem;
-    background: #ac8547;
+    /* background: #ac8547; */
     position: relative;
     overflow: hidden;
 }
 .ordercheckBg {
-    background: #ac8547;
+    position: absolute;
+    top: 0;
     min-height: 100%;
 }
 .ms_content {
+    position: absolute;
+    top: 0;
     font-size: 14px;
-    background: #ac8547;
 }
 .wxicon {
     float: left;
@@ -1852,16 +1901,18 @@ div.ordercenter span.ordercentersku_count {
     margin: 0 auto;
     width: 2.89rem;
     height: 49px;
-    border-radius: 6px;
+    border-radius: 25px;
     outline: 0;
+    background-color: #7D472B;
     border: 0;
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #dcb474;
+    color: #F6E1BC;
 }
 
 .payTogo {
+
     height: 49px;
 
     position: relative;

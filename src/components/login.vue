@@ -1,11 +1,6 @@
 <template>
     <div style="height: 100%;">
-        <div
-            class="scrollFunc"
-            @touchstart="touchstartFunc"
-            @touchmove="touchmoveFunc"
-            @touchend="touchendFunc"
-        ></div>
+
         <span class="orderCenter" @click="orderCenter">
             <i>我的</i>
         </span>
@@ -48,7 +43,8 @@
         </div>
         <div v-else class="login-wrap-login">
             <div class="loginunitbtn">
-                <button class="login-btn">手机</button>
+                <button class="login-btn" @click="gotoduihuan">去兑换</button>
+                <span class="loginout" @click="logoutsss">退出登录</span>
             </div>
         </div>
         <!-- <div class="loginwrapIcon" @click="linkproduct" v-if="arrow">
@@ -57,7 +53,7 @@
             <span></span>
         </div> -->
         <div class="captchacontentDialog" v-bind:class="{ 'captchaClass': captchaClass }">
-            <div class="captchacontentBg" @click="captchaClass = false"></div>
+            <div class="captchacontentBg" @click="captchaClassFuncsc"></div>
             <div class="captchacontent">
                 <div id="captcha"></div>
             </div>
@@ -67,11 +63,11 @@
 </template>
 
 <script>
-import { loginPost, pushCode, verify } from "@/api/login";
+import { loginPost, pushCode, logout } from "@/api/login";
 import Cookie from "js-cookie";
 import * as CryptoJS from "crypto-js";
 import AlertBox from "./alertbox";
-import BScroll from "better-scroll";
+
 export default {
     data() {
         return {
@@ -84,7 +80,7 @@ export default {
             vcCodepostfontcontent: "发送验证",
             verifydata: {},
             feishuhref:
-                "https://tsingapi.tsingglobal.com/openapi/auth/login/feishu",
+                "http://dev.api.byte.tsingglobal.cn/openapi/auth/login/wechat",
             param: {
                 email: "",
                 vcCode: "",
@@ -110,39 +106,47 @@ export default {
         //     this.loginShow = true;
         // }
         // this.touchFunc();
+        this.initloginShow();
     },
     mounted() {
         this.pushCodeFunc();
     },
     methods: {
-        touchstartFunc(event) {
-            let that = this;
-            event.preventDefault();
-            var ctouch = event.changedTouches[0];
-            console.log("start" + ctouch.pageY);
-            that.startIndex = ctouch.pageY; //获取到刚开始的X
+        gotoduihuan() {
+            this.$router.push("/ordercheck");
         },
-        touchmoveFunc(event) {
+        logoutsss() {
+            
             let that = this;
-            event.preventDefault();
-            that.touchIndex = event.changedTouches[0].pageY; //获取到移动时不断改变的X轴上的值
-            that.tranX = that.touchIndex - that.startIndex; //移动过程中X轴上的差值
-            // console.log(that.tranX);
-        },
-        touchendFunc(event) {
-            let that = this;
-            event.preventDefault();
-            //获取最终触摸的X轴（手指离开屏幕时获取的）
-            that.endIndex = event.changedTouches[0].pageY;
-            that.tranBack = that.endIndex - that.startIndex;
 
-            console.log("end" + that.endIndex);
-            console.log(that.tranBack);
-            if (that.tranBack < 0 && Math.abs(that.tranBack) > 80) {
-                this.$router.push("/product");
+            logout().then(function(res) {
+                if(!!res && res.code == 20000){
+                    that.alertBoxVisible = true;
+                    that.alertBoxContent = '退出成功';
+                    localStorage.removeItem("xingbake");
+                    that.loginShow = true;
+                }else {
+                    that.alertBoxVisible = true;
+                    that.alertBoxContent = res.message;
+                }
+            })
+            .catch(function(error) {
+                // console.log(error);
+                // that.alertBoxVisible = true;
+                // that.alertBoxContent = "退出失败";
+                
+            });
+
+
+        },
+        initloginShow() {
+            if(!!localStorage.getItem('xingbake')) {
+                this.loginShow = false;
             }
         },
-
+        captchaClassFuncsc() {
+            this.captchaClass = false;
+        },
         urlparamFunc() {
             if (!!this.$route.query.loginShow) {
                 this.loginShow = true;
@@ -159,10 +163,10 @@ export default {
                 fail_txt: "验证失败，请在此点击按钮刷新",
                 scaning_txt: "智能检测中",
                 success: function(data) {
-                    console.log(NVC_Opt.token);
-                    console.log(data.sessionId);
-                    console.log(data.sig);
-                    console.log(data);
+                    // console.log(NVC_Opt.token);
+                    // console.log(data.sessionId);
+                    // console.log(data.sig);
+                    // console.log(data);
                     that.verifydata = {
                         token: NVC_Opt.token,
                         sessionid: data.sessionId,
@@ -171,20 +175,29 @@ export default {
                     };
 
                     let paramsdata = {
-                        email: that.param.email,
+                        phone: that.param.email,
                         verify: that.verifydata
                     };
 
                     pushCode(paramsdata)
                         .then(function(res) {
-                            that.timecodeFunc();
+                            
                             that.captchaClass = false;
-                            console.log(res);
+                            if (!!res && res.code == 20000) {
+                                that.timecodeFunc();
+                                that.smartCaptcha.reset();
+                                localStorage.setItem("xingbake", that.param.email);
+
+                            } else {
+                                that.alertBoxVisible = true;
+                                that.alertBoxContent = res.message;
+                            }
+                            
                         })
                         .catch(function(e) {
-                            console.log(e.status);
-                            console.log(e.responseText);
-                            that.smartCaptcha.fail();
+                            
+                            // that.smartCaptcha.fail();
+                            console.log(e)
                         });
                 },
                 fail: function(data) {
@@ -238,9 +251,8 @@ export default {
         },
         submitForm() {
             let data = {
-                email: this.param.email,
+                phone: this.param.email,
                 captcha: this.param.vcCode
-                // verify: this.verifydata,
             };
             let that = this;
             if (this.param.email === "") {
@@ -268,7 +280,6 @@ export default {
                                     "moonxing_email",
                                     that.param.email
                                 );
-                                _czc.push(["_trackEvent", "login", "loginh5"]);
 
                                 that.alertBoxContent = "登录成功";
                                 setTimeout(function() {
@@ -288,11 +299,10 @@ export default {
             this.$router.push("/product");
         },
         orderCenter() {
-            if (!!localStorage.getItem("moonxing_email")) {
+            if (!!localStorage.getItem("xingbake")) {
                 this.$router.push("/myorder");
             } else {
                 this.loginShow = true;
-                this.arrow = false;
             }
         }
     }
@@ -300,6 +310,20 @@ export default {
 </script>
 
 <style scoped>
+.loginout {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #8B5D45;
+    line-height: 17px;
+    letter-spacing: 1px;
+}
 .login-wrap-login {
     width: 2.6rem;
     position: absolute;
