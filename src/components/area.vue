@@ -2801,7 +2801,8 @@ export default {
                         },
                         {
                             id: 1830,
-                            name: "济源市",district: []
+                            name: "济源市",
+                            district: ["济源市辖区"]
                         }
                     ]
                 },
@@ -3000,19 +3001,18 @@ export default {
                         },
                         {
                             id: 1956,
-                            name: "仙桃市",district: []
+                            name: "仙桃市",
+                            district: ["仙桃市辖区"]
                         },
                         {
                             id: 1957,
-                            name: "潜江市",district: []
+                            name: "潜江市",
+                            district: ["潜江市辖区"]
                         },
                         {
                             id: 1958,
-                            name: "天门市",district: []
-                        },
-                        {
-                            id: 1959,
-                            name: "神农架林区",district: []
+                            name: "天门市",
+                            district: ["天门市辖区"]
                         }
                     ]
                 },
@@ -3468,15 +3468,13 @@ export default {
                         },
                         {
                             id: 2252,
-                            name: "东莞市",district: [],district: []
+                            name: "东莞市",
+                            district: ["东莞市辖区"]
                         },
                         {
                             id: 2253,
-                            name: "中山市",district: [],district: []
-                        },
-                        {
-                            id: 2254,
-                            name: "东沙群岛",district: [],district: []
+                            name: "中山市",
+                            district: ["中山市辖区"]
                         },
                         {
                             id: 2255,
@@ -3762,67 +3760,83 @@ export default {
                         },
                         {
                             id: 2430,
-                            name: "儋州市",district: []
+                            name: "儋州市",
+                            district: ["儋州市市辖区"]
                         },
                         {
                             id: 2431,
-                            name: "五指山市",district: []
+                            name: "五指山市",
+                            district: ["五指山市市辖区"]
                         },
                         {
                             id: 2432,
-                            name: "琼海市",district: []
+                            name: "琼海市",
+                            district: ["琼海市市辖区"]
                         },
                         {
                             id: 2433,
-                            name: "文昌市",district: []
+                            name: "文昌市",
+                            district: ["文昌市市辖区"]
                         },
                         {
                             id: 2434,
-                            name: "万宁市",district: []
+                            name: "万宁市",
+                            district: ["万宁市市辖区"]
                         },
                         {
                             id: 2435,
-                            name: "东方市",district: []
+                            name: "东方市",
+                            district: ["东方市市辖区"]
                         },
                         {
                             id: 2436,
-                            name: "定安县",district: []
+                            name: "定安县",
+                            district: ["定安县镇"]
                         },
                         {
                             id: 2437,
-                            name: "屯昌县",district: []
+                            name: "屯昌县",
+                            district: ["屯昌县镇"]
                         },
                         {
                             id: 2438,
-                            name: "澄迈县",district: []
+                            name: "澄迈县",
+                            district: ["澄迈县镇"]
                         },
                         {
                             id: 2439,
-                            name: "临高县",district: []
+                            name: "临高县",
+                            district: ["临高县镇"]
                         },
                         {
                             id: 2440,
-                            name: "白沙黎族自治县",district: []
+                            name: "白沙黎族自治县",
+                            district: ["白沙黎族自治县镇"]
                         },
                         {
                             id: 2441,
-                            name: "昌江黎族自治县",district: []
+                            name: "昌江黎族自治县",
+                            district: ["昌江黎族自治县镇"]
                         },
                         {
                             id: 2442,
-                            name: "乐东黎族自治县",district: []
+                            name: "乐东黎族自治县",
+                            district: ["乐东黎族自治县镇"]
                         },
                         {
                             id: 2443,
-                            name: "陵水黎族自治县",district: []
+                            name: "陵水黎族自治县",
+                            district: ["陵水黎族自治县镇"]
                         },
                         {
                             id: 2444,
-                            name: "保亭黎族苗族自治县",district: []
+                            name: "保亭黎族苗族自治县",
+                            district: ["保亭黎族苗族自治县镇"]
                         },
                         {
                             id: 2445,
-                            name: "琼中黎族苗族自治县",district: []
+                            name: "琼中黎族苗族自治县",
+                            district: ["琼中黎族苗族自治县镇"]
                         }
                     ]
                 },
@@ -5278,7 +5292,8 @@ export default {
                         },
                         {
                             id: 3398,
-                            name: "胡杨河市",district: []
+                            name: "胡杨河市",
+                            district: ["胡杨河市市辖区"]
                         },
                         {
                             id: 3399,
@@ -5425,42 +5440,51 @@ export default {
                         },
                         {
                             id: 3491,
-                            name: "石河子市",district: []
+                            name: "石河子市",
+                            district: ["石河子市"]
                         },
                         {
                             id: 3492,
-                            name: "阿拉尔市",district: []
+                            name: "阿拉尔市",
+                            district: ["阿拉尔市"]
                         },
                         {
                             id: 3493,
-                            name: "图木舒克市",district: []
+                            name: "图木舒克市",
+                            district: ["图木舒克市"]
                         },
                         {
                             id: 3494,
-                            name: "五家渠市",district: []
+                            name: "五家渠市",
+                            district: ["五家渠市"]
                         },
                         {
                             id: 3495,
-                            name: "北屯市",district: []
+                            name: "北屯市",
+                            district: ["北屯市"]
                         },
                         {
                             id: 3496,
-                            name: "铁门关市",district: []
+                            name: "铁门关市",
+                            district: ["铁门关市"]
                         },
                         {
                             id: 3497,
-                            name: "双河市",district: []
+                            name: "双河市",
+                            district: ["双河市"]
                         },
                         {
                             id: 3498,
-                            name: "可克达拉市",district: []
+                            name: "可克达拉市",
+                            district: ["可克达拉市"]
                         },
                         {
                             id: 3499,
-                            name: "昆玉市",district: []
+                            name: "昆玉市",
+                            district: ["昆玉市"]
                         }
                     ]
-                },
+                }
             ]
         };
     },
@@ -5628,7 +5652,7 @@ export default {
     left: 0;
     z-index: 122;
     height: 80%;
-    background: #fff;
+    background: #987133;
     width: 100%;
 }
 
@@ -5647,7 +5671,7 @@ export default {
     font-size: 16px;
     line-height: 40px;
     font-weight: normal;
-    color: #999;
+    color: #fff;
 }
 .title span {
     z-index: 1;
@@ -5661,7 +5685,7 @@ export default {
 .area {
     font-size: 14px;
     line-height: 40px;
-    color: #333;
+    color: #E8DECD;
     overflow: hidden;
     float: left;
     margin: 0 10px 0 20px;
@@ -5671,7 +5695,7 @@ export default {
     text-align: center;
     font-size: 15px;
     list-style: none;
-    color: #333;
+    color: #E8DECD;
     line-height: 40px;
 }
 
@@ -5686,11 +5710,11 @@ export default {
     text-align: left;
 }
 .address .title .active {
-    color: #0071b8;
-    border-bottom: 0.02rem solid #0071b8;
+    color:#FFD491;
+    border-bottom: 0.01rem solid #FFD491;
 }
 .address ul .active {
-    color: #0071b8;
+    color: #FFD491;
 }
 </style>
 
