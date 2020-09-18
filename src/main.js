@@ -35,12 +35,12 @@ Vue.directive('preventReClick', {
     }
 })
 
-import FastClick from 'fastclick'
-if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function () {
-        FastClick.attach(document.body);
-    }, false);
-}
+// import FastClick from 'fastclick'
+// if ('addEventListener' in document) {
+//     document.addEventListener('DOMContentLoaded', function () {
+//         FastClick.attach(document.body);
+//     }, false);
+// }
 
 // FastClick.prototype.onTouchEnd = function (event) {
 // if (event.target.hasAttribute("type") && event.target.getAttribute("type") == "text") {
