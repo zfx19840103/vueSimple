@@ -18,12 +18,6 @@ export default new Router({
             component: () => import(/* webpackChunkName: "login" */ '../components/login.vue'),
         },
         {
-            path: '/product',
-            name: 'product',
-            meta: { title: '2020中秋商城' },
-            component: () => import(/* webpackChunkName: "product" */ '../components/product.vue'),
-        },
-        {
             path: '/ordercheck',
             name: 'ordercheck',
             component: () => import(/* webpackChunkName: "ordercheck" */ '../components/ordercheck.vue'),
