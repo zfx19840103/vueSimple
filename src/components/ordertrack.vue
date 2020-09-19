@@ -153,6 +153,7 @@
               localStorage.removeItem("xingbake");
               localStorage.removeItem("moon_email");
               localStorage.removeItem("onemoreobj");
+              localStorage.removeItem("USERINFO");
               setTimeout(function() {
                 that.$router.push("/login");
               }, 1000);
