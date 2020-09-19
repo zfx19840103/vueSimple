@@ -168,8 +168,6 @@ export default {
                             if (!!res && res.code == 20000) {
                                 that.timecodeFunc();
                                 that.smartCaptcha.reset();
-                                localStorage.setItem("xingbake", that.param.email);
-
                             } else {
                                 that.alertBoxVisible = true;
                                 that.alertBoxContent = res.message;
