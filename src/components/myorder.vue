@@ -354,6 +354,7 @@
               localStorage.removeItem("moon_email");
               localStorage.removeItem("onemoreobj");
               localStorage.removeItem("xingbake");
+              localStorage.removeItem("USERINFO");
               setTimeout(function() {
                 that.$router.push("/login");
               }, 1000);
@@ -390,6 +391,7 @@
             localStorage.removeItem("moonxing_email");
             localStorage.removeItem("onemoreobj_xing");
             localStorage.removeItem("xingbake");
+            localStorage.removeItem("USERINFO");
             setTimeout(function() {
               that.$router.push("/login");
             }, 1000);
@@ -426,6 +428,7 @@
                   tip: "退出成功"
                 },
                 localStorage.removeItem("xingbake");
+                localStorage.removeItem("USERINFO"); 
               setTimeout(function() {
                 that.$router.push('/login')
               }, 1000)
