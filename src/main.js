@@ -77,16 +77,16 @@ router.beforeEach((to, from, next) => {
 
     if (!!realname) {
         realname = decodeURIComponent(realname);
-        localStorage.setItem('moonxing_phone', realname);
+        localStorage.setItem('xingbake', realname);
     }
 
-    const role = localStorage.getItem('moonxing_phone');
+    const role = localStorage.getItem('xingbake');
 
-    // if (!role && to.path !== '/ordercheck') {
-    //     next('/ordercheck')
-    // } else {
+    if (!role && to.path !== '/login') {
+        next('/login')
+    } else {
         next();
-    // }
+    }
 });
 
 /* eslint-disable no-new */

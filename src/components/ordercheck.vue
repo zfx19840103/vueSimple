@@ -477,6 +477,7 @@ export default {
                             that.$router.push("/login");
                         }, 1000);
                         localStorage.removeItem("xingbake");
+                        localStorage.removeItem("USERINFO");
 
                     } else {
                         that.alertBox = {
@@ -556,6 +557,8 @@ export default {
                                     tip: res.message,
                                     visible: true
                                 };
+                                localStorage.removeItem("xingbake");
+                                localStorage.removeItem("USERINFO");
                                 that.$router.push('/login');
                             } else {
                                 that.alertBox = {
@@ -589,24 +592,7 @@ export default {
                 this.alertBoxContent = "请输入邮箱地址";
             }
         },
-        timecodeFunc() {
-            let n = 59,
-                that = this;
 
-            let timecode = () => {
-                if (n >= 0) {
-                    that.vcCodepostfontcontent = n + "秒";
-                    n -= 1;
-                    setTimeout(function() {
-                        timecode();
-                    }, 1000);
-                } else {
-                    that.vcCodepostfontcontent = "发送验证";
-                    that.smartCaptcha.reset();
-                }
-            };
-            timecode();
-        },
         //创建订单
         paysubmit() {
             let that = this;
@@ -677,9 +663,6 @@ export default {
             }
         },
 
-        linkInvoice() {
-            this.$router.push("/addinvoice");
-        },
         touchStart(e) {
             this.startX = e.touches[0].clientX;
         },
@@ -807,7 +790,7 @@ export default {
     height: 56px;
     background: rgba(153, 98, 55, 0.79);
     border-radius: 27px 0 0 27px;
-    position: absolute;
+    position: fixed;
     top: 27px;
     right: 0;
     z-index: 9999;
@@ -1087,7 +1070,7 @@ export default {
     outline: 0;
 }
 .addressinputcontent .unit.nounit input.addressinputcontentinput {
-    width: 2.5rem;
+    width: 2.4rem;
 }
 input::-webkit-input-placeholder {
     /* WebKit browsers */

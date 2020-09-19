@@ -105,6 +105,7 @@ export default {
                     that.alertBoxContent = '退出成功';
                     setTimeout(function() {
                         localStorage.removeItem("xingbake");
+                        localStorage.removeItem("USERINFO");
                         that.loginShow = true;
                     }, 1000)
                 }else {
@@ -275,6 +276,8 @@ export default {
                 this.$router.push("/myorder");
             } else {
                 this.loginShow = true;
+                this.alertBoxVisible = true;
+                this.alertBoxContent = "请登录";
             }
         }
     }
@@ -405,7 +408,7 @@ export default {
     position: absolute;
     top: 27px;
     right: 0;
-    z-index: 9999;
+    z-index: 999999;
 }
 div.captchaClass {
     visibility: inherit;

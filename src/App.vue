@@ -61,8 +61,9 @@ html, body {
     padding: 0;
 }
 .alertBox .el-dialog {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
+    color: rgba(255,255,255,1);
+    background: rgba(86, 61, 41, 0.9);
+    border-radius: 6px;
 }
 .alertBox .el-dialog__header {
     padding: 0;
