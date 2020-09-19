@@ -48,7 +48,7 @@ export function deleteaddress(data) {
 export function ordercreateapi(data) {
     return new Promise((resolve, reject) => {
         request
-            .post(`${API}/openapi/user/order/create/bytemoon_pay`, qs.stringify(data))
+            .post(`${API}/openapi/user/order/create/sbux_exchange`, qs.stringify(data))
             .then(function(response) {
                 resolve(response);
             })
