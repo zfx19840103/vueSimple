@@ -428,7 +428,7 @@ div.captchaClass {
     z-index: 1;
 }
 .captchacontentDialog {
-    z-index: 10000;
+    z-index: 100000000;
     position: fixed;
     width: 100%;
     height: 100%;
