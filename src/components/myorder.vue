@@ -233,7 +233,7 @@
           ]
         },
         windowHeight: document.documentElement.clientHeight,
-        myorderDatapagesize: 10,
+        myorderDatapagesize: 20,
         myorderDatapage: 1,
         loadingConnecting: false,
         pulldownMsg: "下拉刷新",
@@ -377,7 +377,7 @@
         let data = {
           page: pages,
           pagesize: this.myorderDatapagesize,
-          usage_scenario: "bytemoon_exchange"
+          usage_scenario: "sbux_exchange"
         };
         orderlist(data).then(function(res) {
           if (res.code == 20000) {
@@ -428,7 +428,7 @@
                   tip: "退出成功"
                 },
                 localStorage.removeItem("xingbake");
-                localStorage.removeItem("USERINFO"); 
+                localStorage.removeItem("USERINFO");
               setTimeout(function() {
                 that.$router.push('/login')
               }, 1000)
