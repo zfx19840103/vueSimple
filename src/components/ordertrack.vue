@@ -111,7 +111,11 @@
         let that = this;
         var clipboard = new Clipboard(".iconCopy");
         clipboard.on("success", e => {
-          that.alertBoxVisible = true;
+          // that.alertBoxVisible = true;
+          that.alertBox = {
+            visible: true,
+            tip: '复制成功'
+          },
           clipboard.destroy();
         });
         clipboard.on("error", e => {
