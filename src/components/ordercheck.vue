@@ -541,7 +541,7 @@ export default {
                             detailAddress: that.param.addressbk
                         },
                         orderdes: that.ordercreate.orderdes,
-                        usage_scenario: "bytemoon_exchange",
+                        usage_scenario: "sbux_exchange",
                         exchange_code: that.drawerexchangeinput,
                         verify: obj,
                         code: 'ea56dd',
@@ -616,7 +616,7 @@ export default {
                     detailAddress: that.detailownerParam.address
                 },
                 orderdes: that.ordercreate.orderdes,
-                usage_scenario: "bytemoon_exchange",
+                usage_scenario: "sbux_exchange",
                 exchange_code: that.drawerexchangeinput
             };
             console.log(data);

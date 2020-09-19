@@ -18,7 +18,7 @@
                 <div class="loginunit">
                     <label>
                         <span class="logintitle">验证码：</span>
-                        <input v-model="param.vcCode" maxlength="6" />
+                        <input class="vccodeinput" v-model="param.vcCode" maxlength="6" />
                     </label>
                     <div class="vcCodepost">
                         <div class="vcCodepostfont" @click="vcCodepostfont">
@@ -285,6 +285,11 @@ export default {
 </script>
 
 <style scoped>
+input.vccodeinput:-webkit-autofill {
+    background-color: rgba(255, 255, 255, 0.4);
+    background-image: none;
+    color: #000;
+}
 .loginout {
     position: absolute;
     top: 50px;
@@ -610,7 +615,6 @@ div.captchaClass {
     height: 22px;
     line-height: 22px;
     margin: 8px 0;
-    /* background: #ffcccc; */
 }
 
 .loginunit label {
